@@ -134,6 +134,37 @@
   .slform input{border:1.5px solid var(--border);border-radius:11px;padding:13px 16px;font-size:15px;background:var(--surface-1);color:var(--ink);min-width:260px;font-family:var(--font);}
   .sldone{display:none;background:var(--good-soft);color:var(--good-ink);border:1px solid var(--good);border-radius:12px;padding:18px;font-weight:600;margin-top:6px;}
   .sldisc{font-size:11.5px;color:var(--muted);margin-top:14px;}
+  /* terminal qualification card */
+  .qualcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:34px 30px;text-align:center;box-shadow:0 6px 34px rgba(0,0,0,.06);max-width:720px;margin:0 auto;}
+  .qualcard h2{font-size:28px;margin:14px 0 8px;letter-spacing:-.4px;}
+  .urgency{display:flex;gap:14px;justify-content:center;margin:6px 0 20px;flex-wrap:wrap;}
+  .ucard{background:var(--surface-1);border:1px solid var(--border);border-radius:14px;padding:14px 24px;min-width:190px;}
+  .ucard.acc{background:var(--accent-soft);border-color:var(--accent);}
+  .ubig{font-size:34px;font-weight:800;letter-spacing:-1px;color:var(--sfm);font-variant-numeric:tabular-nums;line-height:1;}
+  .ucard.acc .ubig{color:var(--accent);}
+  .ut{font-size:12.5px;color:var(--ink-2);margin-top:7px;}
+  .slnote{font-size:13px;color:var(--good-ink);font-weight:600;margin-top:13px;}
+  .scrolldown{display:inline-block;margin-top:22px;font-size:13.5px;color:var(--muted);font-weight:600;}
+  .scrolldown:hover{color:var(--sfm);text-decoration:none;}
+  .comparewrap{margin-top:48px;}
+  .strh{text-align:left;margin-top:34px;}
+  .strengths{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:820px){.strengths{grid-template-columns:1fr;}}
+  .scard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;border-top:3px solid var(--good);}
+  .sct{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:12px;}
+  .svs{display:flex;align-items:center;gap:10px;}
+  .sa,.sb{flex:1;display:flex;flex-direction:column;line-height:1.1;}
+  .sa{font-size:21px;font-weight:800;color:var(--sfm);letter-spacing:-.5px;}
+  .sb{font-size:21px;font-weight:700;color:var(--muted);letter-spacing:-.5px;}
+  .sa small,.sb small{font-size:10.5px;font-weight:600;color:var(--muted);margin-top:3px;letter-spacing:0;}
+  .svsx{font-size:11px;font-weight:700;color:var(--muted);}
+  .snote{margin-top:12px;font-size:12.5px;font-weight:600;color:var(--good-ink);background:var(--good-soft);border-radius:8px;padding:7px 10px;}
+  .analysiscta{margin-top:34px;background:var(--sfm-soft);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;}
+  .analysiscta h3{margin:0 0 6px;font-size:20px;}
+  .analysiscta p{margin:0 auto 16px;font-size:14.5px;color:var(--ink-2);max-width:520px;}
+  /* quiz reveal on click */
+  #quiz{max-height:0;opacity:0;overflow:hidden;padding-top:0;padding-bottom:0;border-bottom:0;transition:max-height .55s ease,opacity .45s ease,padding .45s ease;}
+  #quiz.revealed{max-height:1800px;opacity:1;padding-top:44px;padding-bottom:44px;border-bottom:1px solid var(--border);}
 
   /* EDGE / DATA */
   .faceoffs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
@@ -257,7 +288,7 @@
 <!-- APPLE HERO (HOME) -->
 <header class="apple" data-view="home">
   <div class="wrap">
-    <div class="ak" data-k="a.k">SFM e-mobility · 2027</div>
+    <div class="ak" data-k="a.k">E-Mobility 2027</div>
     <h1 class="ah" data-k="a.h">Are you ready for the<br><span class="grad">future of transport?</span></h1>
     <p class="asub" data-k="a.sub">Up to 80&nbsp;km/h. Up to half the price of the big names. A battery nobody else sells. Find your match and claim early access — in 60 seconds.</p>
     <button class="cta big" id="heroCta" data-k="a.cta">Check your eligibility →</button>
@@ -284,40 +315,49 @@
 
 <!-- RESULT -->
 <section id="result" data-view="home">
-  <div class="eyebrow" data-k="r.eyebrow">Your result</div>
-  <div id="eligbadge"></div>
-  <h2 style="margin-top:14px" id="rtitle"></h2>
-  <p class="lead" id="rlead"></p>
-
-  <div class="matchrow">
-    <div class="matchcard">
-      <div class="ml" data-k="r.match">Your best match</div>
-      <div class="mn" id="rmname"></div>
-      <div class="mc" id="rmclass"></div>
-      <div class="mp" id="rmprice"></div>
-      <ul id="rmspecs"></ul>
+  <div class="qualcard">
+    <div id="eligbadge"></div>
+    <h2 id="rtitle"></h2>
+    <p class="lead" id="rlead" style="margin-left:auto;margin-right:auto"></p>
+    <div class="urgency">
+      <div class="ucard"><div class="ubig" id="countdown">72:00:00</div><div class="ut" data-k="r.u1">left to lock in your preferential rate</div></div>
+      <div class="ucard acc"><div class="ubig">200</div><div class="ut" data-k="r.u2">slots · qualified candidates only</div></div>
     </div>
-    <div class="compare">
-      <div class="ct" id="rct"></div>
-      <div class="cn" data-k="r.cn">Retail price in the same licence class — lower is cheaper. Specs shown under each bar.</div>
-      <div class="cols" id="rcols"></div>
-      <div class="saveline" id="rsave"></div>
-    </div>
-  </div>
-
-  <div class="shortlist">
-    <div class="slscarcity">
-      <div class="slnum">200</div>
-      <div class="sltext"><b data-k="r.slt1">early spots — qualified candidates only</b><span data-k="r.slt2">Applications close 1 October 2027 · first come, first matched</span></div>
-    </div>
-    <h3 data-k="r.slh">Join the pre-order shortlist</h3>
-    <p data-k="r.slp">Only <b>200 qualified pre-orders</b> are accepted before 1 October 2027. Shortlisted riders get first delivery slots in the spring, a locked-in launch price, and a free second battery. No payment now — you confirm your order when we reveal final pricing in February.</p>
     <div class="slform" id="slform">
       <input type="email" id="slemail" placeholder="you@email.com" data-kph="r.slph">
-      <button class="cta acc" id="slbtn" data-k="r.slbtn">Reserve my spot</button>
+      <button class="cta acc" id="slbtn" data-k="r.slbtn">Secure my spot</button>
     </div>
+    <div class="slnote" id="slnote" data-k="r.slnote">✓ No payment and no commitment — leaving your email only holds your place. Securing it locks your early-access rate.</div>
     <div class="sldone" id="sldone"></div>
-    <div class="sldisc" data-k="r.sldisc">Reserving adds you to the priority list — it isn't a purchase and isn't binding. We'll email you when pre-orders open.</div>
+    <div class="sldisc" data-k="r.sldisc">You can walk away any time — this reserves a spot, it isn't a purchase or a binding order. We'll email you to confirm when pre-orders open.</div>
+    <a href="#compare" class="scrolldown" data-k="r.scroll">↓ See how your match stacks up against the market</a>
+  </div>
+
+  <div id="compare" class="comparewrap">
+    <div class="eyebrow" data-k="r.ceyebrow">The proof behind your rate</div>
+    <h3 id="rct" style="font-size:24px"></h3>
+    <div class="matchrow">
+      <div class="matchcard">
+        <div class="ml" data-k="r.match">Your best match</div>
+        <div class="mn" id="rmname"></div>
+        <div class="mc" id="rmclass"></div>
+        <div class="mp" id="rmprice"></div>
+        <ul id="rmspecs"></ul>
+      </div>
+      <div class="compare">
+        <div class="ct" id="rctp"></div>
+        <div class="cn" data-k="r.cn">Retail price in the same licence class — lower is cheaper. Specs under each bar.</div>
+        <div class="cols" id="rcols"></div>
+        <div class="saveline" id="rsave"></div>
+      </div>
+    </div>
+    <h3 class="strh" data-k="r.strh">Where it beats the competition</h3>
+    <div class="strengths" id="rstrengths"></div>
+    <div class="analysiscta">
+      <h3 data-k="r.actah">See the full 2027 line-up</h3>
+      <p data-k="r.actap">Six models, every one benchmarked against its class — the strongest competitive advantages first.</p>
+      <button class="cta" id="toAnalysis" data-k="r.actabtn">Explore the product line →</button>
+    </div>
   </div>
 </section>
 
@@ -495,7 +535,12 @@ const ENPH={}; document.querySelectorAll('[data-kph]').forEach(e=>{ENPH[e.datase
 // ---------- German dictionary ----------
 const DE={
 'nav.home':'Start','nav.analysis':'Analyse',
-'a.k':'SFM e-mobility · 2027',
+'a.k':'E-Mobility 2027',
+'r.u1':'bis dein Vorzugspreis fixiert ist','r.u2':'Plätze · nur qualifizierte Bewerber',
+'r.slnote':'✓ Keine Zahlung, keine Verpflichtung — deine E-Mail sichert nur deinen Platz. Das Sichern fixiert deinen Early-Access-Preis.',
+'r.scroll':'↓ So schlägt sich dein Match gegen den Markt',
+'r.ceyebrow':'Der Beleg für deinen Preis','r.strh':'Wo es den Wettbewerb schlägt',
+'r.actah':'Die komplette 2027-Palette ansehen','r.actap':'Sechs Modelle, jedes gegen seine Klasse gebenchmarkt — die stärksten Wettbewerbsvorteile zuerst.','r.actabtn':'Produktlinie entdecken →',
 'a.h':'Bist du bereit für die<br><span class="grad">Zukunft der Mobilität?</span>',
 'a.sub':'Bis zu 80&nbsp;km/h. Bis zum halben Preis der großen Namen. Ein Akku, den sonst niemand verkauft. Finde dein Match und sichere dir Early Access — in 60 Sekunden.',
 'a.cta':'Eligibility prüfen →','a.meta':'200 Early-Plätze · endet 1. Oktober · Deutschland · Österreich · Schweiz',
@@ -512,7 +557,7 @@ const DE={
 'r.slt1':'Early-Plätze — nur für qualifizierte Bewerber','r.slt2':'Bewerbung endet 1. Oktober 2027 · wer zuerst kommt, wird zuerst gematcht',
 'r.slh':'Auf die Vorbestell-Shortlist','r.slp':'Nur <b>200 qualifizierte Vorbestellungen</b> werden vor dem 1. Oktober 2027 angenommen. Shortlist-Fahrer erhalten die ersten Liefertermine im Frühjahr, einen fixierten Launch-Preis und einen gratis Zweitakku. Keine Zahlung jetzt — du bestätigst deine Bestellung bei der finalen Preisbekanntgabe im Februar.',
 'r.slph':'du@email.com','r.slbtn':'Platz sichern',
-'r.sldisc':'Die Reservierung setzt dich auf die Prioritätsliste — sie ist kein Kauf und nicht bindend. Wir melden uns per E-Mail, sobald die Vorbestellung startet.',
+'r.sldisc':'Du kannst jederzeit aussteigen — das reserviert einen Platz, es ist kein Kauf und keine verbindliche Bestellung. Wir mailen dich zur Bestätigung, sobald die Vorbestellung öffnet.',
 'e.eyebrow':'Die Daten dahinter','e.title':'Warum „bis zu halber Preis" echt ist, kein Slogan',
 'e.lead':'Drei direkte Vergleiche, die den Abstand am klarsten zeigen. Jede Zahl ist ein echter Marktpreis 2025–26; SFM-Preise sind Hersteller-UVP.',
 'e.f1t':'80-km/h-Klasse · der K.-o.-Schlag','e.f1a':'SFM E2H Sport','e.f1b':'Günstigster Rivale','e.f1s':'600&nbsp;€ weniger — und der <b>günstigste 80-km/h-E-Roller in ganz DACH</b>.',
@@ -621,6 +666,33 @@ const MODELS={
    rivals:[{name:'Horwin SK3',price:3990,s:90,r:120},{name:'Super Soco TC Max',price:3999,s:95,r:110},{name:'Vespa Elettrica',price:7199,s:70,r:70}]}
 };
 
+// strong points per model (honest wins vs named rivals)
+const STRONG={
+ 'SFM EM1 · 25 km/h':[
+   {t:{en:'Price',de:'Preis'},a:'€1,899',b:'€2,200',bn:'NIU UQi',note:{en:'€301 less — the class price floor',de:'301 € günstiger — Preisuntergrenze der Klasse'}},
+   {t:{en:'Range',de:'Reichweite'},a:'70 km',b:'50 km',bn:'NIU UQi',note:{en:'+40% further per charge',de:'+40% mehr pro Ladung'}},
+   {t:{en:'vs premium build',de:'vs. Premium'},a:'€1,899',b:'€3,200',bn:'Horwin EK1',note:{en:'Almost half the price',de:'Fast der halbe Preis'}}],
+ 'SFM EM1 · 45 km/h':[
+   {t:{en:'Price',de:'Preis'},a:'€1,899',b:'€2,250',bn:'Vässla 2',note:{en:'Below the volume band',de:'Unter dem Volumen-Band'}},
+   {t:{en:'Range',de:'Reichweite'},a:'70 km',b:'65 km',bn:'NIU MQi+',note:{en:'More range, less money',de:'Mehr Reichweite, weniger Geld'}},
+   {t:{en:'vs retro brand',de:'vs. Retro-Marke'},a:'€1,899',b:'€3,900',bn:'Kumpan 54',note:{en:'Less than half',de:'Weniger als die Hälfte'}}],
+ 'SFM Future 5':[
+   {t:{en:'Battery tech',de:'Akku-Technik'},a:'Na-ion',b:'Li-ion',bn:'every rival',note:{en:'Cold-tough, no fire story',de:'Kältefest, keine Brandgeschichte'}},
+   {t:{en:'Price',de:'Preis'},a:'€1,999',b:'€2,500',bn:'NIU MQi+',note:{en:'€500 less',de:'500 € günstiger'}},
+   {t:{en:'Lifespan',de:'Lebensdauer'},a:'~1,200',b:'—',bn:'cycles',note:{en:'Long-life sodium cells',de:'Langlebige Natrium-Zellen'}}],
+ 'SFM Prima E':[
+   {t:{en:'Price',de:'Preis'},a:'€1,999',b:'€3,024',bn:'unu Scooter',note:{en:'~€1,000 less than the design DTC',de:'~1.000 € unter der Design-DTC'}},
+   {t:{en:'vs retro icon',de:'vs. Retro-Ikone'},a:'€1,999',b:'€3,900',bn:'Kumpan 54',note:{en:'Half the retro price',de:'Halber Retro-Preis'}},
+   {t:{en:'Battery',de:'Akku'},a:'7 kg',b:'heavier',bn:'rivals',note:{en:'Light, removable, carry indoors',de:'Leicht, herausnehmbar, drinnen laden'}}],
+ 'SFM Prima E Sport':[
+   {t:{en:'Price',de:'Preis'},a:'€2,999',b:'€3,799',bn:'NIU MQi GT',note:{en:'€800 less',de:'800 € günstiger'}},
+   {t:{en:'Range',de:'Reichweite'},a:'90 km',b:'75 km',bn:'NIU MQi GT',note:{en:'More range for less',de:'Mehr Reichweite für weniger'}},
+   {t:{en:'Speed for money',de:'Speed pro Geld'},a:'75 km/h',b:'45 km/h',bn:'moped money',note:{en:'A1 pace at moped price',de:'A1-Tempo zum Moped-Preis'}}],
+ 'SFM E2H Sport':[
+   {t:{en:'Price',de:'Preis'},a:'€3,399',b:'€3,999',bn:'Super Soco TC Max',note:{en:'Cheapest 80 km/h L3e in DACH',de:'Günstigster 80-km/h-L3e in DACH'}},
+   {t:{en:'vs a Vespa',de:'vs. Vespa'},a:'€3,399',b:'€7,199',bn:'Elettrica 70',note:{en:'~53% less',de:'~53% günstiger'}},
+   {t:{en:'Batteries',de:'Akkus'},a:'Removable',b:'Fixed',bn:'Vespa',note:{en:'Charge them indoors',de:'Drinnen laden'}}]
+};
 function recommend(){
  const [loc,spd,dist,bud,use,when]=answers;
  let key;
@@ -673,10 +745,11 @@ function revealResult(){
 // ---------- column chart ----------
 function renderColumns(elId,items,lang){
  const el=document.getElementById(elId); el.innerHTML='';
- const maxP=Math.max(...items.map(i=>i.price))*1.02;
+ // amplified scale: cheapest maps short, dearest tall — emphasizes the price gap (labels show real €)
+ const prices=items.map(i=>i.price); const hi=Math.max(...prices), lo=Math.min(...prices); const span=(hi-lo)||1;
  items.forEach(it=>{
    const c=document.createElement('div'); c.className='colc'+(it.sfm?' sfm':'');
-   const h=Math.max((it.price/maxP)*100,6);
+   const h=30+(it.price-lo)/span*70;
    const spec=(it.s?(it.s+' km/h · '+it.r+' km'):'');
    c.innerHTML='<div class="ctop">€'+it.price.toLocaleString(lang==='de'?'de-DE':'en-US')+'</div>'+
      '<div class="cbar" style="height:'+h+'%"></div>'+
@@ -687,48 +760,47 @@ function renderColumns(elId,items,lang){
 
 // ---------- submit ----------
 document.getElementById('qback').onclick=()=>{ if(!animating && curQ>0) flipTo(curQ-1,-1); };
+let cdTimer=null, cdEnd=0;
+function tickCD(){ const el=document.getElementById('countdown'); if(!el)return; let s=Math.max(0,Math.floor((cdEnd-Date.now())/1000)); const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60; el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
+function startCountdown(){ if(cdTimer)return; cdEnd=Date.now()+72*3600*1000; tickCD(); cdTimer=setInterval(tickCD,1000); }
+function renderStrengths(m,lang){
+ const el=document.getElementById('rstrengths'); if(!el)return;
+ const arr=STRONG[m.name]||[];
+ el.innerHTML=arr.map(x=>'<div class="scard"><div class="sct">'+x.t[lang]+'</div><div class="svs"><div class="sa">'+x.a+'<small>SFM</small></div><div class="svsx">vs</div><div class="sb">'+x.b+'<small>'+x.bn+'</small></div></div><div class="snote">✓ '+x.note[lang]+'</div></div>').join('');
+}
 function showResult(){
  const m=recommend(); const lang=curLang;
  const loc=answers[0]; const eligible=loc<=2;
- const locName=(lang==='de'?['Deutschland','Österreich','die Schweiz']:['Germany','Austria','Switzerland'])[loc]||'';
- // badge
- const badge=document.getElementById('eligbadge');
- if(eligible){
-   badge.innerHTML='<span class="elig">✓ '+(lang==='de'?'Du qualifizierst dich für Early Access':'You qualify for early access')+'</span>';
- } else {
-   badge.innerHTML='<span class="elig intl">◐ '+(lang==='de'?'Early Access startet zuerst in DE/AT/CH':'Early access starts in DE/AT/CH first')+'</span>';
- }
- document.getElementById('rtitle').textContent=(lang==='de'?'Dein Match: ':'Your match: ')+m.name;
- document.getElementById('rlead').innerHTML= eligible
-   ? (lang==='de'?('Basierend auf deinen Antworten passt die <b>'+m.name+'</b> am besten — und in '+locName+' bist du für Early Access startberechtigt. Hier die echten Zahlen gegen den Wettbewerb:')
-                 :('Based on your answers, the <b>'+m.name+'</b> fits you best — and in '+locName+' you\'re eligible for early access. Here are the real numbers vs the competition:'))
-   : (lang==='de'?('Basierend auf deinen Antworten passt die <b>'+m.name+'</b> am besten. Early Access startet zuerst in DE/AT/CH — trag dich ein und wir informieren dich, sobald dein Markt dazukommt.')
-                 :('Based on your answers, the <b>'+m.name+'</b> fits you best. Early access starts in DE/AT/CH first — join below and we\'ll tell you when your market opens.'));
+ document.getElementById('eligbadge').innerHTML = eligible
+   ? '<span class="elig">✓ '+(lang==='de'?'Du bist qualifiziert':'You\'re qualified')+'</span>'
+   : '<span class="elig intl">◐ '+(lang==='de'?'Early Access: zuerst DE/AT/CH':'Early access: DE/AT/CH first')+'</span>';
+ document.getElementById('rtitle').innerHTML = eligible
+   ? (lang==='de'?'Du qualifizierst dich für die Vorbestellung zum <span style="color:var(--accent)">Vorzugspreis</span>':'You qualify for pre-order at a <span style="color:var(--accent)">preferential rate</span>')
+   : (lang==='de'?'Deine <span style="color:var(--accent)">Wunschmaschine</span> steht fest':'Your <span style="color:var(--accent)">match</span> is ready');
+ document.getElementById('rlead').innerHTML = eligible
+   ? (lang==='de'?('Deine Antworten passen am besten zur <b>'+m.name+'</b> — für dich zum Early-Access-Preis reserviert, bevor die öffentlichen Preise stehen. Sichere ihn dir in den nächsten 72 Stunden; nur 200 qualifizierte Plätze.')
+                 :('Your answers match the <b>'+m.name+'</b> — held for you at an early-access rate before public pricing goes live. Lock it in within the next 72 hours; only 200 qualified spots.'))
+   : (lang==='de'?('Deine Antworten passen am besten zur <b>'+m.name+'</b>. Early Access startet zuerst in DE/AT/CH — trag deine E-Mail ein und wir melden uns, sobald dein Markt öffnet.')
+                 :('Your answers match the <b>'+m.name+'</b>. Early access opens in DE/AT/CH first — drop your email and we\'ll tell you when your market goes live.'));
  // match card
  document.getElementById('rmname').textContent=m.name;
  document.getElementById('rmclass').textContent=m.cls[lang];
  document.getElementById('rmprice').textContent='€'+m.price.toLocaleString(lang==='de'?'de-DE':'en-US');
  document.getElementById('rmspecs').innerHTML=m.specs[lang].map(s=>'<li><span>'+s[0]+'</span><b>'+s[1]+'</b></li>').join('');
- // compare
- document.getElementById('rct').textContent=(lang==='de'?'Preisvergleich in deiner Klasse':'Price comparison in your class');
- const items=[{name:m.name.replace('SFM ','SFM '),price:m.price,sfm:1,s:parseSpeed(m),r:parseRange(m)}]
-   .concat(m.rivals.map(r=>({name:r.name,price:r.price,s:r.s,r:r.r})));
+ // price chart
+ document.getElementById('rctp').textContent=(lang==='de'?'Preisvergleich in deiner Klasse':'Price comparison in your class');
+ const items=[{name:m.name,price:m.price,sfm:1,s:parseSpeed(m),r:parseRange(m)}].concat(m.rivals.map(r=>({name:r.name,price:r.price,s:r.s,r:r.r})));
  renderColumns('rcols',items,lang);
- // savings
- const rivalMin=Math.min(...m.rivals.map(r=>r.price));
- const rivalMax=Math.max(...m.rivals.map(r=>r.price));
- const save=rivalMin-m.price;
- const pct=Math.round((1-m.price/rivalMax)*100);
- const premium=m.rivals.find(r=>r.price===rivalMax).name;
- let s;
- if(lang==='de'){
-   s='<b>Du zahlst €'+m.price.toLocaleString('de-DE')+'</b> — '+(save>0?('€'+save.toLocaleString('de-DE')+' weniger als der günstigste Vergleichbare'):'auf Augenhöhe mit dem günstigsten Rivalen')+', und <b>'+pct+'% unter</b> der '+premium+'.';
- } else {
-   s='<b>You\'d pay €'+m.price.toLocaleString('en-US')+'</b> — '+(save>0?('€'+save.toLocaleString('en-US')+' less than the cheapest comparable bike'):'on par with the cheapest rival')+', and <b>'+pct+'% below</b> the '+premium+'.';
- }
- document.getElementById('rsave').innerHTML=s;
+ const rivalMin=Math.min(...m.rivals.map(r=>r.price)), rivalMax=Math.max(...m.rivals.map(r=>r.price));
+ const save=rivalMin-m.price, pct=Math.round((1-m.price/rivalMax)*100), premium=m.rivals.find(r=>r.price===rivalMax).name;
+ document.getElementById('rsave').innerHTML = lang==='de'
+   ? ('<b>Du zahlst €'+m.price.toLocaleString('de-DE')+'</b> — '+(save>0?('€'+save.toLocaleString('de-DE')+' weniger als der günstigste Vergleichbare'):'auf Augenhöhe mit dem günstigsten Rivalen')+', und <b>'+pct+'% unter</b> der '+premium+'.')
+   : ('<b>You\'d pay €'+m.price.toLocaleString('en-US')+'</b> — '+(save>0?('€'+save.toLocaleString('en-US')+' less than the cheapest comparable bike'):'on par with the cheapest rival')+', and <b>'+pct+'% below</b> the '+premium+'.');
+ // heading + strengths
+ document.getElementById('rct').textContent=(lang==='de'?('So schlägt sich deine '+m.name):('How your '+m.name+' stacks up'));
+ renderStrengths(m,lang);
  // reveal
- resultShown=true;
+ resultShown=true; startCountdown();
  const res=document.getElementById('result'); res.style.display='block';
  res.scrollIntoView({behavior:'smooth'});
 }
@@ -817,7 +889,8 @@ function showView(v){
 }
 document.getElementById('navHome').onclick=(e)=>{e.preventDefault();showView('home');};
 document.getElementById('navAnalysis').onclick=(e)=>{e.preventDefault();showView('analysis');};
-document.getElementById('heroCta').onclick=()=>document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+document.getElementById('toAnalysis').onclick=()=>showView('analysis');
+document.getElementById('heroCta').onclick=()=>{ const q=document.getElementById('quiz'); q.classList.add('revealed'); setTimeout(()=>q.scrollIntoView({behavior:'smooth',block:'center'}),80); };
 const tbn=document.getElementById('themeBtn');
 tbn.onclick=()=>{const d=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',d?'light':'dark');tbn.textContent=d?'Dark':(curLang==='de'?'Hell':'Light');};
 // initial language: quick browser hint, then refine by IP country (DE/AT/CH → German)
