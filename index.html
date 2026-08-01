@@ -467,6 +467,15 @@
 
 <script>
 const root=document.documentElement;
+let manualLang=false;
+// MailerLite (test group) — public embedded-form endpoint, no secret key exposed
+const ML_ACCOUNT='2508827', ML_FORM='194585389484214253';
+async function mlSubscribe(email){
+ const body=new URLSearchParams();
+ body.append('fields[email]',email); body.append('ml-submit','1'); body.append('anticsrf','true');
+ try{ await fetch('https://assets.mailerlite.com/jsonp/'+ML_ACCOUNT+'/forms/'+ML_FORM+'/subscribe',{method:'POST',mode:'no-cors',body}); return true; }
+ catch(e){ return false; }
+}
 const EN={}; document.querySelectorAll('[data-k]').forEach(e=>{EN[e.dataset.k]=e.innerHTML;});
 const ENPH={}; document.querySelectorAll('[data-kph]').forEach(e=>{ENPH[e.dataset.kph]=e.getAttribute('placeholder');});
 
@@ -704,15 +713,17 @@ function parseSpeed(m){ if(m.name.includes('25'))return 25; if(m.name.includes('
 function parseRange(m){ const map={'SFM EM1 · 25 km/h':70,'SFM EM1 · 45 km/h':70,'SFM Future 5':45,'SFM Prima E':65,'SFM Prima E Sport':90,'SFM E2H Sport':75}; return map[m.name]||60; }
 
 // shortlist
-document.getElementById('slbtn').onclick=()=>{
+document.getElementById('slbtn').onclick=async()=>{
  const em=document.getElementById('slemail').value.trim();
- if(!em||!em.includes('@')){ document.getElementById('slemail').focus(); return; }
+ if(!em||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ document.getElementById('slemail').focus(); return; }
+ const btn=document.getElementById('slbtn'); btn.disabled=true; btn.textContent=(curLang==='de'?'Wird gesendet…':'Sending…');
+ await mlSubscribe(em);
  document.getElementById('slform').style.display='none';
  const d=document.getElementById('sldone'); d.style.display='block';
- const spot=Math.floor(37+ (em.length*7)%120); // illustrative deterministic number
+ const spot=Math.floor(37+ (em.length*7)%120); // illustrative position
  d.innerHTML=(curLang==='de'
-   ? '✓ Du stehst auf der Shortlist — <b>Platz '+spot+' von 200</b>. Wir mailen dich an, sobald die Vorbestellung im Februar öffnet.'
-   : '✓ You\'re on the shortlist — <b>spot '+spot+' of 200</b>. We\'ll email you the moment pre-orders open in February.');
+   ? '✓ Du stehst auf der Shortlist — <b>Platz '+spot+' von 200</b>.<br>Bitte bestätige deine E-Mail über den Link, den wir dir gerade geschickt haben.'
+   : '✓ You\'re on the shortlist — <b>spot '+spot+' of 200</b>.<br>Please confirm your email via the link we just sent you.');
 };
 
 // ---------- deeper charts ----------
@@ -769,8 +780,8 @@ function applyLang(l){
  renderQuiz(); updateProg(); renderDeeper(l);
  if(document.getElementById('result').style.display==='block' && answers.filter(a=>a!==null).length===6) showResult();
 }
-document.getElementById('enBtn').onclick=()=>applyLang('en');
-document.getElementById('deBtn').onclick=()=>applyLang('de');
+document.getElementById('enBtn').onclick=()=>{manualLang=true;applyLang('en');};
+document.getElementById('deBtn').onclick=()=>{manualLang=true;applyLang('de');};
 
 // ---------- view switching (Home / Analysis) ----------
 let resultShown=false;
@@ -786,8 +797,17 @@ document.getElementById('navAnalysis').onclick=(e)=>{e.preventDefault();showView
 document.getElementById('heroCta').onclick=()=>document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
 const tbn=document.getElementById('themeBtn');
 tbn.onclick=()=>{const d=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',d?'light':'dark');tbn.textContent=d?'Dark':(curLang==='de'?'Hell':'Light');};
-applyLang('en');
+// initial language: quick browser hint, then refine by IP country (DE/AT/CH → German)
+applyLang((navigator.language||'').toLowerCase().startsWith('de')?'de':'en');
 showView('home');
+(async()=>{
+ try{
+   const r=await fetch('https://ipwho.is/?fields=country_code,success');
+   const j=await r.json();
+   const cc=((j&&j.country_code)||'').toUpperCase();
+   if(!manualLang && cc) applyLang(['DE','AT','CH'].includes(cc)?'de':'en');
+ }catch(e){ /* keep browser-hint language */ }
+})();
 </script>
 </body>
 </html>
