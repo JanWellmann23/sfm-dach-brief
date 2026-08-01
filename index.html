@@ -86,6 +86,10 @@
   .cta:hover{filter:brightness(1.07);} .cta:disabled{opacity:.45;cursor:not-allowed;}
   .cta.big{padding:16px 34px;font-size:17px;} .cta.acc{background:var(--accent);}
   .qnote{font-size:12.5px;color:var(--muted);}
+  #qwrap{transition:opacity .16s ease, transform .16s ease;}
+  .qnav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;}
+  .qback{background:none;border:none;color:var(--ink-2);font-weight:600;font-size:14px;cursor:pointer;padding:6px 2px;font-family:var(--font);}
+  .qback:hover{color:var(--sfm);} .qstep{font-size:12.5px;color:var(--muted);font-weight:600;}
 
   /* RESULT */
   #result{display:none;background:radial-gradient(800px 320px at 50% -10%,var(--good-soft),transparent 62%),var(--surface-1);}
@@ -119,6 +123,12 @@
   .shortlist{margin-top:26px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;}
   .shortlist h3{margin:0 0 8px;font-size:21px;}
   .slcount{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:800;border-radius:999px;padding:5px 15px;font-size:13px;margin-bottom:14px;}
+  .slscarcity{display:inline-flex;align-items:center;gap:18px;background:var(--accent-soft);border:2px solid var(--accent);border-radius:16px;padding:14px 26px 14px 22px;margin-bottom:18px;box-shadow:0 4px 18px color-mix(in srgb,var(--accent) 18%,transparent);}
+  .slnum{font-size:56px;font-weight:800;color:var(--accent);line-height:.9;letter-spacing:-2.5px;font-variant-numeric:tabular-nums;}
+  .sltext{text-align:left;}
+  .sltext b{display:block;font-size:16.5px;color:var(--ink);letter-spacing:-.2px;}
+  .sltext span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:3px;}
+  @media(max-width:520px){.slnum{font-size:44px;} .slscarcity{padding:12px 18px;gap:12px;}}
   .shortlist p{color:var(--ink-2);font-size:14.5px;max-width:560px;margin:0 auto 18px;}
   .slform{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
   .slform input{border:1.5px solid var(--border);border-radius:11px;padding:13px 16px;font-size:15px;background:var(--surface-1);color:var(--ink);min-width:260px;font-family:var(--font);}
@@ -232,7 +242,7 @@
 
 <nav>
   <div class="wrap">
-    <div class="brand">SFM<span>·</span>e-mobility</div>
+    <div class="brand">E-Mobility <span>2027</span></div>
     <div class="navlinks">
       <a href="#" id="navHome" class="vlink on" data-k="nav.home">Home</a>
       <a href="#" id="navAnalysis" class="vlink" data-k="nav.analysis">Analysis</a>
@@ -265,9 +275,9 @@
   <div class="quizcard">
     <div class="qprog"><div id="qbar"></div></div>
     <div id="qwrap"></div>
-    <div class="qsubrow">
-      <button class="cta" id="qsubmit" disabled data-k="q.submit">See my result &amp; the numbers</button>
-      <span class="qnote" id="qcount" data-k="q.count">Answer all 6 to continue</span>
+    <div class="qnav">
+      <button class="qback" id="qback">← <span data-k="q.back">Back</span></button>
+      <span class="qstep" id="qstep"></span>
     </div>
   </div>
 </section>
@@ -296,7 +306,10 @@
   </div>
 
   <div class="shortlist">
-    <div class="slcount" id="slcount">● 200 spots · closing 1 October</div>
+    <div class="slscarcity">
+      <div class="slnum">200</div>
+      <div class="sltext"><b data-k="r.slt1">early spots — qualified candidates only</b><span data-k="r.slt2">Applications close 1 October 2027 · first come, first matched</span></div>
+    </div>
     <h3 data-k="r.slh">Join the pre-order shortlist</h3>
     <p data-k="r.slp">Only <b>200 qualified pre-orders</b> are accepted before 1 October 2027. Shortlisted riders get first delivery slots in the spring, a locked-in launch price, and a free second battery. No payment now — you confirm your order when we reveal final pricing in February.</p>
     <div class="slform" id="slform">
@@ -493,9 +506,10 @@ const DE={
 't.scroll':'↓ Starte mit einer kurzen Frage',
 'q.eyebrow':'Der Eligibility-Check','q.title':'Passt Early Access zu dir?',
 'q.lead':'Early Access ist nicht für jeden — sondern für Fahrer in Deutschland, Österreich und der Schweiz, die diese Klassen wirklich nutzen. Kein Gimmick: Deine Antworten ordnen dir das richtige Modell zu und zeigen den echten Preis und die Leistung im Vergleich zum Wettbewerb. Sechs kurze Fragen.',
-'q.submit':'Ergebnis &amp; Zahlen ansehen','q.count':'Beantworte alle 6, um fortzufahren',
+'q.submit':'Ergebnis &amp; Zahlen ansehen','q.count':'Beantworte alle 6, um fortzufahren','q.back':'Zurück',
 'r.eyebrow':'Dein Ergebnis','r.match':'Dein bestes Match',
 'r.cn':'Verkaufspreis in derselben Führerscheinklasse — niedriger ist günstiger. Daten unter jeder Säule.',
+'r.slt1':'Early-Plätze — nur für qualifizierte Bewerber','r.slt2':'Bewerbung endet 1. Oktober 2027 · wer zuerst kommt, wird zuerst gematcht',
 'r.slh':'Auf die Vorbestell-Shortlist','r.slp':'Nur <b>200 qualifizierte Vorbestellungen</b> werden vor dem 1. Oktober 2027 angenommen. Shortlist-Fahrer erhalten die ersten Liefertermine im Frühjahr, einen fixierten Launch-Preis und einen gratis Zweitakku. Keine Zahlung jetzt — du bestätigst deine Bestellung bei der finalen Preisbekanntgabe im Februar.',
 'r.slph':'du@email.com','r.slbtn':'Platz sichern',
 'r.sldisc':'Die Reservierung setzt dich auf die Prioritätsliste — sie ist kein Kauf und nicht bindend. Wir melden uns per E-Mail, sobald die Vorbestellung startet.',
@@ -621,30 +635,39 @@ function recommend(){
  return MODELS[key];
 }
 
-// ---------- render quiz ----------
+// ---------- stepper quiz (one window per flip) ----------
 let curLang='en';
+let curQ=0, animating=false;
 function renderQuiz(){
- const wrap=document.getElementById('qwrap'); wrap.innerHTML='';
- QUIZ[curLang].forEach((item,qi)=>{
-   const q=document.createElement('div'); q.className='q';
-   q.innerHTML='<div class="qn">'+item.n+'</div><div class="qq">'+item.q+'</div>';
-   const opts=document.createElement('div'); opts.className='qopts';
-   item.o.forEach((opt,oi)=>{
-     const b=document.createElement('div'); b.className='qopt'+(answers[qi]===oi?' sel':'');
-     b.innerHTML='<span class="mk">'+(answers[qi]===oi?'✓':'')+'</span><span>'+opt+'</span>';
-     b.onclick=()=>{ answers[qi]=oi; renderQuiz(); updateProg(); };
-     opts.appendChild(b);
-   });
-   q.appendChild(opts); wrap.appendChild(q);
- });
+ const item=QUIZ[curLang][curQ];
+ const wrap=document.getElementById('qwrap');
+ let h='<div class="qq">'+item.q+'</div><div class="qopts">';
+ item.o.forEach((opt,oi)=>{ h+='<div class="qopt'+(answers[curQ]===oi?' sel':'')+'" data-oi="'+oi+'"><span class="mk">'+(answers[curQ]===oi?'✓':'')+'</span><span>'+opt+'</span></div>'; });
+ h+='</div>';
+ wrap.innerHTML=h;
+ wrap.querySelectorAll('.qopt').forEach(b=>{ b.onclick=()=>{ if(animating)return; answers[curQ]=+b.dataset.oi; renderQuiz(); setTimeout(nextQ,150); }; });
+ const back=document.getElementById('qback'); if(back) back.style.visibility=curQ>0?'visible':'hidden';
+ updateProg();
 }
 function updateProg(){
  const done=answers.filter(a=>a!==null).length;
- document.getElementById('qbar').style.width=(done/6*100)+'%';
- const sub=document.getElementById('qsubmit'); sub.disabled=done<6;
- const c=document.getElementById('qcount');
- if(done<6) c.textContent=(curLang==='de'?('Noch '+(6-done)+' Frage(n)'):(6-done)+' question(s) left');
- else c.textContent=(curLang==='de'?'Alles beantwortet ✓':'All answered ✓');
+ document.getElementById('qbar').style.width=(Math.max(done,curQ)/6*100)+'%';
+ const st=document.getElementById('qstep');
+ if(st) st.textContent=(curLang==='de'?('Frage '+(curQ+1)+' von 6'):('Question '+(curQ+1)+' of 6'));
+}
+function flipTo(idx,dir){
+ const w=document.getElementById('qwrap'); animating=true;
+ w.style.opacity='0'; w.style.transform='translateX('+(dir>0?-26:26)+'px)';
+ setTimeout(()=>{ curQ=idx; renderQuiz(); w.style.transform='translateX('+(dir>0?26:-26)+'px)';
+   requestAnimationFrame(()=>{ w.style.opacity='1'; w.style.transform='translateX(0)'; });
+   setTimeout(()=>{animating=false;},170);
+ },150);
+}
+function nextQ(){ if(curQ<5) flipTo(curQ+1,1); else revealResult(); }
+function revealResult(){
+ const w=document.getElementById('qwrap'); animating=true;
+ w.style.opacity='0'; w.style.transform='translateX(-26px)';
+ setTimeout(()=>{ showResult(); w.style.opacity='1'; w.style.transform='translateX(0)'; animating=false; },180);
 }
 
 // ---------- column chart ----------
@@ -663,7 +686,7 @@ function renderColumns(elId,items,lang){
 }
 
 // ---------- submit ----------
-document.getElementById('qsubmit').onclick=()=>{ showResult(); };
+document.getElementById('qback').onclick=()=>{ if(!animating && curQ>0) flipTo(curQ-1,-1); };
 function showResult(){
  const m=recommend(); const lang=curLang;
  const loc=answers[0]; const eligible=loc<=2;
