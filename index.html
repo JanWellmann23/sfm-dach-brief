@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFM Electric Two-Wheelers — Competitive Analysis & Go-to-Market (DACH 2027)</title>
+<style>
+  :root{
+    color-scheme: light;
+    --surface-1:#fcfcfb; --plane:#f4f3ef; --card:#ffffff;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --grid:#e6e5df; --line:#c3c2b7; --border:rgba(11,11,11,0.10);
+    --sfm:#2a78d6; --sfm-soft:#e7f0fb;
+    --accent:#eb6834; --accent-soft:#fdece4;
+    --good:#0ca30c; --good-ink:#006300; --warn:#b7791f; --crit:#d03b3b;
+    --comp:#b9b8b1; --comp-soft:#eeede8;
+    --sodium:#4a3aa7;
+    --radius:14px;
+    --font: system-ui,-apple-system,"Segoe UI",sans-serif;
+    --maxw: 1120px;
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --surface-1:#1a1a19; --plane:#0d0d0d; --card:#1f1f1e;
+    --ink:#ffffff; --ink-2:#c3c2b7; --muted:#9a988f;
+    --grid:#2c2c2a; --line:#383835; --border:rgba(255,255,255,0.12);
+    --sfm:#3987e5; --sfm-soft:#16283f;
+    --accent:#eb6834; --accent-soft:#3a2418;
+    --good:#0ca30c; --good-ink:#0ca30c; --warn:#eda100; --crit:#e66767;
+    --comp:#54534d; --comp-soft:#262624;
+    --sodium:#9085e9;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--plane); color:var(--ink); font-family:var(--font); line-height:1.55; font-size:16px; -webkit-font-smoothing:antialiased;}
+  a{color:var(--sfm); text-decoration:none;} a:hover{text-decoration:underline;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px;}
+
+  nav{position:sticky; top:0; z-index:50; background:color-mix(in srgb,var(--surface-1) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border);}
+  nav .wrap{display:flex; align-items:center; gap:16px; height:56px;}
+  .brand{font-weight:800; letter-spacing:.5px; font-size:18px;} .brand span{color:var(--sfm);}
+  .navlinks{display:flex; gap:15px; margin-left:auto; flex-wrap:wrap;}
+  .navlinks a{color:var(--ink-2); font-size:13px; font-weight:600;} .navlinks a:hover{color:var(--sfm); text-decoration:none;}
+  .ctrls{display:flex; gap:8px;}
+  .btn{cursor:pointer; border:1px solid var(--border); background:var(--card); color:var(--ink-2); border-radius:8px; padding:5px 10px; font-size:12px; font-weight:700;}
+  .btn.on{background:var(--sfm); color:#fff; border-color:var(--sfm);}
+  .langwrap{display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden;}
+  .langwrap .btn{border:none; border-radius:0;}
+  @media(max-width:820px){.navlinks{display:none;}}
+
+  header.hero{background:radial-gradient(1100px 380px at 78% -10%, var(--sfm-soft), transparent 60%), var(--surface-1); border-bottom:1px solid var(--border); padding:48px 0 36px;}
+  .kicker{color:var(--sfm); font-weight:700; font-size:13px; letter-spacing:1.5px; text-transform:uppercase;}
+  h1{font-size:40px; line-height:1.1; margin:12px 0 10px; letter-spacing:-.5px;}
+  .sub{font-size:18px; color:var(--ink-2); max-width:780px;}
+  .meta-row{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;}
+  .chip{background:var(--card); border:1px solid var(--border); border-radius:999px; padding:5px 13px; font-size:12.5px; font-weight:600; color:var(--ink-2);} .chip b{color:var(--ink);}
+
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:28px;}
+  .tile{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px 18px 16px;}
+  .tile .big{font-size:30px; font-weight:800; letter-spacing:-.5px; line-height:1;}
+  .tile .big.sfm{color:var(--sfm);} .tile .big.acc{color:var(--accent);} .tile .big.sod{color:var(--sodium);}
+  .tile .lbl{font-size:13px; color:var(--ink-2); margin-top:8px;}
+  @media(max-width:860px){.tiles{grid-template-columns:repeat(2,1fr);}}
+
+  section{padding:44px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:26px; margin:0 0 6px; letter-spacing:-.3px;}
+  .lead{color:var(--ink-2); max-width:820px; margin:0 0 24px; font-size:16.5px;}
+  h3{font-size:18px; margin:30px 0 12px;}
+  .eyebrow{color:var(--accent); font-weight:700; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px;}
+
+  /* SUMMARY / SHORT VERSION */
+  #short{background:
+      radial-gradient(700px 300px at 12% 0%, var(--accent-soft), transparent 62%),
+      radial-gradient(700px 300px at 90% 30%, var(--sfm-soft), transparent 60%),
+      var(--surface-1);}
+  .bigline{font-size:30px; font-weight:800; letter-spacing:-.4px; line-height:1.18; max-width:900px; margin:6px 0 6px;}
+  .bigline .u{color:var(--accent);} .bigline .b{color:var(--sfm);}
+  .short-lead{font-size:17px; color:var(--ink-2); max-width:820px; margin-bottom:26px;}
+  .faceoffs{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media(max-width:900px){.faceoffs{grid-template-columns:1fr;}}
+  .foff{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; position:relative; overflow:hidden;}
+  .foff-t{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:14px;}
+  .foff-row{display:flex; align-items:stretch; gap:10px;}
+  .tag{flex:1; border-radius:10px; padding:12px 10px; display:flex; flex-direction:column; gap:4px; justify-content:center; text-align:center;}
+  .tag span{font-size:11.5px; font-weight:600; opacity:.9;}
+  .tag b{font-size:23px; font-weight:800; letter-spacing:-.5px;}
+  .tag.sfm{background:var(--sfm); color:#fff;}
+  .tag.comp{background:var(--comp-soft); color:var(--ink); border:1px solid var(--border);}
+  .tag.win{background:var(--accent); color:#fff;}
+  .vs{align-self:center; font-size:12px; font-weight:800; color:var(--muted); padding:0 2px;}
+  .foff-save{margin-top:13px; font-size:13px; font-weight:600; color:var(--good-ink); background:color-mix(in srgb,var(--good) 12%, transparent); border-radius:8px; padding:8px 11px; line-height:1.35;}
+  .foff-save.sod{color:var(--sodium); background:color-mix(in srgb,var(--sodium) 13%, transparent);}
+  .foff-save.acc{color:var(--accent); background:var(--accent-soft);}
+
+  .adv-row{display:grid; grid-template-columns:1.2fr 1fr; gap:16px; margin-top:16px;}
+  @media(max-width:900px){.adv-row{grid-template-columns:1fr;}}
+  /* cheapest-in-class mini viz */
+  .miniviz{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px;}
+  .miniviz h4{margin:0 0 4px; font-size:15px;} .miniviz .mvsub{font-size:12.5px; color:var(--muted); margin-bottom:14px;}
+  .mv-row{display:grid; grid-template-columns:96px 1fr; align-items:center; gap:10px; margin-bottom:11px;}
+  .mv-row .mvl{font-size:12.5px; font-weight:700; color:var(--ink-2); text-align:right;}
+  .mv-bars{position:relative;}
+  .mv-bar{height:22px; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:11.5px; font-weight:700; color:#fff; white-space:nowrap; margin-bottom:4px;}
+  .mv-bar.sfm{background:var(--sfm);} .mv-bar.comp{background:var(--comp); color:var(--ink);}
+  /* licence ladder */
+  .ladder{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px;}
+  .ladder h4{margin:0 0 14px; font-size:15px;}
+  .lad-steps{display:flex; flex-direction:column; gap:9px;}
+  .lad{display:flex; align-items:center; gap:12px;}
+  .lad .age{width:42px; height:42px; border-radius:50%; background:var(--sfm-soft); color:var(--sfm); font-weight:800; font-size:15px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:2px solid var(--sfm);}
+  .lad.a1 .age{background:var(--accent-soft); color:var(--accent); border-color:var(--accent);}
+  .lad .ld{font-size:13.5px;} .lad .ld b{display:block; font-size:14.5px;} .lad .ld span{color:var(--muted); font-size:12.5px;}
+
+  .grid-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media(max-width:900px){.grid-cards{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.grid-cards{grid-template-columns:1fr;}}
+  .mcard{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; position:relative; overflow:hidden;}
+  .mcard::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--sfm);}
+  .mcard.sport::before{background:var(--accent);} .mcard.sodium::before{background:var(--sodium);}
+  .mcard .mname{font-weight:800; font-size:17px;}
+  .mcard .mclass{font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px;}
+  .mcard .price{font-size:26px; font-weight:800; margin:10px 0 2px;} .mcard .price small{font-size:13px; color:var(--muted); font-weight:600;}
+  .mcard ul{list-style:none; padding:0; margin:12px 0 0; font-size:13.5px;}
+  .mcard ul li{display:flex; justify-content:space-between; gap:10px; padding:5px 0; border-top:1px solid var(--grid); color:var(--ink-2);}
+  .mcard ul li b{color:var(--ink); font-weight:600; text-align:right;}
+  .badge{display:inline-block; font-size:11px; font-weight:700; border-radius:6px; padding:2px 7px; margin-top:8px;}
+  .badge.sod{background:var(--accent-soft); color:var(--accent);} .badge.new{background:var(--sfm-soft); color:var(--sfm);}
+
+  .chartbox{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px 20px 14px; margin-top:14px;}
+  .chart-title{font-weight:700; font-size:15.5px;}
+  .chart-note{font-size:12.5px; color:var(--muted); margin:2px 0 16px;}
+  .bar-row{display:grid; grid-template-columns:190px 1fr; align-items:center; gap:12px; padding:4px 0;}
+  .bar-label{font-size:13px; text-align:right; color:var(--ink-2); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .bar-label.sfm{color:var(--sfm); font-weight:700;}
+  .bar-track{position:relative; height:26px;}
+  .bar{height:26px; border-radius:4px; background:var(--comp); position:relative; transition:filter .15s; min-width:3px;}
+  .bar.sfm{background:var(--sfm);} .bar.acc{background:var(--accent);} .bar:hover{filter:brightness(1.08);}
+  .bar .val{position:absolute; right:-6px; top:50%; transform:translate(100%,-50%); font-size:12.5px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .legend{display:flex; gap:18px; margin-top:12px; font-size:12.5px; color:var(--ink-2); flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .sw{width:12px; height:12px; border-radius:3px; display:inline-block;}
+  @media(max-width:600px){.bar-row{grid-template-columns:104px 1fr;} .bar-label{font-size:11px;} .tag b{font-size:20px;}}
+
+  #tip{position:fixed; z-index:99; pointer-events:none; background:var(--ink); color:var(--surface-1); padding:8px 11px; border-radius:8px; font-size:12px; opacity:0; transition:opacity .12s; max-width:240px; box-shadow:0 6px 20px rgba(0,0,0,.25);}
+  #tip b{color:#fff;} :root[data-theme="dark"] #tip{background:#000;}
+
+  .twrap{overflow-x:auto; margin-top:14px; border:1px solid var(--border); border-radius:var(--radius);}
+  table{border-collapse:collapse; width:100%; font-size:13.5px; background:var(--card);}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--grid); white-space:nowrap;}
+  th{background:var(--surface-1); font-size:12px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); position:sticky; top:0;}
+  td.num{font-variant-numeric:tabular-nums;}
+  tr.sfm td{background:var(--sfm-soft);} tr.sfm td:first-child{font-weight:700; color:var(--sfm);}
+  tbody tr:hover td{background:var(--plane);} tr.sfm:hover td{background:var(--sfm-soft);}
+
+  .cols2{display:grid; grid-template-columns:1fr 1fr; gap:16px;} @media(max-width:820px){.cols2{grid-template-columns:1fr;}}
+  .panel{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px;}
+  .panel.win{border-left:4px solid var(--good);} .panel.gap{border-left:4px solid var(--crit);}
+  .panel h4{margin:0 0 12px; font-size:16px; display:flex; align-items:center; gap:8px;}
+  .panel ul{margin:0; padding-left:2px; list-style:none;}
+  .panel ul li{padding:7px 0 7px 24px; position:relative; font-size:14px; color:var(--ink-2); border-top:1px solid var(--grid);}
+  .panel ul li:first-child{border-top:none;}
+  .panel ul li::before{position:absolute; left:0; top:7px; font-weight:800;}
+  .panel.win ul li::before{content:"▲"; color:var(--good); font-size:11px;}
+  .panel.gap ul li::before{content:"▼"; color:var(--crit); font-size:11px;}
+  .panel ul li b{color:var(--ink);}
+  .panel.plain ul{list-style:disc; padding-left:20px;} .panel.plain ul li{padding-left:0; border-top:none;} .panel.plain ul li::before{content:none;}
+
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;} @media(max-width:900px){.grid3{grid-template-columns:1fr;}}
+  .ccard{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;}
+  .ccard .chead{padding:16px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px;}
+  .flag{font-size:26px;} .ccard .chead .cn{font-weight:800; font-size:17px;} .ccard .chead .cs{font-size:12px; color:var(--muted);}
+  .ccard .cbody{padding:16px 18px;}
+  .ccard .cbody .row{margin-bottom:14px;} .ccard .cbody .row:last-child{margin-bottom:0;}
+  .ccard .cbody .rl{font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--accent); margin-bottom:3px;}
+  .ccard .cbody .rt{font-size:13.5px; color:var(--ink-2);} .ccard .cbody .rt b{color:var(--ink);}
+
+  .timeline{margin-top:8px;}
+  .phase{display:grid; grid-template-columns:150px 1fr; gap:20px; padding:8px 0 26px; position:relative;}
+  .phase::before{content:""; position:absolute; left:150px; top:12px; bottom:-4px; width:2px; background:var(--grid);}
+  .phase:last-child::before{display:none;}
+  .phase .pdate{text-align:right; padding-right:26px; position:relative;}
+  .phase .pdate .pd{font-weight:800; font-size:14px; color:var(--sfm);} .phase .pdate .pw{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;}
+  .phase .pdot{position:absolute; right:-6px; top:4px; width:14px; height:14px; border-radius:50%; background:var(--sfm); border:3px solid var(--surface-1); z-index:2;}
+  .phase.acc .pdot{background:var(--accent);} .phase.acc .pdate .pd{color:var(--accent);}
+  .phase .pbody{padding-left:8px;} .phase .pbody h4{margin:0 0 4px; font-size:16px;}
+  .phase .pbody .ptag{font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted);}
+  .phase .pbody ul{margin:8px 0 0; padding-left:18px; font-size:13.5px; color:var(--ink-2);} .phase .pbody ul li{margin-bottom:4px;}
+  @media(max-width:640px){.phase{grid-template-columns:92px 1fr; gap:12px;} .phase::before{left:92px;} .phase .pdate{padding-right:18px;}}
+
+  .chgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:4px;} @media(max-width:820px){.chgrid{grid-template-columns:1fr;}}
+  .chcard{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px;}
+  .chcard .ci{font-size:20px;} .chcard h4{margin:8px 0 8px; font-size:15px;} .chcard p{margin:0; font-size:13px; color:var(--ink-2);}
+
+  .pillars{display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:6px;} @media(max-width:900px){.pillars{grid-template-columns:repeat(2,1fr);}}
+  .pill{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; text-align:center;}
+  .pill .pn{font-size:20px; font-weight:800; color:var(--sfm);} .pill h4{margin:8px 0 6px; font-size:14px;} .pill p{margin:0; font-size:12.5px; color:var(--ink-2);}
+
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:14px;} @media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .kpi .kn{font-weight:800; font-size:15px; color:var(--accent);} .kpi .kt{font-size:12.5px; color:var(--ink-2); margin-top:4px;}
+
+  .callout{background:var(--sfm-soft); border:1px solid var(--border); border-left:4px solid var(--sfm); border-radius:12px; padding:16px 18px; margin:20px 0; font-size:14.5px; color:var(--ink);}
+  .callout b{color:var(--sfm);}
+  .callout.acc{background:var(--accent-soft); border-left-color:var(--accent);} .callout.acc b{color:var(--accent);}
+
+  .budget-bar{display:flex; height:34px; border-radius:8px; overflow:hidden; margin-top:8px; border:1px solid var(--border);}
+  .budget-bar div{display:flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:700; color:#fff; white-space:nowrap;}
+  .bl{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:12.5px; color:var(--ink-2);} .bl span{display:inline-flex; align-items:center; gap:6px;}
+
+  footer{padding:38px 0 60px; color:var(--ink-2); font-size:13px;} footer h3{color:var(--ink);}
+  .srcs{columns:2; column-gap:26px; font-size:12px;} @media(max-width:640px){.srcs{columns:1;}}
+  .srcs a{display:block; margin-bottom:5px; color:var(--ink-2); word-break:break-all;}
+  .disc{margin-top:22px; font-size:11.5px; color:var(--muted); border-top:1px solid var(--border); padding-top:14px;}
+</style>
+</head>
+<body>
+<div id="tip"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">SFM<span>·</span>e-mobility</div>
+    <div class="navlinks">
+      <a href="#short" data-k="nav.short">The short version</a>
+      <a href="#lineup" data-k="nav.lineup">Lineup</a>
+      <a href="#position" data-k="nav.position">Competition</a>
+      <a href="#edge" data-k="nav.edge">Edge &amp; Gaps</a>
+      <a href="#strategy" data-k="nav.strategy">Sales Strategy</a>
+      <a href="#campaign" data-k="nav.campaign">Pre-Marketing</a>
+      <a href="#risks" data-k="nav.risks">Risks</a>
+    </div>
+    <div class="ctrls">
+      <div class="langwrap">
+        <button class="btn on" id="enBtn">EN</button>
+        <button class="btn" id="deBtn">DE</button>
+      </div>
+      <button class="btn" id="themeBtn">Dark</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker" data-k="hero.kicker">Competitive Analysis &amp; Go-to-Market · DACH · Launch Q1 2027</div>
+    <h1 data-k="hero.title">Six electric two-wheelers,<br>priced to break the DACH market open.</h1>
+    <p class="sub" data-k="hero.sub">SFM's 2027 line spans every licence tier from a 15-year-old's 25&nbsp;km/h Mofa to an 80&nbsp;km/h L3e — and lands <b>below</b> the market on price in every single class. This brief benchmarks each model against its real competitors in Germany, Austria and Switzerland, then sets out the sales strategy and the pre-launch campaign to convert that price advantage into orders.</p>
+    <div class="meta-row">
+      <span class="chip" data-k="hero.chip1"><b>6</b> models</span>
+      <span class="chip" data-k="hero.chip2"><b>€1,899–€3,399</b> UVP</span>
+      <span class="chip" data-k="hero.chip3"><b>3</b> markets: DE · AT · CH</span>
+      <span class="chip" data-k="hero.chip4">Target: <b>commuters · lifestyle · dealers</b></span>
+    </div>
+    <div class="tiles">
+      <div class="tile"><div class="big sfm">–€600</div><div class="lbl" data-k="hero.t1">E2H Sport (€3,399) undercuts the <b>cheapest</b> 90–95&nbsp;km/h L3e rival (Super Soco TC Max, €3,999)</div></div>
+      <div class="tile"><div class="big acc">€1,899</div><div class="lbl" data-k="hero.t2">EM1 45&nbsp;km/h sits <b>~€350–900 under</b> the €2,250–3,200 volume band led by NIU</div></div>
+      <div class="tile"><div class="big sod">1st</div><div class="lbl" data-k="hero.t3">Future 5's <b>sodium-ion</b> battery — no confirmed competitor in mainstream DACH</div></div>
+      <div class="tile"><div class="big">+9.8%</div><div class="lbl" data-k="hero.t4">E-scooter share of the German scooter market in 2025 — <b>electric gained</b> as the market shrank</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- SHORT VERSION -->
+<section id="short">
+  <div class="eyebrow" data-k="short.eyebrow">In plain terms</div>
+  <h2 data-k="short.title">The short version</h2>
+  <div class="bigline" data-k="short.bigline">Cheaper than everyone, <span class="b">in every class</span> — plus a battery <span class="u">nobody else sells</span>.</div>
+  <p class="short-lead" data-k="short.lead">No jargon: here's why SFM wins on the shop floor. Same licence class, same kind of bike — but hundreds of euros less, a genuine battery first, and a model for every rider from a 15-year-old to an A1 licence holder.</p>
+
+  <div class="faceoffs">
+    <div class="foff">
+      <div class="foff-t" data-k="short.f1t">80 km/h class · the knockout</div>
+      <div class="foff-row">
+        <div class="tag sfm"><span data-k="short.f1a">SFM E2H Sport</span><b>€3,399</b></div>
+        <div class="vs">vs</div>
+        <div class="tag comp"><span data-k="short.f1b">Cheapest rival</span><b>€3,999</b></div>
+      </div>
+      <div class="foff-save acc" data-k="short.f1s">You save €600 — and it's the <b>cheapest 80 km/h e-scooter in all of DACH</b>.</div>
+    </div>
+
+    <div class="foff">
+      <div class="foff-t" data-k="short.f2t">Style class · vs the icon</div>
+      <div class="foff-row">
+        <div class="tag sfm"><span data-k="short.f2a">SFM E2H Sport</span><b>€3,399</b></div>
+        <div class="vs">vs</div>
+        <div class="tag comp"><span data-k="short.f2b">Vespa Elettrica 70</span><b>€7,199</b></div>
+      </div>
+      <div class="foff-save" data-k="short.f2s">Basically <b>half the price of a Vespa</b> — for a faster bike with a battery you can take out and carry.</div>
+    </div>
+
+    <div class="foff">
+      <div class="foff-t" data-k="short.f3t">The tech nobody else has</div>
+      <div class="foff-row">
+        <div class="tag win"><span data-k="short.f3a">SFM Future 5</span><b>⚛ Na-ion</b></div>
+        <div class="vs">vs</div>
+        <div class="tag comp"><span data-k="short.f3b">Every rival</span><b>Li-ion</b></div>
+      </div>
+      <div class="foff-save sod" data-k="short.f3s"><b>Sodium-ion</b>: handles the cold better, no lithium fire story, long life. <b>No competitor in the shops has it.</b></div>
+    </div>
+  </div>
+
+  <div class="adv-row">
+    <div class="miniviz">
+      <h4 data-k="short.mvt">Cheapest starting price in every class</h4>
+      <div class="mvsub" data-k="short.mvs">Entry price, € · SFM (blue) vs the cheapest well-known rival (grey)</div>
+      <div class="mv-row">
+        <div class="mvl" data-k="short.mv1">25 km/h Mofa</div>
+        <div class="mv-bars">
+          <div class="mv-bar sfm" style="width:70%">SFM EM1 · €1,899</div>
+          <div class="mv-bar comp" style="width:81%">NIU UQi · €2,200</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mvl" data-k="short.mv2">45 km/h Mokick</div>
+        <div class="mv-bars">
+          <div class="mv-bar sfm" style="width:60%">SFM EM1 · €1,899</div>
+          <div class="mv-bar comp" style="width:71%">Vässla 2 · €2,250</div>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mvl" data-k="short.mv3">75–80 km/h</div>
+        <div class="mv-bars">
+          <div class="mv-bar sfm" style="width:75%">SFM Prima E Sport · €2,999</div>
+          <div class="mv-bar comp" style="width:95%">NIU MQi GT · €3,799</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ladder">
+      <h4 data-k="short.ladt">One brand for every licence</h4>
+      <div class="lad-steps">
+        <div class="lad"><div class="age">15</div><div class="ld"><b data-k="short.lad1a">Mofa 25 km/h</b><span data-k="short.lad1b">EM1 · Prima E — first ride, certificate only (DE)</span></div></div>
+        <div class="lad"><div class="age">15</div><div class="ld"><b data-k="short.lad2a">Mokick 45 km/h · AM</b><span data-k="short.lad2b">EM1 · Prima E · Future 5 — the everyday commuter</span></div></div>
+        <div class="lad a1"><div class="age">16</div><div class="ld"><b data-k="short.lad3a">L3e up to 80 km/h · A1</b><span data-k="short.lad3b">Prima E Sport · E2H Sport — the fast ones</span></div></div>
+      </div>
+      <p style="margin:14px 0 0; font-size:13px; color:var(--ink-2)" data-k="short.ladnote">A rider can start on an SFM at 15 and never leave the brand as their licence grows.</p>
+    </div>
+  </div>
+
+  <div class="callout acc" data-k="short.takeaway"><b>Bottom line for the sales floor:</b> "Same class, hundreds less, a battery no one else has, and a model for every licence." Everything below is the proof behind that sentence.</div>
+</section>
+
+<!-- LINEUP -->
+<section id="lineup">
+  <div class="eyebrow" data-k="lineup.eyebrow">The Range</div>
+  <h2 data-k="lineup.title">The SFM 2027 lineup</h2>
+  <p class="lead" data-k="lineup.lead">Two entry mopeds available as 25 or 45&nbsp;km/h, a sodium-ion technology flagship, a retro city scooter, and two performance L3e-class machines. Removable batteries across almost the whole range. Prices are manufacturer UVP incl. VAT.</p>
+  <div class="grid-cards">
+    <div class="mcard">
+      <div class="mname">EM1 · 25 km/h</div>
+      <div class="mclass" data-k="m.em1_25.c">Mofa — from age 15</div>
+      <div class="price">€1,899 <small>UVP</small></div>
+      <ul data-k="m.em1_25.u"><li><span>Motor</span><b>800 W / 1,800 W peak</b></li><li><span>Battery</span><b>60V · 1,440 Wh Li-Ion</b></li><li><span>Range</span><b>up to 70 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Weight</span><b>~65 kg</b></li></ul>
+      <span class="badge new" data-k="m.em1_25.b">Best-value Mofa</span>
+    </div>
+    <div class="mcard">
+      <div class="mname">EM1 · 45 km/h</div>
+      <div class="mclass" data-k="m.em1_45.c">Mokick / L1e — AM licence</div>
+      <div class="price">€1,899 <small>UVP</small></div>
+      <ul data-k="m.em1_45.u"><li><span>Motor</span><b>800 W / 1,800 W peak</b></li><li><span>Battery</span><b>60V · 1,440 Wh Li-Ion</b></li><li><span>Range</span><b>up to 70 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Weight</span><b>~65 kg</b></li></ul>
+      <span class="badge new" data-k="m.em1_45.b">Undercuts NIU</span>
+    </div>
+    <div class="mcard sodium">
+      <div class="mname">Future 5</div>
+      <div class="mclass" data-k="m.fut.c">Mokick 45 km/h — AM licence</div>
+      <div class="price">€1,999 <small>UVP</small></div>
+      <ul data-k="m.fut.u"><li><span>Motor</span><b>1,200 W / 2,000 W peak</b></li><li><span>Battery</span><b>Sodium-ion · 1,260 Wh</b></li><li><span>Cycles</span><b>~1,200</b></li><li><span>Range</span><b>up to 45 km</b></li><li><span>Removable battery</span><b>Yes</b></li></ul>
+      <span class="badge sod" data-k="m.fut.b">⚛ Sodium-ion first</span>
+    </div>
+    <div class="mcard">
+      <div class="mname">Prima E</div>
+      <div class="mclass" data-k="m.pri.c">Mofa 25 or Mokick 45 km/h</div>
+      <div class="price">€1,999 <small>UVP</small></div>
+      <ul data-k="m.pri.u"><li><span>Motor</span><b>1,000 W · 14″ wheels</b></li><li><span>Battery</span><b>48V · 960 Wh Li-Ion</b></li><li><span>Range</span><b>up to 65 km (25)</b></li><li><span>Removable battery</span><b>Yes · 7 kg</b></li><li><span>Weight</span><b>~51 kg</b></li></ul>
+      <span class="badge new" data-k="m.pri.b">Retro / lifestyle</span>
+    </div>
+    <div class="mcard sport">
+      <div class="mname">Prima E Sport</div>
+      <div class="mclass" data-k="m.pris.c">Fast scooter — 75 km/h · A1</div>
+      <div class="price">€2,999 <small>UVP</small></div>
+      <ul data-k="m.pris.u"><li><span>Motor</span><b>3,000 W / 3,800 W · 150 Nm</b></li><li><span>Battery</span><b>2× · 2,400 Wh Li-Ion</b></li><li><span>Range</span><b>up to 90 km</b></li><li><span>Brakes</span><b>CBS combined</b></li><li><span>Weight</span><b>~103 kg</b></li></ul>
+      <span class="badge new" data-k="m.pris.b">75 km/h at moped money</span>
+    </div>
+    <div class="mcard sport">
+      <div class="mname">E2H Sport</div>
+      <div class="mclass" data-k="m.e2h.c">L3e motorcycle — 80 km/h · A1</div>
+      <div class="price">€3,399 <small>UVP</small></div>
+      <ul data-k="m.e2h.u"><li><span>Motor</span><b>3,000 W / 5,000 W peak</b></li><li><span>Battery</span><b>2× 72V · 3,456 Wh</b></li><li><span>Range</span><b>up to 75 km</b></li><li><span>Removable batteries</span><b>Yes</b></li><li><span>Weight</span><b>~106 kg</b></li></ul>
+      <span class="badge new" data-k="m.e2h.b">Price-leader L3e</span>
+    </div>
+  </div>
+</section>
+
+<!-- POSITION -->
+<section id="position">
+  <div class="eyebrow" data-k="pos.eyebrow">Where SFM lands</div>
+  <h2 data-k="pos.title">Competitive positioning by class</h2>
+  <p class="lead" data-k="pos.lead">Every SFM model is benchmarked against the vehicles a DACH buyer would actually cross-shop in the same licence class. Bars show retail price (lower = cheaper). SFM models are highlighted; hover any bar for specs. Competitor prices are current 2025–26 German street/UVP prices and shift by dealer and battery configuration.</p>
+
+  <div class="chartbox">
+    <div class="chart-title" data-k="pos.c1t">45 km/h Mokick / L1e — the volume battleground</div>
+    <div class="chart-note" data-k="pos.c1n">Retail price, € · lower is cheaper · SFM in blue, sodium-ion flagship in orange</div>
+    <div id="c1"></div>
+    <div class="legend"><span><i class="sw" style="background:var(--sfm)"></i><span data-k="pos.lg.sfm">SFM</span></span><span><i class="sw" style="background:var(--accent)"></i><span data-k="pos.lg.fut">SFM · Future 5 (sodium-ion)</span></span><span><i class="sw" style="background:var(--comp)"></i><span data-k="pos.lg.comp">Competitor</span></span></div>
+  </div>
+  <div class="callout" data-k="pos.call1"><b>Read:</b> the mainstream 45&nbsp;km/h field clears at €2,250–3,200 (NIU, Super Soco, Vässla, Horwin), with German retro brands at €3,900–6,500. SFM's EM1 and Prima E enter at <b>€1,899–1,999</b> — below the entire mainstream band and roughly half the retro tier — while still offering removable batteries and, on EM1, a stronger 70&nbsp;km stated range than most rivals.</div>
+
+  <div class="chartbox">
+    <div class="chart-title" data-k="pos.c2t">25 km/h Mofa — the youth / entry tier</div>
+    <div class="chart-note" data-k="pos.c2n">Retail price, € · a thin slice, mostly software-limited versions of the 45 km/h bikes</div>
+    <div id="c2"></div>
+    <div class="legend"><span><i class="sw" style="background:var(--sfm)"></i><span data-k="pos.lg.sfm2">SFM</span></span><span><i class="sw" style="background:var(--comp)"></i><span data-k="pos.lg.comp2">Competitor</span></span></div>
+  </div>
+  <div class="callout" data-k="pos.call2"><b>Read:</b> a small but strategically useful segment — in Germany a 25&nbsp;km/h Mofa can be ridden from age 15 on a theory-only certificate. SFM's EM1 at €1,899 is the price floor of the class, opening a clean youth / first-vehicle entry point that pulls riders into the brand early.</div>
+
+  <div class="chartbox">
+    <div class="chart-title" data-k="pos.c3t">75–80 km/h L3e / fast class — where the undercut is biggest</div>
+    <div class="chart-note" data-k="pos.c3n">Retail price, € · SFM's two performance models vs. the current L3e field</div>
+    <div id="c3"></div>
+    <div class="legend"><span><i class="sw" style="background:var(--sfm)"></i><span data-k="pos.lg.pris">SFM · Prima E Sport (75 km/h)</span></span><span><i class="sw" style="background:var(--accent)"></i><span data-k="pos.lg.e2h">SFM · E2H Sport (80 km/h)</span></span><span><i class="sw" style="background:var(--comp)"></i><span data-k="pos.lg.comp3">Competitor</span></span></div>
+  </div>
+  <div class="callout acc" data-k="pos.call3"><b>The headline:</b> at <b>€3,399</b> the E2H Sport would be the <b>cheapest 80&nbsp;km/h-class L3e scooter on sale in DACH</b> — a ~€600 undercut of Super Soco TC Max and Horwin SK3, ~€1,000 under the spec-matched Trinity Uranus R 80, and less than half a Vespa Elettrica 70. The Prima E Sport delivers 75&nbsp;km/h for €2,999, roughly the price of a mid 45&nbsp;km/h moped. The tradeoff to manage is <b>range</b> (75–90&nbsp;km vs. 110–130&nbsp;km for NIU/Super Soco) and the absence of a big-brand service name.</div>
+
+  <h3 data-k="pos.tabt">Full specification benchmark</h3>
+  <div class="twrap">
+    <table>
+      <thead><tr>
+        <th data-k="pos.th.model">Model</th><th data-k="pos.th.class">Class</th><th data-k="pos.th.speed">Top speed</th><th>Price €</th><th data-k="pos.th.motor">Motor nom.</th><th data-k="pos.th.batt">Battery</th><th data-k="pos.th.range">Range</th><th data-k="pos.th.swap">Swap battery</th>
+      </tr></thead>
+      <tbody id="specbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- EDGE -->
+<section id="edge">
+  <div class="eyebrow" data-k="edge.eyebrow">Honest assessment</div>
+  <h2 data-k="edge.title">Where SFM wins — and where it's exposed</h2>
+  <p class="lead" data-k="edge.lead">The line is built to win on price and breadth. To convert that into sales rather than just cheap-brand perception, the gaps below have to be answered at launch, not after.</p>
+  <div class="cols2">
+    <div class="panel win">
+      <h4 data-k="edge.winh">▲ Structural advantages</h4>
+      <ul data-k="edge.winu"><li><b>Price leadership in every class</b> — below the mainstream band at 25 &amp; 45 km/h and the cheapest L3e in the market.</li><li><b>Full-tier coverage</b> — one brand for the 15-year-old's first Mofa through to an 80 km/h A1 machine.</li><li><b>Sodium-ion story (Future 5)</b> — an industry-first talking point: better cold-weather behaviour, no lithium fire-risk narrative, long cycle life (~1,200), sustainability angle.</li><li><b>Removable batteries across the range</b> — table-stakes, and SFM has them, incl. dual-pack setups for charging indoors.</li><li><b>Retro/lifestyle design (Prima E)</b> — a Vespa-adjacent look at a fraction of Vespa/Kumpan money.</li></ul>
+    </div>
+    <div class="panel gap">
+      <h4 data-k="edge.gaph">▼ Gaps to close before launch</h4>
+      <ul data-k="edge.gapu"><li><b>Brand &amp; after-sales trust</b> — the #1 reason DACH buyers reject value e-scooters is weak service. SFM needs a visible service &amp; spare-parts answer from day one.</li><li><b>Range on three models</b> — Future 5 (45 km), E2H Sport (75 km), Prima E Sport (90 km) trail rivals at 110–130 km. Position on cost/tech, offer a 2nd battery, don't lead on range.</li><li><b>No connectivity / app</b> — NIU and unu sell on GPS tracking, anti-theft and an app. SFM datasheets show none.</li><li><b>Switzerland classification</b> — a 45 km/h throttle scooter is an A1 <i>Kleinmotorrad</i> in CH (licence + higher age), not the easy moped tier it is in DE/AT.</li><li><b>No subsidy tailwind</b> — AT's federal grant closed (Mar 2026), DE has none for two-wheelers, CH is canton-by-canton.</li></ul>
+    </div>
+  </div>
+  <div class="callout acc" data-k="edge.call"><b>Strategic verdict:</b> SFM is a credible <b>value-challenger to NIU</b> with two genuine hooks — an unbeatable L3e price and a sodium-ion first. The battle isn't won on the spec sheet; it's won on <b>trust</b>. Spend the pre-launch window buying credibility (dealers, service, reviews, warranty) so the low price reads as "smart," not "risky."</div>
+</section>
+
+<!-- STRATEGY -->
+<section id="strategy">
+  <div class="eyebrow" data-k="str.eyebrow">Go-to-market</div>
+  <h2 data-k="str.title">Sales strategy for Germany, Austria &amp; Switzerland</h2>
+  <p class="lead" data-k="str.lead">One positioning — <b>"the honestly-priced electric two-wheeler brand, with real service behind it"</b> — executed through a hybrid model: a selective dealer/service network for trust and after-sales, plus a direct online configurator for reach. Each market needs a different emphasis.</p>
+  <div class="grid3">
+    <div class="ccard">
+      <div class="chead"><span class="flag">🇩🇪</span><div><div class="cn">Germany</div><div class="cs" data-k="str.de.s">Largest EU market · ~23% share · NIU-dominated</div></div></div>
+      <div class="cbody" data-k="str.de.b">
+        <div class="row"><div class="rl">Priority</div><div class="rt">Volume market and the main event. Win the <b>45 km/h</b> price war with EM1/Prima/Future 5, and make the <b>E2H Sport €3,399</b> the L3e price story.</div></div>
+        <div class="row"><div class="rl">Channel</div><div class="rt">Recruit a <b>dealer/service network first</b> — the trust answer against NIU. Layer D2C online on top. Prioritise dense cities.</div></div>
+        <div class="row"><div class="rl">Levers</div><div class="rt"><b>THG-Quote</b> for L3e owners (recurring income), <b>0.25% company-car rule</b> for B2B/fleet, 15-yr Mofa tier for youth.</div></div>
+        <div class="row"><div class="rl">Segment</div><div class="rt">Commuters (price), lifestyle (Prima design), fleets/delivery (TCO + swappable packs).</div></div>
+      </div>
+    </div>
+    <div class="ccard">
+      <div class="chead"><span class="flag">🇦🇹</span><div><div class="cn">Austria</div><div class="cs" data-k="str.at.s">Smaller · AM at 45 km/h is the entry class</div></div></div>
+      <div class="cbody" data-k="str.at.b">
+        <div class="row"><div class="rl">Priority</div><div class="rt">No 25 km/h Mofa tier — the youth entry is <b>AM at 45 km/h from age 15</b>. Lead with EM1 45, Prima E 45 and Future 5.</div></div>
+        <div class="row"><div class="rl">Channel</div><div class="rt">Work through <b>importer + regional dealer partners</b>; align with motoring-club (ÖAMTC) service credibility. Online as support.</div></div>
+        <div class="row"><div class="rl">Levers</div><div class="rt">Federal subsidy is <b>closed</b> — do not build on it. Use the <b>Alpine cold-weather</b> angle for Future 5's sodium-ion chemistry.</div></div>
+        <div class="row"><div class="rl">Segment</div><div class="rt">Youth/first-vehicle, and design-led urban buyers in Vienna/Graz/Linz.</div></div>
+      </div>
+    </div>
+    <div class="ccard">
+      <div class="chead"><span class="flag">🇨🇭</span><div><div class="cn">Switzerland</div><div class="cs" data-k="str.ch.s">Premium tolerance · different vehicle classes</div></div></div>
+      <div class="cbody" data-k="str.ch.b">
+        <div class="row"><div class="rl">Priority</div><div class="rt">A 45 km/h throttle scooter is an <b>A1 Kleinmotorrad</b> here, not a moped — a higher barrier. Lean into the <b>Prima E Sport &amp; E2H Sport</b> and the 25 km/h tier.</div></div>
+        <div class="row"><div class="rl">Channel</div><div class="rt">Requires <b>Swiss homologation (ASTRA)</b> and a local importer/service partner. Premium framing supports margin.</div></div>
+        <div class="row"><div class="rl">Levers</div><div class="rt">Incentives are <b>canton-by-canton</b> (energiefranken.ch) — a lookup, not a headline. Sell on design, quality, running cost.</div></div>
+        <div class="row"><div class="rl">Segment</div><div class="rt">Affluent urban commuters &amp; lifestyle buyers (Zürich, Genève, Basel, Bern).</div></div>
+      </div>
+    </div>
+  </div>
+  <h3 data-k="str.gh">Pricing &amp; positioning guardrails</h3>
+  <div class="cols2">
+    <div class="panel plain">
+      <h4 data-k="str.p1h">Hold the price, add the value</h4>
+      <ul data-k="str.p1u"><li>Keep UVP as the aggressive headline — <b>don't discount</b>, or "cheap" becomes "low quality."</li><li>Bundle instead: <b>Launch Edition</b> with a free 2nd battery, top-box or 3-year battery warranty rather than money off.</li><li>Over-warrant deliberately: beat the 2-year statutory minimum with a <b>battery capacity guarantee</b> — answers the trust gap.</li><li>Publish a <b>cost-per-km / vs-combustion calculator</b> so the price advantage compounds into a running-cost story.</li></ul>
+    </div>
+    <div class="panel plain">
+      <h4 data-k="str.p2h">Segment-to-model map</h4>
+      <ul data-k="str.p2u"><li><b>Private commuters</b> → EM1 (25/45), Prima E — price + practicality.</li><li><b>Lifestyle / design</b> → Prima E (retro), Prima E Sport — style vs Vespa/NIU at half the money.</li><li><b>Tech-forward / early adopters</b> → Future 5 — the sodium-ion halo.</li><li><b>A1 riders / performance</b> → E2H Sport — 80 km/h price-leader.</li><li><b>Dealers &amp; fleets</b> → whole range + margin, swappable-battery uptime.</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- CAMPAIGN -->
+<section id="campaign">
+  <div class="eyebrow" data-k="cmp.eyebrow">The core ask</div>
+  <h2 data-k="cmp.title">Pre-marketing campaign — from teaser to spring peak</h2>
+  <p class="lead" data-k="cmp.lead">The whole plan is timed to one fact: <b>DACH two-wheeler sales peak in March–May</b>. Everything front-loads demand into Q1 2027 so deliveries land in the buying wave. The window opens with the trade, builds a consumer waitlist through winter, reveals price in February, and converts at spring test-ride events. Two audiences run in parallel — <b>dealers first, then consumers</b> — plus a tech-press track for the sodium-ion story.</p>
+
+  <h3 data-k="cmp.tlh">Campaign timeline</h3>
+  <div class="timeline">
+    <div class="phase">
+      <div class="pdate"><div class="pdot"></div><div class="pd">Sep–Oct 2026</div><div class="pw">Phase 0</div></div>
+      <div class="pbody" data-k="cmp.ph0"><div class="ptag">Foundation — quiet</div><h4>Build the arsenal</h4><ul><li>Finish EU type approval + Swiss homologation; lock delivery for Feb–Mar 2027.</li><li>Brand identity, studio + lifestyle photography/video of all 6 models, website + online configurator, reservation system.</li><li>Dealer pitch deck, wholesale terms, demo-unit plan; PR media kit with the two hero angles (price-leader L3e; sodium-ion first).</li><li>Stand up cost-per-km and range calculators; set up CRM + waitlist capture.</li></ul></div>
+    </div>
+    <div class="phase">
+      <div class="pdate"><div class="pdot"></div><div class="pd">Oct–Nov 2026</div><div class="pw">Phase 1</div></div>
+      <div class="pbody" data-k="cmp.ph1"><div class="ptag">Dealer warm-up — trade only</div><h4>Sign the network before consumers hear a word</h4><ul><li>Dealer roadshow across DE/AT + CH importer meetings; ride-and-drive of the demo fleet.</li><li>Trade-press embargoed briefings (Motorradonline, electrive, e-roller.com); presence at a late-2026 trade fair.</li><li>Target: <b>signed dealer LOIs / first stocking orders</b> and named service partners per region locked before the public reveal.</li></ul></div>
+    </div>
+    <div class="phase">
+      <div class="pdate"><div class="pdot"></div><div class="pd">Nov 2026–Jan 2027</div><div class="pw">Phase 2</div></div>
+      <div class="pbody" data-k="cmp.ph2"><div class="ptag">Consumer teaser + waitlist</div><h4>"Coming spring 2027" — build the pipeline</h4><ul><li>Open a <b>reservation waitlist with a small refundable deposit (~€49)</b> — a real pipeline, first-mover data, and FOMO. Waitlisters get first delivery slots + Launch-Edition perks.</li><li>Social teaser (Instagram/TikTok reels): Prima design beauty shots, the sodium-ion tech reveal, "which licence, which SFM" explainers.</li><li>Seed <b>micro-influencers</b> in urban-mobility niches across DE/AT/CH; email-capture pages; geo-targeted paid social + Google Search on "Elektroroller 45 km/h / kaufen".</li><li>Tech-press track: pitch the sodium-ion "affordable world-first" story to EV/tech media.</li></ul></div>
+    </div>
+    <div class="phase acc">
+      <div class="pdate"><div class="pdot"></div><div class="pd">Feb 2027</div><div class="pw">Phase 3</div></div>
+      <div class="pbody" data-k="cmp.ph3"><div class="ptag">Reveal &amp; pre-order — the big moment</div><h4>Drop the price. Open pre-orders.</h4><ul><li>Full range reveal with the <b>price as the headline</b> ("80 km/h from €3,399 — the rest of the market starts at €3,999").</li><li>Convert the waitlist to <b>pre-orders</b>; launch the Launch Edition bundle (free 2nd battery / accessory, not a discount).</li><li>Ship <b>review units</b> to YouTube/print so tests land in March; dealer demo days scheduled; PR blitz on both hero angles.</li></ul></div>
+    </div>
+    <div class="phase acc">
+      <div class="pdate"><div class="pdot"></div><div class="pd">Mar–May 2027</div><div class="pw">Phase 4</div></div>
+      <div class="pbody" data-k="cmp.ph4"><div class="ptag">Launch &amp; on-sale — the peak</div><h4>Deliver into the spring wave</h4><ul><li>Deliveries begin; <b>spring test-ride tour</b> through flagship dealers + city pop-ups; campus activations for the Mofa/45 youth tier.</li><li>Retarget waitlist non-converters; dealer local co-op marketing; reviews now live and amplified.</li><li>Kick off <b>fleet/delivery pilot programs</b> (last-mile) using the TCO + swappable-battery story.</li></ul></div>
+    </div>
+  </div>
+
+  <h3 data-k="cmp.chh">Channel plan</h3>
+  <div class="chgrid">
+    <div class="chcard"><div class="ci">🌐</div><h4 data-k="cmp.ch1h">Owned</h4><p data-k="cmp.ch1p">Website + configurator, waitlist &amp; deposit funnel, email nurture, cost/range calculators, "which licence" guide. The conversion engine.</p></div>
+    <div class="chcard"><div class="ci">📣</div><h4 data-k="cmp.ch2h">Earned / PR</h4><p data-k="cmp.ch2p">Two hero stories — cheapest L3e in DACH, and the sodium-ion first — to Motorradonline, electrive, e-roller.com, plus tech/EV press. Review units for independent tests.</p></div>
+    <div class="chcard"><div class="ci">🎯</div><h4 data-k="cmp.ch3h">Paid</h4><p data-k="cmp.ch3p">Geo-targeted Meta/TikTok (design + tech creative), Google Search on high-intent terms, YouTube pre-roll, waitlist retargeting. Front-loaded into Q1.</p></div>
+    <div class="chcard"><div class="ci">🤝</div><h4 data-k="cmp.ch4h">Trade</h4><p data-k="cmp.ch4p">Dealer portal, roadshow, demo fleet, co-op marketing budget, trade-fair stand. Warms the network ahead of retail.</p></div>
+    <div class="chcard"><div class="ci">🛵</div><h4 data-k="cmp.ch5h">Experiential</h4><p data-k="cmp.ch5p">Spring test-ride tour, city pop-ups, campus activations. Nothing sells a scooter like a five-minute ride — the antidote to the unknown-brand objection.</p></div>
+    <div class="chcard"><div class="ci">👥</div><h4 data-k="cmp.ch6h">Influencer</h4><p data-k="cmp.ch6p">Micro-creators in commuter, urban-lifestyle and EV-tech niches across all three markets; seeded pre-reveal, activated at launch.</p></div>
+  </div>
+
+  <h3 data-k="cmp.pih">Message pillars</h3>
+  <div class="pillars">
+    <div class="pill"><div class="pn">01</div><h4 data-k="cmp.pi1h">Priced honestly</h4><p data-k="cmp.pi1p">Same class, hundreds less. The undercut <i>is</i> the story.</p></div>
+    <div class="pill"><div class="pn">02</div><h4 data-k="cmp.pi2h">Sodium-ion first</h4><p data-k="cmp.pi2p">A safer, cold-tough, long-life battery no rival offers.</p></div>
+    <div class="pill"><div class="pn">03</div><h4 data-k="cmp.pi3h">Charge indoors</h4><p data-k="cmp.pi3p">Removable packs — carry the battery up, no garage needed.</p></div>
+    <div class="pill"><div class="pn">04</div><h4 data-k="cmp.pi4h">Real service</h4><p data-k="cmp.pi4p">A German brand with a dealer &amp; warranty network behind it.</p></div>
+    <div class="pill"><div class="pn">05</div><h4 data-k="cmp.pi5h">A model for every licence</h4><p data-k="cmp.pi5p">From a 15-year-old's first Mofa to an 80 km/h A1.</p></div>
+  </div>
+
+  <h3 data-k="cmp.bh">Indicative pre-launch budget split</h3>
+  <div class="budget-bar">
+    <div style="width:26%; background:var(--sfm)" data-k="cmp.b1">Content &amp; assets 26%</div>
+    <div style="width:24%; background:var(--accent)" data-k="cmp.b2">Paid social/search 24%</div>
+    <div style="width:20%; background:var(--sodium)" data-k="cmp.b3">Dealer &amp; trade 20%</div>
+    <div style="width:16%; background:var(--good)" data-k="cmp.b4">Events/test-ride 16%</div>
+    <div style="width:14%; background:var(--comp)" data-k="cmp.b5">PR &amp; influencer 14%</div>
+  </div>
+  <p class="chart-note" style="margin-top:10px" data-k="cmp.bnote">Allocation, not absolute spend — weight toward assets and paid demand-gen early, shifting to events as launch nears. Tune to the actual budget once set.</p>
+
+  <h3 data-k="cmp.kh">What to measure</h3>
+  <div class="kpis">
+    <div class="kpi"><div class="kn" data-k="cmp.k1n">Dealer LOIs</div><div class="kt" data-k="cmp.k1t">Signed dealers &amp; named service partners per region before reveal.</div></div>
+    <div class="kpi"><div class="kn" data-k="cmp.k2n">Waitlist &amp; deposits</div><div class="kt" data-k="cmp.k2t">Reservations captured; deposit-to-preorder conversion rate.</div></div>
+    <div class="kpi"><div class="kn" data-k="cmp.k3n">CPL / CAC</div><div class="kt" data-k="cmp.k3t">Cost per lead by channel; blended acquisition cost vs. margin.</div></div>
+    <div class="kpi"><div class="kn" data-k="cmp.k4n">Earned reach</div><div class="kt" data-k="cmp.k4t">Press pickups &amp; review views on the two hero angles.</div></div>
+    <div class="kpi"><div class="kn" data-k="cmp.k5n">Test-ride bookings</div><div class="kt" data-k="cmp.k5t">Bookings → sales conversion at the spring tour.</div></div>
+    <div class="kpi"><div class="kn" data-k="cmp.k6n">Pre-orders</div><div class="kt" data-k="cmp.k6t">Units pre-sold before first delivery; by model &amp; market.</div></div>
+    <div class="kpi"><div class="kn" data-k="cmp.k7n">Share of voice</div><div class="kt" data-k="cmp.k7t">SFM vs NIU/Super Soco mentions in DACH e-scooter media.</div></div>
+    <div class="kpi"><div class="kn" data-k="cmp.k8n">Spring sell-through</div><div class="kt" data-k="cmp.k8t">Mar–May registrations vs. stocked inventory.</div></div>
+  </div>
+</section>
+
+<!-- RISKS -->
+<section id="risks">
+  <div class="eyebrow" data-k="rsk.eyebrow">Watch-outs</div>
+  <h2 data-k="rsk.title">Key risks &amp; how to defuse them</h2>
+  <div class="cols2">
+    <div class="panel gap">
+      <h4 data-k="rsk.rh">▼ Risks</h4>
+      <ul data-k="rsk.ru"><li><b>"Cheap = risky" perception</b> vs. established NIU/Vespa.</li><li><b>Range shortfall</b> on Future 5 / E2H Sport surfaces in reviews.</li><li><b>Homologation slip</b> pushes launch past the spring window — a full year lost.</li><li><b>Thin service network</b> at launch → early-buyer complaints spread.</li><li><b>Swiss classification</b> confuses buyers / dealers on the 45 km/h models.</li></ul>
+    </div>
+    <div class="panel win">
+      <h4 data-k="rsk.mh">▲ Mitigations</h4>
+      <ul data-k="rsk.mu"><li>Buy credibility early: reviews, warranty, visible service, real dealers.</li><li>Never lead on range; sell cost, tech, swap-and-charge; offer a 2nd battery.</li><li>Protect the Feb reveal / Mar delivery timeline as the single hard deadline.</li><li>Name service partners per region <i>before</i> consumer launch (Phase 1).</li><li>Country-specific licence guidance baked into the configurator and dealer training.</li></ul>
+    </div>
+  </div>
+  <div class="callout" data-k="rsk.call"><b>Bottom line:</b> SFM enters 2027 with the most aggressive price ladder in DACH and a real technology story. The line will sell if the pre-launch window is spent converting price into <b>trust</b> — dealers signed, service visible, reviews positive, waitlist warm — so that by the March–May peak the brand is a known, credible, obviously-good-value choice rather than an unknown cheap import.</div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <h3 data-k="ft.h">Sources &amp; notes</h3>
+  <p data-k="ft.p">SFM specifications and pricing from the six product datasheets provided. Competitor pricing and specs are current 2025–2026 German-market street/UVP figures and vary by dealer and battery configuration; treat as indicative benchmarks, not fixed quotes. Licensing, subsidy, seasonality and homologation context from the sources below.</p>
+  <div class="srcs">
+    <a href="https://www.motorradreporter.com/artikel/niu-spitzenreiter-mit-rekordjahr-2025">NIU market leadership / 2025 record — motorradreporter.com</a>
+    <a href="https://scooterhelden.de/2026/01/05/zulassungszahlen-2025-warum-elektro-relativ-gewinnt/">2025 registrations, electric share — scooterhelden.de</a>
+    <a href="https://e-roller.com/elektroroller/niu/niu-uqi/">NIU UQi / UQi GT pricing — e-roller.com</a>
+    <a href="https://sonsofelectricity.de/products/super-soco-cux-pro">Super Soco CUx Pro — sonsofelectricity.de</a>
+    <a href="https://www.electrifiedmagazin.de/elektro/vaessla-2-neuer-e-scooter-aus-schweden/3511/">Vässla 2 pricing — electrifiedmagazin.de</a>
+    <a href="https://e-roller.com/horwin/sk3/">Horwin SK3 — e-roller.com</a>
+    <a href="https://sonsofelectricity.de/products/e-motorrad-super-soco-tc-max-95-km-h">Super Soco TC Max — sonsofelectricity.de</a>
+    <a href="https://www.rotschne.at/produkt/niu-ngt-70-km-h/">NIU NGT — rotschne.at</a>
+    <a href="https://e-roller.com/elektroroller/ninebot-by-segway/segway-ninebot-e300se/">Segway E300SE — e-roller.com</a>
+    <a href="https://www.adac.de/rund-ums-fahrzeug/zweirad/motorrad-roller/roller/vespa-elettrica-70/">Vespa Elettrica 70 — adac.de</a>
+    <a href="https://www.adac.de/verkehr/rund-um-den-fuehrerschein/erwerb/rollerfuehrerschein/">DE licence classes — adac.de</a>
+    <a href="https://www.oeamtc.at/thema/fuehrerschein/mopedfuehrerschein-fuer-moped-mopedauto-17153190">AT Mopedführerschein — oeamtc.at</a>
+    <a href="https://fuehrerausweise.ch/ausweiskategorien/kategorie-m/">CH vehicle categories — fuehrerausweise.ch</a>
+    <a href="https://motorradzone.de/e-motorrad-foerderung-2026-wo-der-staat-noch-zahlt-d-a-ch-ratgeber-fuer-privat-gewerbe/">DACH e-mobility subsidies 2026 — motorradzone.de</a>
+    <a href="https://www.foerderzentrum.at/foerderung-e-zweiraeder">AT subsidy status — foerderzentrum.at</a>
+    <a href="https://www.motorradonline.de/roller/roller-neuzulassungen-april-2026/">Seasonality / April 2026 peak — motorradonline.de</a>
+    <a href="https://www.marketdataforecast.com/market-reports/europe-electric-two-wheeler-market">Europe e-2W market size — marketdataforecast.com</a>
+    <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=celex:32013R0168">EU 168/2013 type approval — eur-lex.europa.eu</a>
+  </div>
+  <div class="disc" data-k="ft.disc">Prepared for SFM · DACH go-to-market, 2027 launch. Competitive figures are best-available public data as of Aug 2026 and should be re-verified against live dealer pricing before external use. Prices exclude registration, delivery and country-specific taxes.</div>
+</footer>
+
+<script>
+const root=document.documentElement;
+// ---- capture EN from markup ----
+const EN={}; document.querySelectorAll('[data-k]').forEach(e=>{EN[e.dataset.k]=e.innerHTML;});
+
+// ---- German dictionary ----
+const DE={
+'nav.short':'Kurz gesagt','nav.lineup':'Modelle','nav.position':'Wettbewerb','nav.edge':'Stärken &amp; Lücken','nav.strategy':'Vertrieb','nav.campaign':'Pre-Marketing','nav.risks':'Risiken',
+'hero.kicker':'Wettbewerbsanalyse &amp; Markteinführung · DACH · Launch Q1 2027',
+'hero.title':'Sechs Elektro-Zweiräder,<br>die den DACH-Markt über den Preis aufbrechen.',
+'hero.sub':'Die SFM-Palette 2027 deckt jede Führerscheinklasse ab — vom 25&nbsp;km/h-Mofa für 15-Jährige bis zum 80&nbsp;km/h-L3e — und liegt in <b>jeder</b> Klasse preislich <b>unter</b> dem Markt. Dieses Briefing vergleicht jedes Modell mit seinen echten Wettbewerbern in Deutschland, Österreich und der Schweiz und legt anschließend die Vertriebsstrategie und die Pre-Launch-Kampagne dar, die diesen Preisvorteil in Bestellungen verwandelt.',
+'hero.chip1':'<b>6</b> Modelle','hero.chip2':'<b>1.899–3.399&nbsp;€</b> UVP','hero.chip3':'<b>3</b> Märkte: DE · AT · CH','hero.chip4':'Zielgruppen: <b>Pendler · Lifestyle · Händler</b>',
+'hero.t1':'E2H Sport (3.399&nbsp;€) unterbietet den <b>günstigsten</b> 90–95&nbsp;km/h-L3e-Rivalen (Super Soco TC Max, 3.999&nbsp;€)',
+'hero.t2':'EM1 45&nbsp;km/h liegt <b>~350–900&nbsp;€ unter</b> dem Volumensegment von 2.250–3.200&nbsp;€, das NIU anführt',
+'hero.t3':'Der <b>Natrium-Ionen</b>-Akku der Future 5 — kein bestätigter Wettbewerber im DACH-Mainstream',
+'hero.t4':'E-Roller-Anteil am deutschen Rollermarkt 2025 — <b>Elektro legte zu</b>, während der Markt schrumpfte',
+'short.eyebrow':'Klartext','short.title':'Kurz gesagt',
+'short.bigline':'Günstiger als alle, <span class="b">in jeder Klasse</span> — plus ein Akku, <span class="u">den sonst niemand verkauft</span>.',
+'short.lead':'Ohne Fachjargon: Darum überzeugt SFM im Verkaufsraum. Gleiche Führerscheinklasse, gleiche Art Fahrzeug — aber hunderte Euro günstiger, eine echte Akku-Neuheit und ein Modell für jeden Fahrer, vom 15-Jährigen bis zum A1-Führerschein.',
+'short.f1t':'80-km/h-Klasse · der K.-o.-Schlag','short.f1a':'SFM E2H Sport','short.f1b':'Günstigster Rivale',
+'short.f1s':'600&nbsp;€ gespart — und der <b>günstigste 80-km/h-E-Roller in ganz DACH</b>.',
+'short.f2t':'Style-Klasse · gegen die Ikone','short.f2a':'SFM E2H Sport','short.f2b':'Vespa Elettrica 70',
+'short.f2s':'Praktisch <b>der halbe Vespa-Preis</b> — für ein schnelleres Fahrzeug mit herausnehmbarem Akku.',
+'short.f3t':'Die Technik, die sonst keiner hat','short.f3a':'SFM Future 5','short.f3b':'Jeder Rivale',
+'short.f3s':'<b>Natrium-Ionen</b>: kältefester, keine Lithium-Brandgeschichte, lange Lebensdauer. <b>Kein Wettbewerber im Handel hat das.</b>',
+'short.mvt':'Günstigster Einstiegspreis in jeder Klasse','short.mvs':'Einstiegspreis, € · SFM (blau) vs. günstigster bekannter Rivale (grau)',
+'short.mv1':'25 km/h Mofa','short.mv2':'45 km/h Mokick','short.mv3':'75–80 km/h',
+'short.ladt':'Eine Marke für jeden Führerschein',
+'short.lad1a':'Mofa 25 km/h','short.lad1b':'EM1 · Prima E — erste Fahrt, nur Prüfbescheinigung (DE)',
+'short.lad2a':'Mokick 45 km/h · AM','short.lad2b':'EM1 · Prima E · Future 5 — der Alltagspendler',
+'short.lad3a':'L3e bis 80 km/h · A1','short.lad3b':'Prima E Sport · E2H Sport — die Schnellen',
+'short.ladnote':'Ein Fahrer kann mit 15 auf einer SFM starten und der Marke treu bleiben, während der Führerschein wächst.',
+'short.takeaway':'<b>Fazit für den Verkaufsraum:</b> „Gleiche Klasse, hunderte Euro günstiger, ein Akku, den sonst keiner hat, und ein Modell für jeden Führerschein." Alles Weitere unten ist der Beleg für diesen Satz.',
+'lineup.eyebrow':'Die Palette','lineup.title':'Die SFM-Palette 2027',
+'lineup.lead':'Zwei Einsteiger-Mopeds, wahlweise als 25- oder 45-km/h-Version, ein Natrium-Ionen-Technologieträger, ein Retro-City-Roller und zwei Performance-Modelle der L3e-Klasse. Herausnehmbare Akkus über fast die gesamte Palette. Preise sind Hersteller-UVP inkl. MwSt.',
+'m.em1_25.c':'Mofa — ab 15 Jahren','m.em1_25.u':'<li><span>Motor</span><b>800 W / 1.800 W Spitze</b></li><li><span>Akku</span><b>60V · 1.440 Wh Li-Ion</b></li><li><span>Reichweite</span><b>bis zu 70 km</b></li><li><span>Wechselakku</span><b>Ja</b></li><li><span>Gewicht</span><b>~65 kg</b></li>','m.em1_25.b':'Bestes Preis-Mofa',
+'m.em1_45.c':'Mokick / L1e — AM-Führerschein','m.em1_45.u':'<li><span>Motor</span><b>800 W / 1.800 W Spitze</b></li><li><span>Akku</span><b>60V · 1.440 Wh Li-Ion</b></li><li><span>Reichweite</span><b>bis zu 70 km</b></li><li><span>Wechselakku</span><b>Ja</b></li><li><span>Gewicht</span><b>~65 kg</b></li>','m.em1_45.b':'Unterbietet NIU',
+'m.fut.c':'Mokick 45 km/h — AM-Führerschein','m.fut.u':'<li><span>Motor</span><b>1.200 W / 2.000 W Spitze</b></li><li><span>Akku</span><b>Natrium-Ionen · 1.260 Wh</b></li><li><span>Ladezyklen</span><b>~1.200</b></li><li><span>Reichweite</span><b>bis zu 45 km</b></li><li><span>Wechselakku</span><b>Ja</b></li>','m.fut.b':'⚛ Natrium-Ionen-Premiere',
+'m.pri.c':'Mofa 25 oder Mokick 45 km/h','m.pri.u':'<li><span>Motor</span><b>1.000 W · 14″-Räder</b></li><li><span>Akku</span><b>48V · 960 Wh Li-Ion</b></li><li><span>Reichweite</span><b>bis zu 65 km (25)</b></li><li><span>Wechselakku</span><b>Ja · 7 kg</b></li><li><span>Gewicht</span><b>~51 kg</b></li>','m.pri.b':'Retro / Lifestyle',
+'m.pris.c':'Schneller Roller — 75 km/h · A1','m.pris.u':'<li><span>Motor</span><b>3.000 W / 3.800 W · 150 Nm</b></li><li><span>Akku</span><b>2× · 2.400 Wh Li-Ion</b></li><li><span>Reichweite</span><b>bis zu 90 km</b></li><li><span>Bremsen</span><b>CBS-Kombibremse</b></li><li><span>Gewicht</span><b>~103 kg</b></li>','m.pris.b':'75 km/h zum Moped-Preis',
+'m.e2h.c':'L3e-Motorrad — 80 km/h · A1','m.e2h.u':'<li><span>Motor</span><b>3.000 W / 5.000 W Spitze</b></li><li><span>Akku</span><b>2× 72V · 3.456 Wh</b></li><li><span>Reichweite</span><b>bis zu 75 km</b></li><li><span>Wechselakkus</span><b>Ja</b></li><li><span>Gewicht</span><b>~106 kg</b></li>','m.e2h.b':'Preisführer L3e',
+'pos.eyebrow':'Wo SFM landet','pos.title':'Wettbewerbspositionierung nach Klasse',
+'pos.lead':'Jedes SFM-Modell wird mit den Fahrzeugen verglichen, die ein DACH-Käufer in derselben Führerscheinklasse tatsächlich in die engere Wahl zieht. Die Balken zeigen den Verkaufspreis (niedriger = günstiger). SFM-Modelle sind hervorgehoben; für Details mit der Maus über einen Balken fahren. Wettbewerberpreise sind aktuelle Straßen-/UVP-Preise 2025–26 für Deutschland und variieren je nach Händler und Akku-Konfiguration.',
+'pos.c1t':'45 km/h Mokick / L1e — das Volumen-Schlachtfeld','pos.c1n':'Verkaufspreis, € · niedriger ist günstiger · SFM in Blau, Natrium-Ionen-Flaggschiff in Orange',
+'pos.lg.sfm':'SFM','pos.lg.fut':'SFM · Future 5 (Natrium-Ionen)','pos.lg.comp':'Wettbewerber',
+'pos.call1':'<b>Lesart:</b> Das 45-km/h-Mainstream-Feld liegt bei 2.250–3.200&nbsp;€ (NIU, Super Soco, Vässla, Horwin), deutsche Retro-Marken bei 3.900–6.500&nbsp;€. SFMs EM1 und Prima E starten bei <b>1.899–1.999&nbsp;€</b> — unter dem gesamten Mainstream-Band und rund halb so teuer wie die Retro-Klasse — und bieten trotzdem Wechselakkus und, bei der EM1, mit 70&nbsp;km eine höhere angegebene Reichweite als die meisten Rivalen.',
+'pos.c2t':'25 km/h Mofa — die Jugend- / Einstiegsklasse','pos.c2n':'Verkaufspreis, € · ein schmales Segment, meist softwarelimitierte Versionen der 45-km/h-Modelle',
+'pos.lg.sfm2':'SFM','pos.lg.comp2':'Wettbewerber',
+'pos.call2':'<b>Lesart:</b> Ein kleines, aber strategisch nützliches Segment — in Deutschland darf ein 25-km/h-Mofa ab 15 mit reiner Prüfbescheinigung gefahren werden. SFMs EM1 zu 1.899&nbsp;€ ist die Preisuntergrenze der Klasse und öffnet einen sauberen Jugend- / Erstfahrzeug-Einstieg, der Fahrer früh an die Marke bindet.',
+'pos.c3t':'75–80 km/h L3e / Schnellklasse — wo die Unterbietung am größten ist','pos.c3n':'Verkaufspreis, € · SFMs zwei Performance-Modelle vs. das aktuelle L3e-Feld',
+'pos.lg.pris':'SFM · Prima E Sport (75 km/h)','pos.lg.e2h':'SFM · E2H Sport (80 km/h)','pos.lg.comp3':'Wettbewerber',
+'pos.call3':'<b>Die Schlagzeile:</b> Mit <b>3.399&nbsp;€</b> wäre die E2H Sport der <b>günstigste L3e-Roller der 80-km/h-Klasse in DACH</b> — rund 600&nbsp;€ unter Super Soco TC Max und Horwin SK3, ~1.000&nbsp;€ unter der spec-gleichen Trinity Uranus R 80 und weniger als die Hälfte einer Vespa Elettrica 70. Die Prima E Sport liefert 75&nbsp;km/h für 2.999&nbsp;€, etwa zum Preis eines mittleren 45-km/h-Mopeds. Zu managen ist der Kompromiss bei der <b>Reichweite</b> (75–90&nbsp;km vs. 110–130&nbsp;km bei NIU/Super Soco) und das Fehlen eines großen Service-Markennamens.',
+'pos.tabt':'Vollständiger Spezifikationsvergleich',
+'pos.th.model':'Modell','pos.th.class':'Klasse','pos.th.speed':'Höchstgeschw.','pos.th.motor':'Motor nom.','pos.th.batt':'Akku','pos.th.range':'Reichweite','pos.th.swap':'Wechselakku',
+'edge.eyebrow':'Ehrliche Einschätzung','edge.title':'Wo SFM gewinnt — und wo es angreifbar ist',
+'edge.lead':'Die Palette ist darauf ausgelegt, über Preis und Breite zu gewinnen. Damit daraus Verkäufe werden und nicht nur ein Billigmarken-Image, müssen die folgenden Lücken zum Launch geschlossen sein — nicht danach.',
+'edge.winh':'▲ Strukturelle Vorteile','edge.winu':'<li><b>Preisführerschaft in jeder Klasse</b> — unter dem Mainstream-Band bei 25 &amp; 45 km/h und der günstigste L3e am Markt.</li><li><b>Abdeckung aller Klassen</b> — eine Marke vom ersten Mofa des 15-Jährigen bis zum 80-km/h-A1-Fahrzeug.</li><li><b>Natrium-Ionen-Story (Future 5)</b> — ein Branchen-Erstling: besseres Kälteverhalten, keine Lithium-Brandgeschichte, lange Lebensdauer (~1.200 Zyklen), Nachhaltigkeitsargument.</li><li><b>Wechselakkus über die gesamte Palette</b> — Standard, und SFM hat sie, inkl. Doppelpack zum Laden in der Wohnung.</li><li><b>Retro-/Lifestyle-Design (Prima E)</b> — ein Vespa-naher Look zum Bruchteil des Vespa-/Kumpan-Preises.</li>',
+'edge.gaph':'▼ Lücken, die vor dem Launch zu schließen sind','edge.gapu':'<li><b>Marken- &amp; After-Sales-Vertrauen</b> — Grund Nr. 1, warum DACH-Käufer Billig-E-Roller ablehnen, ist schwacher Service. SFM braucht ab Tag&nbsp;1 eine sichtbare Service- &amp; Ersatzteil-Antwort.</li><li><b>Reichweite bei drei Modellen</b> — Future 5 (45 km), E2H Sport (75 km), Prima E Sport (90 km) liegen hinter Rivalen mit 110–130 km. Über Kosten/Technik positionieren, 2. Akku anbieten, nicht mit Reichweite werben.</li><li><b>Keine Konnektivität / App</b> — NIU und unu verkaufen über GPS-Tracking, Diebstahlschutz und App. SFM-Datenblätter zeigen nichts davon.</li><li><b>Schweizer Klassifizierung</b> — ein 45-km/h-Gasroller ist in der CH ein A1-<i>Kleinmotorrad</i> (Führerschein + höheres Alter), nicht die einfache Moped-Klasse wie in DE/AT.</li><li><b>Kein Förder-Rückenwind</b> — AT-Bundesförderung ausgelaufen (März 2026), DE hat keine für Zweiräder, CH ist kantonal.</li>',
+'edge.call':'<b>Strategisches Fazit:</b> SFM ist ein glaubwürdiger <b>Value-Herausforderer für NIU</b> mit zwei echten Haken — ein unschlagbarer L3e-Preis und eine Natrium-Ionen-Premiere. Die Schlacht wird nicht auf dem Datenblatt gewonnen, sondern über <b>Vertrauen</b>. Nutze das Pre-Launch-Fenster, um Glaubwürdigkeit zu kaufen (Händler, Service, Testberichte, Garantie), damit der niedrige Preis als „clever" gelesen wird, nicht als „riskant".',
+'str.eyebrow':'Markteinführung','str.title':'Vertriebsstrategie für Deutschland, Österreich &amp; die Schweiz',
+'str.lead':'Eine Positionierung — <b>„die ehrlich bepreiste Elektro-Zweirad-Marke mit echtem Service dahinter"</b> — umgesetzt über ein Hybridmodell: ein selektives Händler-/Servicenetz für Vertrauen und After-Sales plus ein Direkt-Online-Konfigurator für Reichweite. Jeder Markt braucht einen anderen Schwerpunkt.',
+'str.de.s':'Größter EU-Markt · ~23% Anteil · NIU-dominiert',
+'str.de.b':'<div class="row"><div class="rl">Priorität</div><div class="rt">Volumenmarkt und Hauptschauplatz. Den <b>45-km/h</b>-Preiskampf mit EM1/Prima/Future 5 gewinnen und die <b>E2H Sport 3.399&nbsp;€</b> zur L3e-Preisgeschichte machen.</div></div><div class="row"><div class="rl">Kanal</div><div class="rt"><b>Zuerst ein Händler-/Servicenetz</b> aufbauen — die Vertrauensantwort gegen NIU. D2C-Online darüberlegen. Dichte Städte priorisieren.</div></div><div class="row"><div class="rl">Hebel</div><div class="rt"><b>THG-Quote</b> für L3e-Halter (wiederkehrende Einnahmen), <b>0,25%-Dienstwagenregel</b> für B2B/Flotte, 15er-Mofa-Klasse für die Jugend.</div></div><div class="row"><div class="rl">Segment</div><div class="rt">Pendler (Preis), Lifestyle (Prima-Design), Flotten/Lieferdienste (TCO + Wechselakkus).</div></div>',
+'str.at.s':'Kleiner · AM bei 45 km/h ist die Einstiegsklasse',
+'str.at.b':'<div class="row"><div class="rl">Priorität</div><div class="rt">Keine 25-km/h-Mofa-Klasse — der Jugendeinstieg ist <b>AM bei 45 km/h ab 15</b>. Mit EM1 45, Prima E 45 und Future 5 führen.</div></div><div class="row"><div class="rl">Kanal</div><div class="rt">Über <b>Importeur + regionale Händlerpartner</b> arbeiten; an Autoclub-Glaubwürdigkeit (ÖAMTC) andocken. Online als Unterstützung.</div></div><div class="row"><div class="rl">Hebel</div><div class="rt">Bundesförderung ist <b>ausgelaufen</b> — nicht darauf bauen. Den <b>alpinen Kältevorteil</b> der Natrium-Ionen-Chemie der Future 5 nutzen.</div></div><div class="row"><div class="rl">Segment</div><div class="rt">Jugend/Erstfahrzeug und designorientierte Stadtkäufer in Wien/Graz/Linz.</div></div>',
+'str.ch.s':'Premium-Bereitschaft · andere Fahrzeugklassen',
+'str.ch.b':'<div class="row"><div class="rl">Priorität</div><div class="rt">Ein 45-km/h-Gasroller ist hier ein <b>A1-Kleinmotorrad</b>, kein Moped — eine höhere Hürde. Auf <b>Prima E Sport &amp; E2H Sport</b> und die 25-km/h-Klasse setzen.</div></div><div class="row"><div class="rl">Kanal</div><div class="rt">Erfordert <b>Schweizer Homologation (ASTRA)</b> und lokalen Importeur/Servicepartner. Premium-Framing stützt die Marge.</div></div><div class="row"><div class="rl">Hebel</div><div class="rt">Förderungen sind <b>kantonal</b> (energiefranken.ch) — ein Nachschlagewerk, keine Schlagzeile. Über Design, Qualität, Betriebskosten verkaufen.</div></div><div class="row"><div class="rl">Segment</div><div class="rt">Wohlhabende Stadtpendler &amp; Lifestyle-Käufer (Zürich, Genf, Basel, Bern).</div></div>',
+'str.gh':'Preis- &amp; Positionierungs-Leitplanken',
+'str.p1h':'Preis halten, Wert hinzufügen','str.p1u':'<li>UVP als aggressive Schlagzeile beibehalten — <b>nicht rabattieren</b>, sonst wird aus „günstig" „minderwertig".</li><li>Stattdessen bündeln: <b>Launch Edition</b> mit gratis 2. Akku, Topcase oder 3 Jahren Akku-Garantie statt Preisnachlass.</li><li>Bewusst über-garantieren: das gesetzliche 2-Jahres-Minimum mit einer <b>Akku-Kapazitätsgarantie</b> übertreffen — schließt die Vertrauenslücke.</li><li>Einen <b>Kosten-pro-km- / vs.-Verbrenner-Rechner</b> veröffentlichen, damit sich der Preisvorteil zur Betriebskostengeschichte summiert.</li>',
+'str.p2h':'Segment-zu-Modell-Zuordnung','str.p2u':'<li><b>Privatpendler</b> → EM1 (25/45), Prima E — Preis + Praktikabilität.</li><li><b>Lifestyle / Design</b> → Prima E (Retro), Prima E Sport — Stil vs. Vespa/NIU zum halben Preis.</li><li><b>Technikaffine / Early Adopter</b> → Future 5 — der Natrium-Ionen-Leuchtturm.</li><li><b>A1-Fahrer / Performance</b> → E2H Sport — 80-km/h-Preisführer.</li><li><b>Händler &amp; Flotten</b> → ganze Palette + Marge, Wechselakku-Verfügbarkeit.</li>',
+'cmp.eyebrow':'Der Kern-Auftrag','cmp.title':'Pre-Marketing-Kampagne — vom Teaser zum Frühjahrs-Peak',
+'cmp.lead':'Der gesamte Plan ist auf eine Tatsache getaktet: <b>Der DACH-Zweiradmarkt hat sein Verkaufshoch im März–Mai</b>. Alles zieht die Nachfrage ins Q1 2027 vor, damit die Auslieferungen in die Kaufwelle fallen. Das Fenster öffnet mit dem Handel, baut über den Winter eine Kunden-Warteliste auf, enthüllt den Preis im Februar und konvertiert bei Frühjahrs-Testfahrt-Events. Zwei Zielgruppen laufen parallel — <b>zuerst Händler, dann Endkunden</b> — plus eine Fachpresse-Schiene für die Natrium-Ionen-Story.',
+'cmp.tlh':'Kampagnen-Zeitplan',
+'cmp.ph0':'<div class="ptag">Fundament — leise</div><h4>Das Arsenal aufbauen</h4><ul><li>EU-Typgenehmigung + Schweizer Homologation abschließen; Auslieferung für Feb–März 2027 fixieren.</li><li>Markenidentität, Studio- + Lifestyle-Foto/Video aller 6 Modelle, Website + Online-Konfigurator, Reservierungssystem.</li><li>Händler-Pitchdeck, Großhandelskonditionen, Vorführfahrzeug-Plan; PR-Mediakit mit den zwei Hero-Winkeln (Preisführer L3e; Natrium-Ionen-Premiere).</li><li>Kosten-pro-km- und Reichweitenrechner aufsetzen; CRM + Wartelisten-Erfassung einrichten.</li></ul>',
+'cmp.ph1':'<div class="ptag">Händler-Warmlauf — nur Handel</div><h4>Das Netz unterschreiben, bevor Endkunden ein Wort hören</h4><ul><li>Händler-Roadshow durch DE/AT + CH-Importeurtermine; Probefahrten mit der Vorführflotte.</li><li>Fachpresse-Briefings unter Embargo (Motorradonline, electrive, e-roller.com); Präsenz auf einer Fachmesse Ende 2026.</li><li>Ziel: <b>unterschriebene Händler-LOIs / erste Erstaufträge</b> und benannte Servicepartner pro Region vor der öffentlichen Enthüllung fixiert.</li></ul>',
+'cmp.ph2':'<div class="ptag">Kunden-Teaser + Warteliste</div><h4>„Frühjahr 2027" — die Pipeline aufbauen</h4><ul><li>Eine <b>Reservierungs-Warteliste mit kleiner erstattbarer Anzahlung (~49&nbsp;€)</b> öffnen — echte Pipeline, First-Mover-Daten und FOMO. Wartelistenkunden erhalten erste Liefertermine + Launch-Edition-Vorteile.</li><li>Social-Teaser (Instagram/TikTok-Reels): Prima-Design-Aufnahmen, die Natrium-Ionen-Enthüllung, „Welcher Führerschein, welche SFM"-Erklärstücke.</li><li><b>Micro-Influencer</b> in Urban-Mobility-Nischen in DE/AT/CH seeden; E-Mail-Erfassungsseiten; geo-getargetes Paid Social + Google Search auf „Elektroroller 45 km/h / kaufen".</li><li>Fachpresse-Schiene: die Natrium-Ionen-„bezahlbare-Weltpremiere"-Story an EV/Tech-Medien pitchen.</li></ul>',
+'cmp.ph3':'<div class="ptag">Enthüllung &amp; Vorbestellung — der große Moment</div><h4>Den Preis fallen lassen. Vorbestellungen öffnen.</h4><ul><li>Vollständige Palettenenthüllung mit dem <b>Preis als Schlagzeile</b> („80 km/h ab 3.399&nbsp;€ — der Rest des Marktes beginnt bei 3.999&nbsp;€").</li><li>Warteliste in <b>Vorbestellungen</b> umwandeln; Launch-Edition-Bundle starten (gratis 2. Akku / Zubehör, kein Rabatt).</li><li><b>Testfahrzeuge</b> an YouTube/Print schicken, damit Tests im März erscheinen; Händler-Vorführtage terminiert; PR-Blitz auf beiden Hero-Winkeln.</li></ul>',
+'cmp.ph4':'<div class="ptag">Launch &amp; Verkauf — der Peak</div><h4>In die Frühjahrswelle liefern</h4><ul><li>Auslieferungen beginnen; <b>Frühjahrs-Testfahrt-Tour</b> durch Flagship-Händler + City-Pop-ups; Campus-Aktionen für die Mofa/45-Jugendklasse.</li><li>Nicht-konvertierte Wartelistenkunden retargeten; lokales Händler-Co-op-Marketing; Testberichte jetzt live und verstärkt.</li><li><b>Flotten-/Lieferdienst-Pilotprogramme</b> (Last-Mile) mit der TCO- + Wechselakku-Story starten.</li></ul>',
+'cmp.chh':'Kanalplan',
+'cmp.ch1h':'Eigene Kanäle','cmp.ch1p':'Website + Konfigurator, Warteliste &amp; Anzahlungs-Funnel, E-Mail-Nurturing, Kosten-/Reichweitenrechner, „Welcher Führerschein"-Guide. Die Konversionsmaschine.',
+'cmp.ch2h':'Earned / PR','cmp.ch2p':'Zwei Hero-Geschichten — günstigster L3e in DACH und die Natrium-Ionen-Premiere — an Motorradonline, electrive, e-roller.com plus Tech/EV-Presse. Testfahrzeuge für unabhängige Tests.',
+'cmp.ch3h':'Paid','cmp.ch3p':'Geo-getargetes Meta/TikTok (Design- + Tech-Creatives), Google Search auf kaufnahe Begriffe, YouTube-Pre-Roll, Wartelisten-Retargeting. Ins Q1 vorgezogen.',
+'cmp.ch4h':'Handel','cmp.ch4p':'Händlerportal, Roadshow, Vorführflotte, Co-op-Marketingbudget, Messestand. Wärmt das Netz vor dem Einzelhandel an.',
+'cmp.ch5h':'Erlebnis','cmp.ch5p':'Frühjahrs-Testfahrt-Tour, City-Pop-ups, Campus-Aktionen. Nichts verkauft einen Roller besser als eine fünfminütige Fahrt — das Gegenmittel gegen den Unbekannte-Marke-Einwand.',
+'cmp.ch6h':'Influencer','cmp.ch6p':'Micro-Creator in Pendler-, Urban-Lifestyle- und EV-Tech-Nischen in allen drei Märkten; vor der Enthüllung geseedet, zum Launch aktiviert.',
+'cmp.pih':'Botschafts-Säulen',
+'cmp.pi1h':'Ehrlich bepreist','cmp.pi1p':'Gleiche Klasse, hunderte weniger. Die Unterbietung <i>ist</i> die Story.',
+'cmp.pi2h':'Natrium-Ionen-Premiere','cmp.pi2p':'Ein sichererer, kältefester, langlebiger Akku, den kein Rivale bietet.',
+'cmp.pi3h':'Drinnen laden','cmp.pi3p':'Wechselakkus — den Akku hochtragen, keine Garage nötig.',
+'cmp.pi4h':'Echter Service','cmp.pi4p':'Eine deutsche Marke mit Händler- &amp; Garantienetz dahinter.',
+'cmp.pi5h':'Ein Modell für jeden Führerschein','cmp.pi5p':'Vom ersten Mofa des 15-Jährigen bis zum 80-km/h-A1.',
+'cmp.bh':'Indikative Pre-Launch-Budgetaufteilung',
+'cmp.b1':'Content &amp; Assets 26%','cmp.b2':'Paid Social/Search 24%','cmp.b3':'Händler &amp; Handel 20%','cmp.b4':'Events/Testfahrt 16%','cmp.b5':'PR &amp; Influencer 14%',
+'cmp.bnote':'Aufteilung, nicht Absolutbetrag — früh auf Assets und Paid-Demand-Gen gewichten, zum Launch hin zu Events verschieben. An das tatsächliche Budget anpassen, sobald festgelegt.',
+'cmp.kh':'Was gemessen wird',
+'cmp.k1n':'Händler-LOIs','cmp.k1t':'Unterschriebene Händler &amp; benannte Servicepartner pro Region vor der Enthüllung.',
+'cmp.k2n':'Warteliste &amp; Anzahlungen','cmp.k2t':'Erfasste Reservierungen; Anzahlung-zu-Vorbestellung-Konversionsrate.',
+'cmp.k3n':'CPL / CAC','cmp.k3t':'Kosten pro Lead je Kanal; gemischte Akquisekosten vs. Marge.',
+'cmp.k4n':'Earned Reach','cmp.k4t':'Presse-Aufgriffe &amp; Test-Views auf den zwei Hero-Winkeln.',
+'cmp.k5n':'Testfahrt-Buchungen','cmp.k5t':'Buchungen → Verkaufskonversion auf der Frühjahrs-Tour.',
+'cmp.k6n':'Vorbestellungen','cmp.k6t':'Vor Erstauslieferung vorverkaufte Einheiten; nach Modell &amp; Markt.',
+'cmp.k7n':'Share of Voice','cmp.k7t':'SFM vs. NIU/Super Soco-Erwähnungen in DACH-E-Roller-Medien.',
+'cmp.k8n':'Frühjahrs-Abverkauf','cmp.k8t':'März–Mai-Zulassungen vs. bevorratetes Inventar.',
+'rsk.eyebrow':'Zu beachten','rsk.title':'Zentrale Risiken &amp; ihre Entschärfung',
+'rsk.rh':'▼ Risiken','rsk.ru':'<li><b>„Billig = riskant"-Wahrnehmung</b> gegenüber etablierten NIU/Vespa.</li><li><b>Reichweiten-Defizit</b> bei Future 5 / E2H Sport taucht in Tests auf.</li><li><b>Homologations-Verzug</b> schiebt den Launch über das Frühjahrsfenster — ein ganzes Jahr verloren.</li><li><b>Dünnes Servicenetz</b> zum Launch → Beschwerden früher Käufer verbreiten sich.</li><li><b>Schweizer Klassifizierung</b> verwirrt Käufer / Händler bei den 45-km/h-Modellen.</li>',
+'rsk.mh':'▲ Gegenmaßnahmen','rsk.mu':'<li>Früh Glaubwürdigkeit kaufen: Testberichte, Garantie, sichtbarer Service, echte Händler.</li><li>Nie mit Reichweite werben; Kosten, Technik, Wechseln-und-Laden verkaufen; 2. Akku anbieten.</li><li>Den Feb-Enthüllungs- / März-Liefertermin als einzige harte Deadline schützen.</li><li>Servicepartner pro Region <i>vor</i> dem Kunden-Launch benennen (Phase 1).</li><li>Länderspezifische Führerschein-Hinweise in Konfigurator und Händlerschulung einbauen.</li>',
+'rsk.call':'<b>Fazit:</b> SFM startet 2027 mit der aggressivsten Preisleiter in DACH und einer echten Technologie-Story. Die Palette verkauft sich, wenn das Pre-Launch-Fenster genutzt wird, um Preis in <b>Vertrauen</b> zu verwandeln — Händler unterschrieben, Service sichtbar, Tests positiv, Warteliste warm — sodass die Marke zum März–Mai-Peak eine bekannte, glaubwürdige, offensichtlich preiswerte Wahl ist statt ein unbekannter Billigimport.',
+'ft.h':'Quellen &amp; Hinweise',
+'ft.p':'SFM-Spezifikationen und -Preise aus den sechs bereitgestellten Produktdatenblättern. Wettbewerberpreise und -spezifikationen sind aktuelle Straßen-/UVP-Werte 2025–2026 für den deutschen Markt und variieren je nach Händler und Akku-Konfiguration; als indikative Benchmarks behandeln, nicht als feste Angebote. Kontext zu Führerschein, Förderung, Saisonalität und Homologation aus den unten stehenden Quellen.',
+'ft.disc':'Erstellt für SFM · DACH-Markteinführung, Launch 2027. Wettbewerbszahlen sind bestverfügbare öffentliche Daten per Aug. 2026 und sollten vor externer Verwendung gegen aktuelle Händlerpreise geprüft werden. Preise ohne Zulassung, Lieferung und länderspezifische Steuern.'
+};
+
+// ---- chart data (bilingual specs) ----
+const c1=[
+  {name:'SFM EM1 45',price:1899,cls:'sfm',en:'45 km/h · 800W · 1,440 Wh · 70 km · swap',de:'45 km/h · 800W · 1.440 Wh · 70 km · Wechselakku'},
+  {name:'SFM Prima E 45',price:1999,cls:'sfm',en:'45 km/h · 1,000W · 960 Wh · retro 14″ · swap',de:'45 km/h · 1.000W · 960 Wh · Retro 14″ · Wechselakku'},
+  {name:'SFM Future 5',price:1999,cls:'acc',en:'45 km/h · 1,200W · Sodium-ion 1,260 Wh · ~1,200 cycles',de:'45 km/h · 1.200W · Natrium-Ionen 1.260 Wh · ~1.200 Zyklen'},
+  {name:'Vässla 2',price:2250,en:'45 km/h · 1,200W · design brand',de:'45 km/h · 1.200W · Designmarke'},
+  {name:'NIU UQi GT',price:2449,en:'45 km/h · 1,500W · dual packs · ~50 km',de:'45 km/h · 1.500W · Doppelakku · ~50 km'},
+  {name:'NIU MQi+ Sport',price:2500,en:'45 km/h · 1,400W · 2,016 Wh · ~65 km',de:'45 km/h · 1.400W · 2.016 Wh · ~65 km'},
+  {name:'Super Soco CUx Pro',price:2599,en:'45 km/h · 2,300W · 2,580 Wh · up to 80 km',de:'45 km/h · 2.300W · 2.580 Wh · bis 80 km'},
+  {name:'unu Scooter',price:3024,en:'45 km/h · design DTC · portable packs',de:'45 km/h · Design-DTC · tragbare Akkus'},
+  {name:'Horwin EK1',price:3200,en:'45 km/h · 2,000W · 70–120 km · premium',de:'45 km/h · 2.000W · 70–120 km · Premium'},
+  {name:'Kumpan 54 inspire',price:3900,en:'45 km/h · German retro · modular battery',de:'45 km/h · deutsches Retro · modularer Akku'},
+  {name:'unu Scooter Pro',price:3999,en:'45 km/h · 3,000W · app/GPS · premium',de:'45 km/h · 3.000W · App/GPS · Premium'},
+];
+const c2=[
+  {name:'SFM EM1 25',price:1899,cls:'sfm',en:'25 km/h Mofa · 800W · 1,440 Wh · 70 km',de:'25 km/h Mofa · 800W · 1.440 Wh · 70 km'},
+  {name:'SFM Prima E 25',price:1999,cls:'sfm',en:'25 km/h Mofa · retro · 960 Wh · 65 km',de:'25 km/h Mofa · Retro · 960 Wh · 65 km'},
+  {name:'NIU UQi',price:2200,en:'25 km/h · ~1.5 kWh · app · lightest NIU',de:'25 km/h · ~1,5 kWh · App · leichteste NIU'},
+  {name:'Super Soco CUx',price:2300,en:'25 km/h · Ducati-styled · swap pack',de:'25 km/h · Ducati-Look · Wechselakku'},
+  {name:'emco Novi',price:2500,en:'25 km/h · German retro · removable',de:'25 km/h · deutsches Retro · herausnehmbar'},
+  {name:'Horwin EK1 Light',price:3200,en:'25 km/h · premium build · long range option',de:'25 km/h · Premium · Langstrecken-Option'},
+];
+const c3=[
+  {name:'SFM Prima E Sport',price:2999,cls:'sfm',en:'75 km/h · 3,000W/3,800W · 150 Nm · 2,400 Wh · 90 km',de:'75 km/h · 3.000W/3.800W · 150 Nm · 2.400 Wh · 90 km'},
+  {name:'SFM E2H Sport',price:3399,cls:'acc',en:'80 km/h L3e · 3,000W/5,000W · 3,456 Wh · 75 km · swap',de:'80 km/h L3e · 3.000W/5.000W · 3.456 Wh · 75 km · Wechselakku'},
+  {name:'NIU MQi GT 100',price:3799,en:'100 km/h · 6,500W · 3,740 Wh · 65–75 km',de:'100 km/h · 6.500W · 3.740 Wh · 65–75 km'},
+  {name:'Horwin SK3',price:3990,en:'90 km/h · 3,000W · 80–160 km (dual) · swap',de:'90 km/h · 3.000W · 80–160 km (Doppel) · Wechselakku'},
+  {name:'NIU NGT',price:3990,en:'70 km/h · 3,500W · ~130 km · dual packs',de:'70 km/h · 3.500W · ~130 km · Doppelakku'},
+  {name:'Super Soco TC Max',price:3999,en:'95 km/h · 3,900W/5,100W · 110 km · swap',de:'95 km/h · 3.900W/5.100W · 110 km · Wechselakku'},
+  {name:'Trinity Uranus R 80',price:4428,en:'80 km/h · 6,000W · 4,200 Wh · 100 km',de:'80 km/h · 6.000W · 4.200 Wh · 100 km'},
+  {name:'SEAT Mó 125',price:4990,en:'95 km/h · 9 kW · 5,600 Wh · ~133 km',de:'95 km/h · 9 kW · 5.600 Wh · ~133 km'},
+  {name:'Segway E300SE',price:4999,en:'105 km/h · 7,800W · ~130 km · ABS/TCS',de:'105 km/h · 7.800W · ~130 km · ABS/TCS'},
+  {name:'Super Soco CPx',price:5990,en:'90 km/h · 4,800W · up to 140 km · dual',de:'90 km/h · 4.800W · bis 140 km · Doppel'},
+  {name:'Vespa Elettrica 70',price:7199,en:'70 km/h · 3,500W · 70 km · battery NOT removable',de:'70 km/h · 3.500W · 70 km · Akku NICHT herausnehmbar'},
+];
+// spec table rows
+const specRows=[
+  {m:'SFM EM1',c:'Mofa/Mokick',s:'25 / 45',p:'1,899',mo:'800 W',b:'1,440 Wh',r:'70 km',sw:{en:'Yes',de:'Ja'},sfm:1},
+  {m:'SFM Future 5',c:'Mokick',s:'45',p:'1,999',mo:'1,200 W',b:{en:'1,260 Wh Na-ion',de:'1.260 Wh Na-Ion'},r:'45 km',sw:{en:'Yes',de:'Ja'},sfm:1},
+  {m:'SFM Prima E',c:'Mofa/Mokick',s:'25 / 45',p:'1,999',mo:'1,000 W',b:'960 Wh',r:'65 km',sw:{en:'Yes',de:'Ja'},sfm:1},
+  {m:'SFM Prima E Sport',c:'L3e',s:'75',p:'2,999',mo:'3,000 W',b:'2,400 Wh',r:'90 km',sw:{en:'2 packs',de:'2 Akkus'},sfm:1},
+  {m:'SFM E2H Sport',c:'L3e',s:'80',p:'3,399',mo:'3,000 W',b:'3,456 Wh',r:'75 km',sw:{en:'Yes',de:'Ja'},sfm:1},
+  {m:'NIU MQi+ Sport',c:'Mokick',s:'45',p:'~2,500',mo:'1,400 W',b:'2,016 Wh',r:'65 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'NIU UQi GT',c:'Mokick',s:'45',p:'2,449',mo:'1,500 W',b:'~1,500 Wh',r:'50 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Super Soco CUx Pro',c:'Mokick',s:'45',p:'2,599',mo:'2,300 W',b:'2,580 Wh',r:'80 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Vässla 2',c:'Mokick',s:'45',p:'2,250',mo:'1,200 W',b:'~1,500 Wh',r:'40–60 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Horwin EK1',c:'Mokick',s:'45',p:'~3,200',mo:'2,000 W',b:'~1,900 Wh',r:'70–120 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'unu Scooter Pro',c:'Mokick',s:'45',p:'3,999',mo:'3,000 W',b:{en:'removable',de:'herausn.'},r:'50–100 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Kumpan 54 inspire',c:'Mokick',s:'45',p:'~3,900',mo:'3,000 W',b:{en:'modular',de:'modular'},r:'135 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'NIU MQi GT 100',c:'L3e',s:'100',p:'3,799',mo:'6,500 W',b:'3,740 Wh',r:'65–75 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'NIU NGT',c:'L3e',s:'70',p:'3,990',mo:'3,500 W',b:'3,700 Wh',r:'~130 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Super Soco TC Max',c:'L3e',s:'95',p:'3,999',mo:'3,900 W',b:'3,240 Wh',r:'110 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Horwin SK3',c:'L3e',s:'90',p:'3,990',mo:'3,000 W',b:'2,600 Wh',r:'80–160 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Trinity Uranus R 80',c:'L3e',s:'80',p:'4,428',mo:'6,000 W',b:'4,200 Wh',r:'100 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Segway E300SE',c:'L3e',s:'105',p:'4,999',mo:'7,800 W',b:'~5,000 Wh',r:'130 km',sw:{en:'Yes',de:'Ja'}},
+  {m:'Vespa Elettrica 70',c:'L3e',s:'70',p:'7,199',mo:'3,500 W',b:'4,200 Wh',r:'70 km',sw:{en:'No',de:'Nein'}},
+];
+
+// ---- tooltip ----
+const tip=document.getElementById('tip');
+function showTip(e,h){tip.innerHTML=h;tip.style.opacity=1;moveTip(e);}
+function moveTip(e){const p=12;let x=e.clientX+p,y=e.clientY+p;const r=tip.getBoundingClientRect();if(x+r.width>innerWidth)x=e.clientX-r.width-p;if(y+r.height>innerHeight)y=e.clientY-r.height-p;tip.style.left=x+'px';tip.style.top=y+'px';}
+function hideTip(){tip.style.opacity=0;}
+
+function renderChart(elId,data,maxPrice,lang){
+  const el=document.getElementById(elId); el.innerHTML='';
+  data.forEach(d=>{
+    const row=document.createElement('div');row.className='bar-row'+(d.cls?' sfm':'');
+    const lab=document.createElement('div');lab.className='bar-label'+(d.cls?' sfm':'');lab.textContent=d.name;
+    const track=document.createElement('div');track.className='bar-track';
+    const bar=document.createElement('div');bar.className='bar'+(d.cls?(' '+d.cls):'');
+    bar.style.width=Math.max((d.price/maxPrice)*100,2)+'%';
+    const val=document.createElement('div');val.className='val';val.textContent='€'+d.price.toLocaleString(lang==='de'?'de-DE':'en-US');
+    bar.appendChild(val);track.appendChild(bar);row.appendChild(lab);row.appendChild(track);el.appendChild(row);
+    const h='<b>'+d.name+'</b><br>'+d[lang];
+    bar.addEventListener('mouseenter',e=>showTip(e,h));
+    bar.addEventListener('mousemove',moveTip);
+    bar.addEventListener('mouseleave',hideTip);
+  });
+}
+function renderTable(lang){
+  const tb=document.getElementById('specbody'); tb.innerHTML='';
+  specRows.forEach(r=>{
+    const tr=document.createElement('tr'); if(r.sfm)tr.className='sfm';
+    const cell=v=>typeof v==='object'?v[lang]:v;
+    tr.innerHTML='<td>'+r.m+'</td><td>'+cell(r.c)+'</td><td>'+r.s+'</td><td class="num">'+r.p+'</td><td>'+r.mo+'</td><td>'+cell(r.b)+'</td><td>'+r.r+'</td><td>'+cell(r.sw)+'</td>';
+    tb.appendChild(tr);
+  });
+}
+function renderCharts(lang){renderChart('c1',c1,4200,lang);renderChart('c2',c2,3400,lang);renderChart('c3',c3,7600,lang);renderTable(lang);}
+
+let curLang='en';
+function applyLang(l){
+  curLang=l; const src=l==='de'?DE:EN;
+  document.querySelectorAll('[data-k]').forEach(e=>{const v=src[e.dataset.k]; if(v!=null)e.innerHTML=v;});
+  document.documentElement.lang=l;
+  document.getElementById('enBtn').classList.toggle('on',l==='en');
+  document.getElementById('deBtn').classList.toggle('on',l==='de');
+  renderCharts(l);
+}
+document.getElementById('enBtn').onclick=()=>applyLang('en');
+document.getElementById('deBtn').onclick=()=>applyLang('de');
+
+// theme
+const tb2=document.getElementById('themeBtn');
+tb2.onclick=()=>{const d=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',d?'light':'dark');tb2.textContent=d?'Dark':(curLang==='de'?'Hell':'Light');};
+
+// init
+applyLang('en');
+</script>
+</body>
+</html>
