@@ -162,9 +162,13 @@
   .analysiscta{margin-top:34px;background:var(--sfm-soft);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;}
   .analysiscta h3{margin:0 0 6px;font-size:20px;}
   .analysiscta p{margin:0 auto 16px;font-size:14.5px;color:var(--ink-2);max-width:520px;}
-  /* quiz reveal on click */
-  #quiz{max-height:0;opacity:0;overflow:hidden;padding-top:0;padding-bottom:0;border-bottom:0;transition:max-height .55s ease,opacity .45s ease,padding .45s ease;}
-  #quiz.revealed{max-height:1800px;opacity:1;padding-top:44px;padding-bottom:44px;border-bottom:1px solid var(--border);}
+  /* quiz reveal on click — full-viewport centered focus */
+  #quiz{display:none;}
+  #quiz.revealed{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100dvh - 57px);padding:40px 0;border-bottom:1px solid var(--border);animation:quizIn .42s ease;}
+  @keyframes quizIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  #quiz .eyebrow,#quiz h2{width:100%;}
+  #quiz .lead{margin-left:auto;margin-right:auto;}
+  #quiz .quizcard{max-width:600px;width:100%;text-align:left;margin:0 auto;}
 
   /* EDGE / DATA */
   .faceoffs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
@@ -266,6 +270,39 @@
   footer{padding:38px 0 60px;color:var(--ink-2);font-size:13px;} footer h3{color:var(--ink);}
   .srcs{columns:2;column-gap:26px;font-size:12px;} @media(max-width:640px){.srcs{columns:1;}} .srcs a{display:block;margin-bottom:5px;color:var(--ink-2);word-break:break-all;}
   .disc{margin-top:22px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--border);padding-top:14px;}
+  /* ---- mobile ---- */
+  @media(max-width:600px){
+    .wrap{padding:0 16px;}
+    header.apple{padding:64px 0 52px;}
+    .ah{letter-spacing:-1px;}
+    .asub{font-size:16.5px;}
+    section{padding:34px 0;}
+    section h2{font-size:23px;}
+    #quiz.revealed{padding:26px 0;min-height:calc(100dvh - 57px);}
+    #quiz .quizcard{padding:12px 15px 20px;border-radius:16px;}
+    .q .qq{font-size:17.5px;}
+    .qopts{grid-template-columns:1fr;}
+    .qopt{font-size:14.5px;padding:13px 14px;}
+    .qualcard{padding:24px 16px;border-radius:16px;}
+    .qualcard h2{font-size:22px;}
+    .urgency{gap:10px;}
+    .ucard{min-width:0;flex:1;padding:12px 12px;}
+    .ubig{font-size:28px;}
+    .slform{flex-direction:column;}
+    .slform input{min-width:0;width:100%;}
+    .slform .cta{width:100%;}
+    .matchcard,.compare,.scard{border-radius:12px;}
+    .cols{height:210px;gap:5px;}
+    .colc .ctop{font-size:12px;} .colc .cname{font-size:10.5px;} .colc .cspec{font-size:9.5px;}
+    .analysiscta{padding:22px 16px;}
+    .foff .tag b{font-size:19px;}
+    .bigline{font-size:24px;}
+    .cta.big{padding:15px 26px;font-size:16px;}
+  }
+  @media(max-width:400px){
+    .cols .cspec{display:none;}
+    .tag b{font-size:17px;}
+  }
 </style>
 </head>
 <body>
@@ -801,8 +838,9 @@ function showResult(){
  renderStrengths(m,lang);
  // reveal
  resultShown=true; startCountdown();
+ document.getElementById('quiz').classList.remove('revealed');
  const res=document.getElementById('result'); res.style.display='block';
- res.scrollIntoView({behavior:'smooth'});
+ res.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function parseSpeed(m){ if(m.name.includes('25'))return 25; if(m.name.includes('Future')||m.name.includes('EM1'))return 45; if(m.name.includes('Prima E Sport'))return 75; if(m.name.includes('E2H'))return 80; if(m.name.includes('Prima E'))return 45; return 45; }
 function parseRange(m){ const map={'SFM EM1 · 25 km/h':70,'SFM EM1 · 45 km/h':70,'SFM Future 5':45,'SFM Prima E':65,'SFM Prima E Sport':90,'SFM E2H Sport':75}; return map[m.name]||60; }
@@ -890,7 +928,7 @@ function showView(v){
 document.getElementById('navHome').onclick=(e)=>{e.preventDefault();showView('home');};
 document.getElementById('navAnalysis').onclick=(e)=>{e.preventDefault();showView('analysis');};
 document.getElementById('toAnalysis').onclick=()=>showView('analysis');
-document.getElementById('heroCta').onclick=()=>{ const q=document.getElementById('quiz'); q.classList.add('revealed'); setTimeout(()=>q.scrollIntoView({behavior:'smooth',block:'center'}),80); };
+document.getElementById('heroCta').onclick=()=>{ const q=document.getElementById('quiz'); q.classList.add('revealed'); setTimeout(()=>q.scrollIntoView({behavior:'smooth',block:'start'}),90); };
 const tbn=document.getElementById('themeBtn');
 tbn.onclick=()=>{const d=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',d?'light':'dark');tbn.textContent=d?'Dark':(curLang==='de'?'Hell':'Light');};
 // initial language: quick browser hint, then refine by IP country (DE/AT/CH → German)
