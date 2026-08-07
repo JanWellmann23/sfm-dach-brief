@@ -452,7 +452,8 @@
   #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 13.5s linear forwards;}
   @keyframes sbar{to{width:100%;}}
   /* ---------- hero comparison graph ---------- */
-  .herograph{max-width:540px;margin:24px auto 0;display:grid;gap:16px;text-align:left;}
+  .herograph{max-width:540px;margin:24px auto 34px;display:grid;gap:16px;text-align:left;}
+  .apple .cta.big{margin-top:8px;}
   .hg-cap{display:flex;justify-content:space-between;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:7px;}
   .hg-b{height:30px;border-radius:7px;display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;
     transform-origin:left;animation:hgIn .9s cubic-bezier(.2,.7,.2,1) both;}
@@ -516,11 +517,8 @@
   <div class="wrap">
     <div class="ak" data-k="a.k">SFM E-Mobility 2027</div>
     <h1 class="ah" data-k="a.h">Are you ready for the<br><span class="grad">future of transport?</span></h1>
-    <p class="asub" data-k="a.sub"><b>110&nbsp;km/h · 150&nbsp;km range · ~2&nbsp;h fast-charge.</b> €5,999 — thousands below the premium names.</p>
+    <p class="asub" data-k="a.sub">Led by the <b>Dream&nbsp;7 flagship</b>: 110&nbsp;km/h · 150&nbsp;km range · ~2&nbsp;h fast-charge — €5,999, thousands below the premium names.</p>
     <div class="herograph">
-      <div class="hg-row"><div class="hg-cap"><span data-k="hg.range">Range · more is better</span><span class="hg-unit">km</span></div>
-        <div class="hg-b sfm" style="width:100%"><span data-k="hg.us">SFM flagship</span> · 150</div>
-        <div class="hg-b comp" style="width:89%"><span data-k="hg.them">Typical premium rival</span> · 133</div></div>
       <div class="hg-row"><div class="hg-cap"><span data-k="hg.price">Price · less is better</span><span class="hg-unit">€</span></div>
         <div class="hg-b sfm" style="width:68%"><span data-k="hg.us2">SFM flagship</span> · 5,999</div>
         <div class="hg-b comp" style="width:100%"><span data-k="hg.them2">Typical premium rival</span> · 8,790</div></div>
@@ -895,7 +893,7 @@ const DE={
 'r.altsh':'Weitere Modelle, für die du auch qualifiziert bist','r.altsub':'Deine Antworten passen zu mehreren — hier die nächstbesten Treffer. Tippe eines an, um es zu drehen.',
 'r.actah':'Die komplette 2027-Palette ansehen','r.actap':'Sechs Modelle, jedes gegen seine Klasse gebenchmarkt — die stärksten Wettbewerbsvorteile zuerst.','r.actabtn':'Produktlinie entdecken →',
 'a.h':'Bist du bereit für die<br><span class="grad">Zukunft der Mobilität?</span>',
-'a.sub':'<b>110&nbsp;km/h · 150&nbsp;km Reichweite · ~2&nbsp;h Schnellladung.</b> 5.999&nbsp;€ — tausende Euro unter den Premium-Namen.',
+'a.sub':'Angeführt vom <b>Dream&nbsp;7-Flaggschiff</b>: 110&nbsp;km/h · 150&nbsp;km Reichweite · ~2&nbsp;h Schnellladung — 5.999&nbsp;€, tausende Euro unter den Premium-Namen.',
 'hg.range':'Reichweite · mehr ist besser','hg.price':'Preis · weniger ist besser','hg.us':'SFM-Flaggschiff','hg.them':'Typischer Premium-Rivale','hg.us2':'SFM-Flaggschiff','hg.them2':'Typischer Premium-Rivale',
 'a.cta':'Vorbestell-Eignung prüfen →','a.meta':'200 Early-Plätze · endet 1. Oktober · Deutschland · Österreich · Schweiz',
 't.k':'Early Access · Frühjahr 2027 · DE · AT · CH',
