@@ -437,7 +437,7 @@
   #splash .sbg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);
     transition:opacity .6s ease,transform 2s ease;}
   #splash .sbg img.on{opacity:.5;transform:scale(1.005);}
-  #splash.montage .sbg img.on{opacity:.62;}
+  #splash.montage .sbg img.on{opacity:.64;}
   #splash .sov{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 44%,rgba(5,6,10,.18),rgba(5,6,10,.92));}
   #splash .sin{position:relative;z-index:1;text-align:center;color:#fff;padding:24px;max-width:860px;}
   #splash .seyebrow{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#7fb0ee;font-weight:800;margin-bottom:14px;opacity:0;transform:translateY(8px);}
@@ -449,7 +449,7 @@
   #splash .senter button{background:#2a78d6;color:#fff;border:none;padding:12px 26px;border-radius:26px;font-size:15px;font-weight:800;cursor:pointer;transition:.2s;}
   #splash .senter button:hover{background:#1c5cab;transform:scale(1.04);}
   #splash .skip{position:absolute;bottom:24px;right:26px;z-index:2;color:#cfd6de;font-size:13px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:22px;cursor:pointer;}
-  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 8s linear forwards;}
+  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 11s linear forwards;}
   @keyframes sbar{to{width:100%;}}
 </style>
 </head>
@@ -491,7 +491,7 @@
   <div class="wrap">
     <div class="ak" data-k="a.k">E-Mobility 2027</div>
     <h1 class="ah" data-k="a.h">Are you ready for the<br><span class="grad">future of transport?</span></h1>
-    <p class="asub" data-k="a.sub">Up to 80&nbsp;km/h. Up to half the price of the big names. A battery nobody else sells. Find your match and claim early access — in 60 seconds.</p>
+    <p class="asub" data-k="a.sub">Led by the Dream&nbsp;7 flagship: a real <b>110&nbsp;km/h</b>, up to <b>150&nbsp;km</b> of range — the longest in its class — a <b>BYD LFP</b> battery and <b>~2&nbsp;h</b> fast charge. <b>€5,999</b>, thousands below the premium names.</p>
     <button class="cta big" id="heroCta" data-k="a.cta">Check your eligibility →</button>
     <div class="ameta" data-k="a.meta">200 early spots · closing 1 October · Germany · Austria · Switzerland</div>
   </div>
@@ -856,7 +856,7 @@ const DE={
 'r.ceyebrow':'Der Beleg für deinen Preis','r.strh':'Wo es den Wettbewerb schlägt',
 'r.actah':'Die komplette 2027-Palette ansehen','r.actap':'Sechs Modelle, jedes gegen seine Klasse gebenchmarkt — die stärksten Wettbewerbsvorteile zuerst.','r.actabtn':'Produktlinie entdecken →',
 'a.h':'Bist du bereit für die<br><span class="grad">Zukunft der Mobilität?</span>',
-'a.sub':'Bis zu 80&nbsp;km/h. Bis zum halben Preis der großen Namen. Ein Akku, den sonst niemand verkauft. Finde dein Match und sichere dir Early Access — in 60 Sekunden.',
+'a.sub':'Angeführt vom Dream&nbsp;7-Flaggschiff: echte <b>110&nbsp;km/h</b>, bis zu <b>150&nbsp;km</b> Reichweite — die größte seiner Klasse —, ein <b>BYD-LFP</b>-Akku und <b>~2&nbsp;h</b> Schnellladung. <b>5.999&nbsp;€</b>, tausende Euro unter den Premium-Namen.',
 'a.cta':'Eligibility prüfen →','a.meta':'200 Early-Plätze · endet 1. Oktober · Deutschland · Österreich · Schweiz',
 't.k':'Early Access · Frühjahr 2027 · DE · AT · CH',
 't.h':'Bist du bereit für die <span class="g">Zukunft</span><br>der Zweirad-Mobilität?',
@@ -1394,12 +1394,12 @@ showView('home');
  show('sl1',400); show('sl2',1300); show('sl3',2200); show('slq',3100); show('senter',1600);
  // Phase 2 — after the text lands, flash through the shots to hold attention
  const startMontage=setTimeout(()=>{ sp.classList.add('montage');
-   montage=setInterval(()=>{ ci=(ci+1)%imgs.length; imgs.forEach((im,k)=>im.classList.toggle('on',k===ci)); },720);
+   montage=setInterval(()=>{ ci=(ci+1)%imgs.length; imgs.forEach((im,k)=>im.classList.toggle("on",k===ci)); },820);
  },4000);
  let montage=null,done=false;
  function dismiss(){ if(done)return; done=true; clearInterval(montage); clearTimeout(startMontage); clearTimeout(timer);
    sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800); }
- const timer=setTimeout(dismiss,8200);
+ const timer=setTimeout(dismiss,11000);
  document.getElementById('senterb').onclick=(e)=>{e.stopPropagation();dismiss();};
  sp.addEventListener('click',e=>{ if(e.target.closest('.senter'))return; dismiss(); });
 })();
