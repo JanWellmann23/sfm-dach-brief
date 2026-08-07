@@ -433,8 +433,11 @@
   /* ---------- intro teaser splash ---------- */
   #splash{position:fixed;inset:0;z-index:200;background:#05060a;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .7s ease;}
   #splash.gone{opacity:0;pointer-events:none;}
-  #splash .sbg{position:absolute;inset:0;background:url('assets/dream7/d7-2.jpg') center/cover no-repeat;opacity:0;transform:scale(1.14);animation:sbg 4.6s ease forwards;}
-  @keyframes sbg{0%{opacity:0;transform:scale(1.14);}22%{opacity:.6;}100%{opacity:.42;transform:scale(1.01);}}
+  #splash .sbg{position:absolute;inset:0;}
+  #splash .sbg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);
+    transition:opacity .6s ease,transform 2s ease;}
+  #splash .sbg img.on{opacity:.5;transform:scale(1.005);}
+  #splash.montage .sbg img.on{opacity:.62;}
   #splash .sov{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 44%,rgba(5,6,10,.18),rgba(5,6,10,.92));}
   #splash .sin{position:relative;z-index:1;text-align:center;color:#fff;padding:24px;max-width:860px;}
   #splash .seyebrow{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#7fb0ee;font-weight:800;margin-bottom:14px;opacity:0;transform:translateY(8px);}
@@ -446,7 +449,7 @@
   #splash .senter button{background:#2a78d6;color:#fff;border:none;padding:12px 26px;border-radius:26px;font-size:15px;font-weight:800;cursor:pointer;transition:.2s;}
   #splash .senter button:hover{background:#1c5cab;transform:scale(1.04);}
   #splash .skip{position:absolute;bottom:24px;right:26px;z-index:2;color:#cfd6de;font-size:13px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:22px;cursor:pointer;}
-  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 4.6s linear forwards;}
+  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 8s linear forwards;}
   @keyframes sbar{to{width:100%;}}
 </style>
 </head>
@@ -455,16 +458,15 @@
 
 <!-- INTRO TEASER -->
 <div id="splash">
-  <div class="sbg"></div><div class="sov"></div>
+  <div class="sbg" id="sbg"></div><div class="sov"></div>
   <div class="sin">
-    <div class="seyebrow" id="seyebrow">SFM · Dream 7</div>
-    <div class="sline" id="sl1"></div>
-    <div class="sline" id="sl2"></div>
-    <div class="sline b" id="sl3"></div>
-    <div class="sq" id="slq"></div>
-    <div class="senter" id="senter"><button id="senterb"></button></div>
+    <div class="seyebrow">SFM · Dream 7</div>
+    <div class="sline" id="sl1" data-k="s.l1">Imagine 110 km/h.</div>
+    <div class="sline" id="sl2" data-k="s.l2">150 km on a single charge.</div>
+    <div class="sline b" id="sl3" data-k="s.l3">For €5,999.</div>
+    <div class="sq" id="slq" data-k="s.q">A real motorway-legal flagship at that price. Too good to be true?</div>
+    <div class="senter" id="senter"><button id="senterb" data-k="s.enter">Continue →</button></div>
   </div>
-  <button class="skip" id="sskip"></button>
   <div class="sbar"></div>
 </div>
 
@@ -841,6 +843,7 @@ const ENPH={}; document.querySelectorAll('[data-kph]').forEach(e=>{ENPH[e.datase
 const DE={
 'nav.home':'Start','nav.lineup':'Modelle','nav.analysis':'Analyse','nav.dream':'Dream 7',
 'mg.zoom':'Zoom','m.view':'360° · Zoom','m.viewfull':'Zur Showcase',
+'s.l1':'Stell dir 110 km/h vor.','s.l2':'150 km mit einer Ladung.','s.l3':'Für 5.999 €.','s.q':'Ein echtes autobahntaugliches Flaggschiff zu dem Preis. Zu schön, um wahr zu sein?','s.enter':'Weiter →',
 'p.lead':'Drei Wege hinein — wähle deinen',
 'p.line.t':'Die neue Modellpalette','p.line.s':'Angeführt vom Dream-7-Flaggschiff — neun Modelle, bis hinunter zum 1.699-€-City-Mofa. Jedes in 360° drehen und heranzoomen.','p.line.g':'Palette entdecken →',
 'p.quiz.tag':'Nur 200 Plätze','p.quiz.t':'Qualifizierst du dich für die Vorbestellung?','p.quiz.s':'Ein 60-Sekunden-Check findet dein passendes Modell und schaltet den Early-Access-Preis frei. Limitierte Stückzahl.','p.quiz.g':'Eignung prüfen →',
@@ -1359,6 +1362,7 @@ function showView(v){
  document.getElementById('navAnalysis').classList.toggle('on',v==='analysis');
  document.getElementById('navDream').classList.toggle('on',v==='dream7');
  if(v!=='dream7' && typeof d7stop==='function') d7stop();
+ if(v==='dream7' && typeof d7start==='function'){ d7go(0); d7start(); }
  window.scrollTo(0,0);
 }
 function openQuiz(){ showView('home'); document.getElementById('quiz').classList.add('revealed'); document.body.style.overflow='hidden'; }
@@ -1377,29 +1381,27 @@ tbn.onclick=()=>{const d=root.getAttribute('data-theme')==='dark';root.setAttrib
 applyLang((navigator.language||'').toLowerCase().startsWith('de')?'de':'en');
 showView('home');
 
-// ---------- intro teaser splash ----------
+// ---------- intro teaser splash (text first → rapid Dream 7 montage) ----------
 (function(){
  const sp=document.getElementById('splash'); if(!sp)return;
- const de=curLang==='de';
- const T=de
-  ? {ey:'SFM · Dream 7',l1:'Stell dir 110 km/h vor.',l2:'150 km mit einer Ladung.',l3:'Für 5.999 €.',q:'Ein echtes autobahntaugliches Flaggschiff zu dem Preis. Zu schön, um wahr zu sein?',enter:'Herausfinden →',skip:'Überspringen →'}
-  : {ey:'SFM · Dream 7',l1:'Imagine 110 km/h.',l2:'150 km on a single charge.',l3:'For €5,999.',q:'A real motorway-legal flagship at that price. Too good to be true?',enter:'See for yourself →',skip:'Skip →'};
- document.getElementById('seyebrow').textContent=T.ey;
- document.getElementById('sl1').textContent=T.l1;
- document.getElementById('sl2').textContent=T.l2;
- document.getElementById('sl3').textContent=T.l3;
- document.getElementById('slq').textContent=T.q;
- document.getElementById('senterb').textContent=T.enter;
- document.getElementById('sskip').textContent=T.skip;
+ const sbg=document.getElementById('sbg');
+ const order=[2,1,4,6,3,5,7];               // Dream 7 shot sequence for the montage
+ order.forEach((n,i)=>{ const im=document.createElement('img'); im.src='assets/dream7/d7-'+n+'.jpg'; if(i===0)im.className='on'; sbg.appendChild(im); });
+ const imgs=sbg.querySelectorAll('img'); let ci=0;
  document.body.style.overflow='hidden';
- const show=(id,d)=>setTimeout(()=>document.getElementById(id).classList.add('sshow'),d);
- show('seyebrow',150); show('sl1',450); show('sl2',1050); show('sl3',1650); show('slq',2400); show('senter',3000);
- let done=false;
- function dismiss(){ if(done)return; done=true; sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800); }
- const timer=setTimeout(dismiss,4600);
- document.getElementById('senterb').onclick=()=>{clearTimeout(timer);dismiss();};
- document.getElementById('sskip').onclick=()=>{clearTimeout(timer);dismiss();};
- sp.addEventListener('click',e=>{ if(e.target.closest('.senter'))return; clearTimeout(timer); dismiss(); });
+ const show=(id,d)=>setTimeout(()=>{const e=document.getElementById(id);if(e)e.classList.add('sshow');},d);
+ // Phase 1 — the text hook reveals first
+ show('sl1',400); show('sl2',1300); show('sl3',2200); show('slq',3100); show('senter',1600);
+ // Phase 2 — after the text lands, flash through the shots to hold attention
+ const startMontage=setTimeout(()=>{ sp.classList.add('montage');
+   montage=setInterval(()=>{ ci=(ci+1)%imgs.length; imgs.forEach((im,k)=>im.classList.toggle('on',k===ci)); },720);
+ },4000);
+ let montage=null,done=false;
+ function dismiss(){ if(done)return; done=true; clearInterval(montage); clearTimeout(startMontage); clearTimeout(timer);
+   sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800); }
+ const timer=setTimeout(dismiss,8200);
+ document.getElementById('senterb').onclick=(e)=>{e.stopPropagation();dismiss();};
+ sp.addEventListener('click',e=>{ if(e.target.closest('.senter'))return; dismiss(); });
 })();
 (async()=>{
  try{
