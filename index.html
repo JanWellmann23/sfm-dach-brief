@@ -455,11 +455,13 @@
   .herograph{max-width:540px;margin:24px auto 34px;display:grid;gap:16px;text-align:left;}
   .apple .cta.big{margin-top:8px;}
   .hg-cap{display:flex;justify-content:space-between;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:7px;}
-  .hg-b{height:30px;border-radius:7px;display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;
-    transform-origin:left;animation:hgIn .9s cubic-bezier(.2,.7,.2,1) both;}
+  .hg-b{height:30px;border-radius:7px;display:flex;align-items:center;padding:0 12px;box-sizing:border-box;font-size:13px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;
+    transition:width 1.15s cubic-bezier(.2,.7,.2,1),opacity .6s ease;}
   .hg-b+.hg-b{margin-top:6px;}
   .hg-b.sfm{background:var(--sfm);} .hg-b.comp{background:var(--comp);color:#333;}
-  @keyframes hgIn{from{transform:scaleX(.02);opacity:0;}to{transform:scaleX(1);opacity:1;}}
+  .herograph:not(.in) .hg-b{width:0 !important;opacity:0;}
+  .herograph.in .hg-b{opacity:1;}
+  .herograph.in .hg-b.comp{transition-delay:.28s;}
   /* ---------- quiz result: alternates ---------- */
   .alts{margin-top:34px;} .alts .altsub{color:var(--muted);font-size:14px;margin:-6px 0 16px;}
   .altgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
@@ -1483,7 +1485,8 @@ showView('home');
  },6800);
  let montage=null,done=false;
  function dismiss(){ if(done)return; done=true; clearInterval(montage); clearTimeout(startMontage); clearTimeout(timer);
-   sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800); }
+   sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800);
+   const hg=document.querySelector('.herograph'); if(hg) setTimeout(()=>hg.classList.add('in'),350); }
  const timer=setTimeout(dismiss,13500);
  document.getElementById('senterb').onclick=(e)=>{e.stopPropagation();dismiss();};
  sp.addEventListener('click',e=>{ if(e.target.closest('.senter'))return; dismiss(); });
