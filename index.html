@@ -396,16 +396,84 @@
   .mgfilm img{width:100%;height:100%;object-fit:contain;background:#fff;}
   .mgstage.grey .mgfilm img,.mgfilm img{background:#f4f4f2;}
   @media(max-width:560px){.mcard .mphoto{height:140px;}.mgfilm button{width:54px;height:42px;}.mgarrow{width:40px;height:40px;}}
+  /* ---------- home 3-path chooser ---------- */
+  .paths{padding:8px 0 70px;}
+  .paths .plead{text-align:center;color:var(--muted);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;}
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .pcard{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;text-decoration:none;color:#fff;min-height:340px;
+    display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.08);
+    transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s;background:#0e0f12;}
+  .pcard:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.18);text-decoration:none;}
+  .pcard .pimg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s cubic-bezier(.2,.7,.2,1);}
+  .pcard:hover .pimg{transform:scale(1.07);}
+  .pcard .pov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.05) 30%,rgba(8,9,12,.82) 100%);}
+  .pcard.feat .pov{background:linear-gradient(180deg,rgba(42,120,214,.15) 20%,rgba(11,30,60,.9) 100%);}
+  .pcard .pbody{position:relative;z-index:1;padding:26px 24px 24px;}
+  .pcard .pnum{position:absolute;top:18px;left:20px;z-index:1;font-size:13px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.7);}
+  .pcard .ptag{position:absolute;top:16px;right:16px;z-index:1;background:var(--accent);color:#fff;font-size:11px;font-weight:800;padding:5px 11px;border-radius:14px;letter-spacing:.5px;text-transform:uppercase;}
+  .pcard .pt{font-size:24px;font-weight:850;letter-spacing:-.5px;line-height:1.05;}
+  .pcard .ps{font-size:14px;color:rgba(255,255,255,.88);margin-top:8px;line-height:1.45;max-width:34ch;}
+  .pcard .pgo{margin-top:16px;display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:14px;
+    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:9px 16px;border-radius:24px;backdrop-filter:blur(6px);transition:.2s;}
+  .pcard:hover .pgo{background:#fff;color:#0b0b0b;border-color:#fff;}
+  .pcard.feat .pgo{background:var(--sfm);border-color:var(--sfm);} .pcard.feat:hover .pgo{background:#fff;color:var(--sfm);}
+  @media(max-width:820px){.pgrid{grid-template-columns:1fr;gap:16px;}.pcard{min-height:230px;}}
+  /* matched-model image in quiz result */
+  .matchcard .mimg{position:relative;height:150px;border-radius:12px;overflow:hidden;margin:0 0 14px;cursor:pointer;
+    background:radial-gradient(ellipse at 50% 45%,#ffffff,#eceae6 80%);}
+  .matchcard .mimg.grey{background:radial-gradient(ellipse at 50% 45%,#cfcfcf,#8f8f8f 90%);}
+  .matchcard .mimg.dark{background:radial-gradient(ellipse at 50% 42%,#20242c,#08090c 82%);}
+  .matchcard .mimg img{width:100%;height:100%;object-fit:contain;padding:6px 10px;transition:transform .5s;}
+  .matchcard .mimg:hover img{transform:scale(1.06);}
+  .matchcard .mimg .vtag{position:absolute;bottom:8px;right:8px;background:rgba(11,11,11,.72);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:16px;opacity:0;transition:.25s;}
+  .matchcard .mimg:hover .vtag{opacity:1;}
+  /* keep the menu reachable on mobile */
+  @media(max-width:820px){nav .navlinks{display:flex !important;gap:11px;margin-left:0;order:3;width:100%;justify-content:center;padding-top:6px;}
+    nav .wrap{flex-wrap:wrap;} nav .navlinks a{font-size:13px;}}
+  /* ---------- intro teaser splash ---------- */
+  #splash{position:fixed;inset:0;z-index:200;background:#05060a;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .7s ease;}
+  #splash.gone{opacity:0;pointer-events:none;}
+  #splash .sbg{position:absolute;inset:0;background:url('assets/dream7/d7-2.jpg') center/cover no-repeat;opacity:0;transform:scale(1.14);animation:sbg 4.6s ease forwards;}
+  @keyframes sbg{0%{opacity:0;transform:scale(1.14);}22%{opacity:.6;}100%{opacity:.42;transform:scale(1.01);}}
+  #splash .sov{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 44%,rgba(5,6,10,.18),rgba(5,6,10,.92));}
+  #splash .sin{position:relative;z-index:1;text-align:center;color:#fff;padding:24px;max-width:860px;}
+  #splash .seyebrow{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#7fb0ee;font-weight:800;margin-bottom:14px;opacity:0;transform:translateY(8px);}
+  .sline{font-size:clamp(32px,7vw,68px);font-weight:850;letter-spacing:-2px;line-height:.98;opacity:0;transform:translateY(16px);}
+  .sline.b{background:linear-gradient(180deg,#fff,#8fb8f0);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  #splash .sq{margin-top:20px;font-size:clamp(15px,2.5vw,21px);color:#cdd6e2;font-weight:600;opacity:0;transform:translateY(10px);max-width:30ch;margin-left:auto;margin-right:auto;}
+  .sshow{opacity:1 !important;transform:none !important;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1);}
+  #splash .senter{margin-top:26px;opacity:0;}
+  #splash .senter button{background:#2a78d6;color:#fff;border:none;padding:12px 26px;border-radius:26px;font-size:15px;font-weight:800;cursor:pointer;transition:.2s;}
+  #splash .senter button:hover{background:#1c5cab;transform:scale(1.04);}
+  #splash .skip{position:absolute;bottom:24px;right:26px;z-index:2;color:#cfd6de;font-size:13px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:22px;cursor:pointer;}
+  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 4.6s linear forwards;}
+  @keyframes sbar{to{width:100%;}}
 </style>
 </head>
 <body>
 <div id="tip"></div>
+
+<!-- INTRO TEASER -->
+<div id="splash">
+  <div class="sbg"></div><div class="sov"></div>
+  <div class="sin">
+    <div class="seyebrow" id="seyebrow">SFM · Dream 7</div>
+    <div class="sline" id="sl1"></div>
+    <div class="sline" id="sl2"></div>
+    <div class="sline b" id="sl3"></div>
+    <div class="sq" id="slq"></div>
+    <div class="senter" id="senter"><button id="senterb"></button></div>
+  </div>
+  <button class="skip" id="sskip"></button>
+  <div class="sbar"></div>
+</div>
 
 <nav>
   <div class="wrap">
     <div class="brand">E-Mobility <span>2027</span></div>
     <div class="navlinks">
       <a href="#" id="navHome" class="vlink on" data-k="nav.home">Home</a>
+      <a href="#" id="navLineup" class="vlink" data-k="nav.lineup">Lineup</a>
       <a href="#" id="navDream" class="vlink" data-k="nav.dream">Dream 7</a>
       <a href="#" id="navAnalysis" class="vlink" data-k="nav.analysis">Analysis</a>
     </div>
@@ -426,6 +494,42 @@
     <div class="ameta" data-k="a.meta">200 early spots · closing 1 October · Germany · Austria · Switzerland</div>
   </div>
 </header>
+
+<!-- THREE PATHS -->
+<section class="paths" data-view="home">
+  <div class="wrap">
+    <div class="plead" data-k="p.lead">Three ways in — pick yours</div>
+    <div class="pgrid">
+      <a class="pcard feat" onclick="openQuiz()">
+        <div class="pimg" style="background-image:url('assets/models/future5/f-1.jpg')"></div><div class="pov"></div>
+        <div class="pnum">01</div><div class="ptag" data-k="p.quiz.tag">200 spots only</div>
+        <div class="pbody">
+          <div class="pt" data-k="p.quiz.t">Do you qualify for pre-order?</div>
+          <div class="ps" data-k="p.quiz.s">A 60-second check matches you to the right model and unlocks early-access pricing. Limited number available.</div>
+          <span class="pgo" data-k="p.quiz.g">Check eligibility →</span>
+        </div>
+      </a>
+      <a class="pcard" onclick="showView('lineup')">
+        <div class="pimg" style="background-image:url('assets/dream7/d7-5.jpg')"></div><div class="pov"></div>
+        <div class="pnum">02</div>
+        <div class="pbody">
+          <div class="pt" data-k="p.line.t">See the new lineup</div>
+          <div class="ps" data-k="p.line.s">Led by the Dream 7 flagship — a nine-model range down to a €1,699 city Mofa. Spin each one 360° and zoom in.</div>
+          <span class="pgo" data-k="p.line.g">Explore the range →</span>
+        </div>
+      </a>
+      <a class="pcard" onclick="showView('analysis')">
+        <div class="pimg" style="background-image:url('assets/models/future3/f-1.jpg')"></div><div class="pov"></div>
+        <div class="pnum">03</div>
+        <div class="pbody">
+          <div class="pt" data-k="p.ana.t">Competitor analysis</div>
+          <div class="ps" data-k="p.ana.s">How every SFM model beats the competition on price and spec — the full DACH competitive brief.</div>
+          <span class="pgo" data-k="p.ana.g">Open the brief →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
 <main class="wrap">
 
@@ -470,6 +574,7 @@
     <h3 id="rct" style="font-size:24px"></h3>
     <div class="matchrow">
       <div class="matchcard">
+        <div class="mimg" id="rmimg"><img id="rmimgi" src="" alt=""><span class="vtag" data-k="m.view">360° · Zoom</span></div>
         <div class="ml" data-k="r.match">Your best match</div>
         <div class="mn" id="rmname"></div>
         <div class="mc" id="rmclass"></div>
@@ -608,16 +713,14 @@
   <p data-k="d.p">Everything below is the detailed evidence base — the whole lineup, benchmarks against every rival by class, the DACH sales strategy, and the pre-marketing plan.</p>
 </div>
 
-<main class="wrap" data-view="analysis">
-
-<section id="lineup">
+<section id="lineup" class="wrap" data-view="lineup">
   <div class="eyebrow" data-k="lineup.eyebrow">The Range</div>
   <h2 data-k="lineup.title">The SFM 2027 lineup</h2>
   <p class="lead" data-k="lineup.lead">Nine models: three 25&nbsp;km/h Mofas (incl. the torque-rich E2H), a sodium-ion technology first, a big-battery Mokick, a retro city scooter, two performance L3e machines, and the Dream&nbsp;7 flagship. Removable batteries across almost the whole range. Prices are manufacturer UVP incl. VAT.</p>
   <div class="grid-cards">
     <div class="mcard flag haspic"><div class="mphoto" style="background:radial-gradient(ellipse at 50% 45%,#20242c,#08090c 82%)" onclick="showView('dream7')"><img src="assets/dream7/d7-1.jpg" alt="SFM Dream 7"><span class="vtag">⟳ <span data-k="m.viewfull">Full showcase</span></span></div><div class="mname">Dream 7</div><div class="mclass" data-k="m.dream7.c">L3e flagship — 110 km/h · A1</div><div class="price">€5,999 <small>UVP</small></div><ul data-k="m.dream7.u"><li><span>Top speed</span><b>110 km/h</b></li><li><span>Battery</span><b>BYD LFP · 5.18 kWh</b></li><li><span>Range</span><b>up to 150 km</b></li><li><span>Charge</span><b>~2 h to 80%</b></li><li><span>Safety</span><b>ABS + TCS</b></li></ul><span class="badge sod" data-k="m.dream7.b">★ Range &amp; speed flagship</span></div>
     <div class="mcard sodium haspic"><div class="mphoto" onclick="openGallery('future5')"><img src="assets/models/future5/f-1.jpg" alt="SFM Future 5"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Future 5</div><div class="mclass" data-k="m.fut5.c">Mokick 45 km/h — sodium-ion</div><div class="price">€1,999 <small>UVP</small></div><ul data-k="m.fut5.u"><li><span>Battery</span><b>⚛ Sodium-ion · 1,260 Wh</b></li><li><span>Cycles</span><b>~1,200</b></li><li><span>Range</span><b>up to 45 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>45 km/h Mokick</b></li></ul><span class="badge sod" data-k="m.fut5.b">⚛ Sodium-ion first</span></div>
-    <div class="mcard sport"><div class="mname">E2H Sport</div><div class="mclass" data-k="m.e2h.c">L3e motorcycle — 80 km/h · A1</div><div class="price">€2,999 <small>UVP</small></div><ul data-k="m.e2h.u"><li><span>Motor</span><b>3,000 W / 5,000 W peak</b></li><li><span>Battery</span><b>2× 72V · 3,456 Wh</b></li><li><span>Range</span><b>up to 75 km</b></li><li><span>Removable batteries</span><b>Yes</b></li><li><span>Weight</span><b>~106 kg</b></li></ul><span class="badge new" data-k="m.e2h.b">Cheapest 80 km/h L3e in DACH</span></div>
+    <div class="mcard sport haspic"><div class="mphoto grey" onclick="openGallery('e2h')"><img src="assets/models/e2h/f-1.jpg" alt="SFM E2H Sport"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">E2H Sport</div><div class="mclass" data-k="m.e2h.c">L3e motorcycle — 80 km/h · A1</div><div class="price">€2,999 <small>UVP</small></div><ul data-k="m.e2h.u"><li><span>Motor</span><b>3,000 W / 5,000 W peak</b></li><li><span>Battery</span><b>2× 72V · 3,456 Wh</b></li><li><span>Range</span><b>up to 75 km</b></li><li><span>Removable batteries</span><b>Yes</b></li><li><span>Weight</span><b>~106 kg</b></li></ul><span class="badge new" data-k="m.e2h.b">Cheapest 80 km/h L3e in DACH</span></div>
     <div class="mcard sport haspic"><div class="mphoto" onclick="openGallery('primaesport')"><img src="assets/models/primaesport/f-1.jpg" alt="SFM Prima E Sport"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Prima E Sport</div><div class="mclass" data-k="m.pris.c">Fast scooter — 75 km/h · A1</div><div class="price">€2,999 <small>UVP</small></div><ul data-k="m.pris.u"><li><span>Motor</span><b>3,000 W / 3,800 W · 150 Nm</b></li><li><span>Battery</span><b>2× · 2,400 Wh Li-Ion</b></li><li><span>Range</span><b>up to 90 km</b></li><li><span>Brakes</span><b>CBS combined</b></li><li><span>Weight</span><b>~103 kg</b></li></ul><span class="badge new" data-k="m.pris.b">75 km/h at moped money</span></div>
     <div class="mcard haspic"><div class="mphoto" onclick="openGallery('future3')"><img src="assets/models/future3/f-1.jpg" alt="SFM Future 3"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Future 3</div><div class="mclass" data-k="m.fut3.c">Mokick 45 km/h — big battery</div><div class="price">€2,699 <small>UVP</small></div><ul data-k="m.fut3.u"><li><span>Motor</span><b>2,000 W</b></li><li><span>Battery</span><b>72V · 2,160 Wh</b></li><li><span>Range</span><b>strong for class</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>45 km/h Mokick</b></li></ul><span class="badge new" data-k="m.fut3.b">Big battery for less</span></div>
     <div class="mcard haspic"><div class="mphoto" onclick="openGallery('primae')"><img src="assets/models/primae/f-1.jpg" alt="SFM Prima E"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Prima E</div><div class="mclass" data-k="m.pri.c">Retro · 25 or 45 km/h</div><div class="price">€1,999 <small>UVP</small></div><ul data-k="m.pri.u"><li><span>Motor</span><b>1,000 W · 14″ wheels</b></li><li><span>Battery</span><b>48V · 960 Wh Li-Ion</b></li><li><span>Range</span><b>up to 65 km (25)</b></li><li><span>Removable battery</span><b>Yes · 7 kg</b></li><li><span>Weight</span><b>~51 kg</b></li></ul><span class="badge new" data-k="m.pri.b">Retro / lifestyle</span></div>
@@ -626,6 +729,8 @@
     <div class="mcard haspic"><div class="mphoto" onclick="openGallery('em1')"><img src="assets/models/em1/f-1.jpg" alt="SFM EM1"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">EM1</div><div class="mclass" data-k="m.em1.c">Mofa 25 km/h — from age 15</div><div class="price">€1,699 <small>UVP</small></div><ul data-k="m.em1.u"><li><span>Motor</span><b>500 W · 80 Nm</b></li><li><span>Battery</span><b>60V · 1,440 Wh Li-Ion</b></li><li><span>Range</span><b>up to 80 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>25 km/h Mofa</b></li></ul><span class="badge new" data-k="m.em1.b">Class price floor</span></div>
   </div>
 </section>
+
+<main class="wrap" data-view="analysis">
 
 <section id="position">
   <div class="eyebrow" data-k="pos.eyebrow">Where SFM lands</div>
@@ -734,8 +839,12 @@ const ENPH={}; document.querySelectorAll('[data-kph]').forEach(e=>{ENPH[e.datase
 
 // ---------- German dictionary ----------
 const DE={
-'nav.home':'Start','nav.analysis':'Analyse','nav.dream':'Dream 7',
+'nav.home':'Start','nav.lineup':'Modelle','nav.analysis':'Analyse','nav.dream':'Dream 7',
 'mg.zoom':'Zoom','m.view':'360° · Zoom','m.viewfull':'Zur Showcase',
+'p.lead':'Drei Wege hinein — wähle deinen',
+'p.line.t':'Die neue Modellpalette','p.line.s':'Angeführt vom Dream-7-Flaggschiff — neun Modelle, bis hinunter zum 1.699-€-City-Mofa. Jedes in 360° drehen und heranzoomen.','p.line.g':'Palette entdecken →',
+'p.quiz.tag':'Nur 200 Plätze','p.quiz.t':'Qualifizierst du dich für die Vorbestellung?','p.quiz.s':'Ein 60-Sekunden-Check findet dein passendes Modell und schaltet den Early-Access-Preis frei. Limitierte Stückzahl.','p.quiz.g':'Eignung prüfen →',
+'p.ana.t':'Wettbewerbsanalyse','p.ana.s':'Wie jedes SFM-Modell den Wettbewerb bei Preis und Technik schlägt — der komplette DACH-Wettbewerbsbrief.','p.ana.g':'Brief öffnen →',
 'd7.ey':'Das Flaggschiff','d7.sub':'Das autobahntaugliche Aushängeschild der Palette. Ziehen zum Umrunden, ein Blickwinkel antippen, auf das Fahrzeug klicken für Detail-Zoom.','d7.uvp':'UVP inkl. MwSt.','d7.zoom':'⤢ <span>Zum Zoomen klicken</span>','d7.auto':'Auto-Rotation','d7.s1':'km/h Spitze','d7.s2':'km Reichweite','d7.s4':'auf 80%','d7.cta1':'Eignung prüfen →','d7.cta2':'So schneidet sie ab','d7.lbhint':'Scrollen oder pinchen zum Zoomen · ziehen zum Verschieben · Esc schließt',
 'a.k':'E-Mobility 2027',
 'r.u1':'bis dein Vorzugspreis fixiert ist','r.u2':'Plätze · nur qualifizierte Bewerber',
@@ -1017,6 +1126,12 @@ function showResult(){
  document.getElementById('rmclass').textContent=m.cls[lang];
  document.getElementById('rmprice').textContent='€'+m.price.toLocaleString(lang==='de'?'de-DE':'en-US');
  document.getElementById('rmspecs').innerHTML=m.specs[lang].map(s=>'<li><span>'+s[0]+'</span><b>'+s[1]+'</b></li>').join('');
+ // matched model image
+ const MM={'SFM EM1':['em1','g'],'SFM E2H':['e2h','g'],'SFM E2H Plus':['e2h','g'],'SFM Future 5':['future5','g'],'SFM Future 3':['future3','g'],'SFM Prima E':['primae','g'],'SFM Prima E Sport':['primaesport','g'],'SFM E2H Sport':['e2h','g'],'SFM Dream 7':['dream7','d']};
+ const mm=MM[m.name]; const rmb=document.getElementById('rmimg');
+ if(mm){ const isD=mm[1]==='d'; document.getElementById('rmimgi').src=isD?'assets/dream7/d7-1.jpg':('assets/models/'+mm[0]+'/f-1.jpg');
+  rmb.className='mimg'+(mm[0]==='e2h'?' grey':'')+(isD?' dark':''); rmb.onclick=()=>{ isD?showView('dream7'):openGallery(mm[0]); }; rmb.style.display=''; }
+ else rmb.style.display='none';
  // price chart
  document.getElementById('rctp').textContent=(lang==='de'?'Preisvergleich in deiner Klasse':'Price comparison in your class');
  const items=[{name:m.name,price:m.price,sfm:1,s:m.sp,r:m.rg}].concat(m.rivals.map(r=>({name:r.name,price:r.price,s:r.s,r:r.r})));
@@ -1139,24 +1254,27 @@ function openGallery(k){
   const im=document.createElement('img');im.src=s.img;im.alt=m.title+' '+(i+1);im.dataset.i=i;if(i===0)im.className='on';
   mgStage.insertBefore(im,mgStage.firstChild);
   const b=document.createElement('button');b.dataset.i=i;if(i===0)b.className='on';
-  const t=document.createElement('img');t.src=s.th;t.loading='lazy';b.appendChild(t);b.onclick=()=>mgGo(i);mgFilm.appendChild(b);
+  const t=document.createElement('img');t.src=s.th;t.loading='lazy';b.appendChild(t);b.onclick=()=>{mgAutoStop();mgGo(i);};mgFilm.appendChild(b);
  });
- mgEl.classList.add('on'); document.body.style.overflow='hidden';
+ mgEl.classList.add('on'); document.body.style.overflow='hidden'; mgAutoStart();
 }
+let mgTimer=null;
+function mgAutoStart(){ mgAutoStop(); if(mgN>1) mgTimer=setInterval(()=>mgGo(mgI+1),2400); }
+function mgAutoStop(){ if(mgTimer){clearInterval(mgTimer);mgTimer=null;} }
 function mgGo(i){ mgI=(i+mgN)%mgN;
  mgStage.querySelectorAll('img').forEach(im=>im.classList.toggle('on',+im.dataset.i===mgI));
  mgFilm.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.i===mgI));
 }
 function mgNext(){mgGo(mgI+1);} function mgPrev(){mgGo(mgI-1);}
-function mgClose(){ mgEl.classList.remove('on'); if(!d7lb.classList.contains('on')) document.body.style.overflow=''; }
-document.getElementById('mgnext').onclick=mgNext;
-document.getElementById('mgprev').onclick=mgPrev;
+function mgClose(){ mgAutoStop(); mgEl.classList.remove('on'); if(!d7lb.classList.contains('on')) document.body.style.overflow=''; }
+document.getElementById('mgnext').onclick=()=>{mgAutoStop();mgNext();};
+document.getElementById('mgprev').onclick=()=>{mgAutoStop();mgPrev();};
 document.getElementById('mgclose').onclick=mgClose;
-document.getElementById('mgzoom').onclick=()=>lbOpenSrc('assets/models/'+mgKey+'/f-'+(mgI+1)+'.jpg');
-mgStage.addEventListener('click',e=>{ if(e.target.closest('.mgarrow')||e.target.closest('.mgzoom'))return; lbOpenSrc('assets/models/'+mgKey+'/f-'+(mgI+1)+'.jpg'); });
+document.getElementById('mgzoom').onclick=()=>{mgAutoStop();lbOpenSrc('assets/models/'+mgKey+'/f-'+(mgI+1)+'.jpg');};
+mgStage.addEventListener('click',e=>{ if(e.target.closest('.mgarrow')||e.target.closest('.mgzoom'))return; mgAutoStop(); lbOpenSrc('assets/models/'+mgKey+'/f-'+(mgI+1)+'.jpg'); });
 // drag to rotate in modal
 let mgdx=0,mgdown=false;
-mgStage.addEventListener('pointerdown',e=>{mgdown=true;mgdx=e.clientX;});
+mgStage.addEventListener('pointerdown',e=>{mgAutoStop();mgdown=true;mgdx=e.clientX;});
 window.addEventListener('pointermove',e=>{ if(!mgdown)return; const dx=e.clientX-mgdx; if(Math.abs(dx)>48){ dx<0?mgNext():mgPrev(); mgdx=e.clientX; } });
 window.addEventListener('pointerup',()=>{mgdown=false;});
 mgEl.addEventListener('keydown',e=>{ if(e.key==='ArrowRight')mgNext(); if(e.key==='ArrowLeft')mgPrev(); });
@@ -1237,24 +1355,52 @@ function showView(v){
  document.querySelectorAll('[data-view]').forEach(el=>{ el.style.display = (el.dataset.view===v)?'':'none'; });
  document.getElementById('result').style.display = (v==='home'&&resultShown)?'block':'none';
  document.getElementById('navHome').classList.toggle('on',v==='home');
+ document.getElementById('navLineup').classList.toggle('on',v==='lineup');
  document.getElementById('navAnalysis').classList.toggle('on',v==='analysis');
  document.getElementById('navDream').classList.toggle('on',v==='dream7');
  if(v!=='dream7' && typeof d7stop==='function') d7stop();
  window.scrollTo(0,0);
 }
+function openQuiz(){ showView('home'); document.getElementById('quiz').classList.add('revealed'); document.body.style.overflow='hidden'; }
 document.getElementById('navHome').onclick=(e)=>{e.preventDefault();showView('home');};
+document.getElementById('navLineup').onclick=(e)=>{e.preventDefault();showView('lineup');};
 document.getElementById('navAnalysis').onclick=(e)=>{e.preventDefault();showView('analysis');};
 document.getElementById('navDream').onclick=(e)=>{e.preventDefault();showView('dream7');};
 document.getElementById('toAnalysis').onclick=()=>showView('analysis');
 document.getElementById('d7toAnalysis').onclick=()=>showView('analysis');
-document.getElementById('d7toQuiz').onclick=()=>{ showView('home'); document.getElementById('quiz').classList.add('revealed'); document.body.style.overflow='hidden'; };
-document.getElementById('heroCta').onclick=()=>{ document.getElementById('quiz').classList.add('revealed'); document.body.style.overflow='hidden'; };
+document.getElementById('d7toQuiz').onclick=openQuiz;
+document.getElementById('heroCta').onclick=openQuiz;
 document.getElementById('qclose').onclick=()=>{ document.getElementById('quiz').classList.remove('revealed'); document.body.style.overflow=''; };
 const tbn=document.getElementById('themeBtn');
 tbn.onclick=()=>{const d=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',d?'light':'dark');tbn.textContent=d?'Dark':(curLang==='de'?'Hell':'Light');};
 // initial language: quick browser hint, then refine by IP country (DE/AT/CH → German)
 applyLang((navigator.language||'').toLowerCase().startsWith('de')?'de':'en');
 showView('home');
+
+// ---------- intro teaser splash ----------
+(function(){
+ const sp=document.getElementById('splash'); if(!sp)return;
+ const de=curLang==='de';
+ const T=de
+  ? {ey:'SFM · Dream 7',l1:'Stell dir 110 km/h vor.',l2:'150 km mit einer Ladung.',l3:'Für 5.999 €.',q:'Ein echtes autobahntaugliches Flaggschiff zu dem Preis. Zu schön, um wahr zu sein?',enter:'Herausfinden →',skip:'Überspringen →'}
+  : {ey:'SFM · Dream 7',l1:'Imagine 110 km/h.',l2:'150 km on a single charge.',l3:'For €5,999.',q:'A real motorway-legal flagship at that price. Too good to be true?',enter:'See for yourself →',skip:'Skip →'};
+ document.getElementById('seyebrow').textContent=T.ey;
+ document.getElementById('sl1').textContent=T.l1;
+ document.getElementById('sl2').textContent=T.l2;
+ document.getElementById('sl3').textContent=T.l3;
+ document.getElementById('slq').textContent=T.q;
+ document.getElementById('senterb').textContent=T.enter;
+ document.getElementById('sskip').textContent=T.skip;
+ document.body.style.overflow='hidden';
+ const show=(id,d)=>setTimeout(()=>document.getElementById(id).classList.add('sshow'),d);
+ show('seyebrow',150); show('sl1',450); show('sl2',1050); show('sl3',1650); show('slq',2400); show('senter',3000);
+ let done=false;
+ function dismiss(){ if(done)return; done=true; sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800); }
+ const timer=setTimeout(dismiss,4600);
+ document.getElementById('senterb').onclick=()=>{clearTimeout(timer);dismiss();};
+ document.getElementById('sskip').onclick=()=>{clearTimeout(timer);dismiss();};
+ sp.addEventListener('click',e=>{ if(e.target.closest('.senter'))return; clearTimeout(timer); dismiss(); });
+})();
 (async()=>{
  try{
    const r=await fetch('https://ipwho.is/?fields=country_code,success');
