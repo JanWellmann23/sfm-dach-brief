@@ -449,7 +449,7 @@
   #splash .senter button{background:#2a78d6;color:#fff;border:none;padding:12px 26px;border-radius:26px;font-size:15px;font-weight:800;cursor:pointer;transition:.2s;}
   #splash .senter button:hover{background:#1c5cab;transform:scale(1.04);}
   #splash .skip{position:absolute;bottom:24px;right:26px;z-index:2;color:#cfd6de;font-size:13px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:22px;cursor:pointer;}
-  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 13.5s linear forwards;}
+  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 12.2s linear forwards;}
   @keyframes sbar{to{width:100%;}}
   /* ---------- hero comparison graph ---------- */
   .herograph{max-width:540px;margin:24px auto 34px;display:grid;gap:16px;text-align:left;}
@@ -1478,16 +1478,16 @@ showView('home');
  document.body.style.overflow='hidden';
  const show=(id,d)=>setTimeout(()=>{const e=document.getElementById(id);if(e)e.classList.add('sshow');},d);
  // Phase 1 — the text hook reveals first
- show('sl1',900); show('sl2',2400); show('sl3',3900); show('slq',5400); show('senter',2200);
+ show('sl1',800); show('sl2',2150); show('sl3',3500); show('slq',4850); show('senter',2000);
  // Phase 2 — after the text lands, flash through the shots to hold attention
  const startMontage=setTimeout(()=>{ sp.classList.add('montage');
    montage=setInterval(()=>{ ci=(ci+1)%imgs.length; imgs.forEach((im,k)=>im.classList.toggle("on",k===ci)); },820);
- },6800);
+ },6100);
  let montage=null,done=false;
  function dismiss(){ if(done)return; done=true; clearInterval(montage); clearTimeout(startMontage); clearTimeout(timer);
    sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800);
    const hg=document.querySelector('.herograph'); if(hg) setTimeout(()=>hg.classList.add('in'),350); }
- const timer=setTimeout(dismiss,13500);
+ const timer=setTimeout(dismiss,12200);
  document.getElementById('senterb').onclick=(e)=>{e.stopPropagation();dismiss();};
  sp.addEventListener('click',e=>{ if(e.target.closest('.senter'))return; dismiss(); });
 })();
