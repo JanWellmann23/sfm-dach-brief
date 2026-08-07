@@ -449,8 +449,33 @@
   #splash .senter button{background:#2a78d6;color:#fff;border:none;padding:12px 26px;border-radius:26px;font-size:15px;font-weight:800;cursor:pointer;transition:.2s;}
   #splash .senter button:hover{background:#1c5cab;transform:scale(1.04);}
   #splash .skip{position:absolute;bottom:24px;right:26px;z-index:2;color:#cfd6de;font-size:13px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:9px 16px;border-radius:22px;cursor:pointer;}
-  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 11s linear forwards;}
+  #splash .sbar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#2a78d6,#eb6834);width:0;animation:sbar 13.5s linear forwards;}
   @keyframes sbar{to{width:100%;}}
+  /* ---------- hero comparison graph ---------- */
+  .herograph{max-width:540px;margin:24px auto 0;display:grid;gap:16px;text-align:left;}
+  .hg-cap{display:flex;justify-content:space-between;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:7px;}
+  .hg-b{height:30px;border-radius:7px;display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;
+    transform-origin:left;animation:hgIn .9s cubic-bezier(.2,.7,.2,1) both;}
+  .hg-b+.hg-b{margin-top:6px;}
+  .hg-b.sfm{background:var(--sfm);} .hg-b.comp{background:var(--comp);color:#333;}
+  @keyframes hgIn{from{transform:scaleX(.02);opacity:0;}to{transform:scaleX(1);opacity:1;}}
+  /* ---------- quiz result: alternates ---------- */
+  .alts{margin-top:34px;} .alts .altsub{color:var(--muted);font-size:14px;margin:-6px 0 16px;}
+  .altgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .altcard{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--card);cursor:pointer;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;}
+  .altcard:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.12);}
+  .altcard .aimg{height:130px;position:relative;background:radial-gradient(ellipse at 50% 45%,#fff,#eceae6 80%);}
+  .altcard .aimg.grey{background:radial-gradient(ellipse at 50% 45%,#cfcfcf,#8f8f8f 90%);}
+  .altcard .aimg.dark{background:radial-gradient(ellipse at 50% 42%,#20242c,#08090c 82%);}
+  .altcard .aimg img{width:100%;height:100%;object-fit:contain;padding:6px 10px;transition:transform .4s;}
+  .altcard:hover .aimg img{transform:scale(1.06);}
+  .altcard .aimg .vtag{position:absolute;bottom:7px;right:7px;background:rgba(11,11,11,.72);color:#fff;font-size:10px;font-weight:800;padding:4px 9px;border-radius:14px;opacity:0;transition:.2s;}
+  .altcard:hover .aimg .vtag{opacity:1;}
+  .altcard .abody{padding:13px 15px 16px;}
+  .altcard .an{font-weight:800;font-size:16px;}
+  .altcard .ap{font-weight:800;font-size:15px;color:var(--sfm);margin:2px 0 6px;}
+  .altcard .awhy{font-size:12.5px;color:var(--ink-2);line-height:1.4;}
+  @media(max-width:720px){.altgrid{grid-template-columns:1fr;}.altcard{flex-direction:row;}.altcard .aimg{width:130px;flex:0 0 130px;height:auto;}.altcard .abody{flex:1;}}
 </style>
 </head>
 <body>
@@ -472,7 +497,7 @@
 
 <nav>
   <div class="wrap">
-    <div class="brand">E-Mobility <span>2027</span></div>
+    <div class="brand">SFM E-Mobility <span>2027</span></div>
     <div class="navlinks">
       <a href="#" id="navHome" class="vlink on" data-k="nav.home">Home</a>
       <a href="#" id="navLineup" class="vlink" data-k="nav.lineup">Lineup</a>
@@ -489,9 +514,17 @@
 <!-- APPLE HERO (HOME) -->
 <header class="apple" data-view="home">
   <div class="wrap">
-    <div class="ak" data-k="a.k">E-Mobility 2027</div>
+    <div class="ak" data-k="a.k">SFM E-Mobility 2027</div>
     <h1 class="ah" data-k="a.h">Are you ready for the<br><span class="grad">future of transport?</span></h1>
-    <p class="asub" data-k="a.sub">Led by the Dream&nbsp;7 flagship: a real <b>110&nbsp;km/h</b>, up to <b>150&nbsp;km</b> of range — the longest in its class — a <b>BYD LFP</b> battery and <b>~2&nbsp;h</b> fast charge. <b>€5,999</b>, thousands below the premium names.</p>
+    <p class="asub" data-k="a.sub"><b>110&nbsp;km/h. 150&nbsp;km of range. €5,999.</b> More performance, thousands less than the premium names.</p>
+    <div class="herograph">
+      <div class="hg-row"><div class="hg-cap"><span data-k="hg.range">Range · more is better</span><span class="hg-unit">km</span></div>
+        <div class="hg-b sfm" style="width:100%"><span data-k="hg.us">SFM flagship</span> · 150</div>
+        <div class="hg-b comp" style="width:89%"><span data-k="hg.them">Typical premium rival</span> · 133</div></div>
+      <div class="hg-row"><div class="hg-cap"><span data-k="hg.price">Price · less is better</span><span class="hg-unit">€</span></div>
+        <div class="hg-b sfm" style="width:68%"><span data-k="hg.us2">SFM flagship</span> · 5,999</div>
+        <div class="hg-b comp" style="width:100%"><span data-k="hg.them2">Typical premium rival</span> · 8,790</div></div>
+    </div>
     <button class="cta big" id="heroCta" data-k="a.cta">Check your eligibility →</button>
     <div class="ameta" data-k="a.meta">200 early spots · closing 1 October · Germany · Austria · Switzerland</div>
   </div>
@@ -592,9 +625,14 @@
     </div>
     <h3 class="strh" data-k="r.strh">Where it beats the competition</h3>
     <div class="strengths" id="rstrengths"></div>
+    <div class="alts" id="ralts">
+      <h3 class="strh" data-k="r.altsh">Other models you'd also qualify for</h3>
+      <p class="altsub" data-k="r.altsub">Your answers fit more than one — here are the next-best matches. Tap any to spin it around.</p>
+      <div class="altgrid" id="raltgrid"></div>
+    </div>
     <div class="analysiscta">
       <h3 data-k="r.actah">See the full 2027 line-up</h3>
-      <p data-k="r.actap">Six models, every one benchmarked against its class — the strongest competitive advantages first.</p>
+      <p data-k="r.actap">Nine models, every one benchmarked against its class — the strongest competitive advantages first.</p>
       <button class="cta" id="toAnalysis" data-k="r.actabtn">Explore the product line →</button>
     </div>
   </div>
@@ -849,14 +887,16 @@ const DE={
 'p.quiz.tag':'Nur 200 Plätze','p.quiz.t':'Qualifizierst du dich für die Vorbestellung?','p.quiz.s':'Ein 60-Sekunden-Check findet dein passendes Modell und schaltet den Early-Access-Preis frei. Limitierte Stückzahl.','p.quiz.g':'Eignung prüfen →',
 'p.ana.t':'Wettbewerbsanalyse','p.ana.s':'Wie jedes SFM-Modell den Wettbewerb bei Preis und Technik schlägt — der komplette DACH-Wettbewerbsbrief.','p.ana.g':'Brief öffnen →',
 'd7.ey':'Das Flaggschiff','d7.sub':'Das autobahntaugliche Aushängeschild der Palette. Ziehen zum Umrunden, ein Blickwinkel antippen, auf das Fahrzeug klicken für Detail-Zoom.','d7.uvp':'UVP inkl. MwSt.','d7.zoom':'⤢ <span>Zum Zoomen klicken</span>','d7.auto':'Auto-Rotation','d7.s1':'km/h Spitze','d7.s2':'km Reichweite','d7.s4':'auf 80%','d7.cta1':'Eignung prüfen →','d7.cta2':'So schneidet sie ab','d7.lbhint':'Scrollen oder pinchen zum Zoomen · ziehen zum Verschieben · Esc schließt',
-'a.k':'E-Mobility 2027',
+'a.k':'SFM E-Mobility 2027',
 'r.u1':'bis dein Vorzugspreis fixiert ist','r.u2':'Plätze · nur qualifizierte Bewerber',
 'r.slnote':'✓ Keine Zahlung, keine Verpflichtung — deine E-Mail sichert nur deinen Platz. Das Sichern fixiert deinen Early-Access-Preis.',
 'r.scroll':'↓ So schlägt sich dein Match gegen den Markt',
 'r.ceyebrow':'Der Beleg für deinen Preis','r.strh':'Wo es den Wettbewerb schlägt',
+'r.altsh':'Weitere Modelle, für die du auch qualifiziert bist','r.altsub':'Deine Antworten passen zu mehreren — hier die nächstbesten Treffer. Tippe eines an, um es zu drehen.',
 'r.actah':'Die komplette 2027-Palette ansehen','r.actap':'Sechs Modelle, jedes gegen seine Klasse gebenchmarkt — die stärksten Wettbewerbsvorteile zuerst.','r.actabtn':'Produktlinie entdecken →',
 'a.h':'Bist du bereit für die<br><span class="grad">Zukunft der Mobilität?</span>',
-'a.sub':'Angeführt vom Dream&nbsp;7-Flaggschiff: echte <b>110&nbsp;km/h</b>, bis zu <b>150&nbsp;km</b> Reichweite — die größte seiner Klasse —, ein <b>BYD-LFP</b>-Akku und <b>~2&nbsp;h</b> Schnellladung. <b>5.999&nbsp;€</b>, tausende Euro unter den Premium-Namen.',
+'a.sub':'<b>110&nbsp;km/h. 150&nbsp;km Reichweite. 5.999&nbsp;€.</b> Mehr Leistung, tausende Euro unter den Premium-Namen.',
+'hg.range':'Reichweite · mehr ist besser','hg.price':'Preis · weniger ist besser','hg.us':'SFM-Flaggschiff','hg.them':'Typischer Premium-Rivale','hg.us2':'SFM-Flaggschiff','hg.them2':'Typischer Premium-Rivale',
 'a.cta':'Eligibility prüfen →','a.meta':'200 Early-Plätze · endet 1. Oktober · Deutschland · Österreich · Schweiz',
 't.k':'Early Access · Frühjahr 2027 · DE · AT · CH',
 't.h':'Bist du bereit für die <span class="g">Zukunft</span><br>der Zweirad-Mobilität?',
@@ -946,7 +986,7 @@ const DEPH={'r.slph':'du@email.com'};
 const QUIZ={
  en:[
   {n:'Question 1 of 6',q:'Where will you be riding?',o:['🇩🇪 Germany','🇦🇹 Austria','🇨🇭 Switzerland','🌍 Elsewhere in Europe']},
-  {n:'Question 2 of 6',q:'How fast do you need to go?',o:['25 km/h — Mofa, from age 15','45 km/h — moped (AM licence)','Up to 80 km/h — A1 licence','Not sure yet']},
+  {n:'Question 2 of 6',q:'How fast do you need to go?',o:['25 km/h — Mofa, from age 15','45 km/h — moped (AM licence)','Up to 110 km/h — A1 licence','Not sure yet']},
   {n:'Question 3 of 6',q:'How far on a typical day?',o:['Under 30 km','30–60 km','60–90 km','90 km or more']},
   {n:'Question 4 of 6',q:'What would you like to spend?',o:['Under €2,000','€2,000–3,500','€3,500–5,000','Over €5,000']},
   {n:'Question 5 of 6',q:'What\'s it mainly for?',o:['City commuting','Leisure &amp; fun','Delivery or business','My first vehicle']},
@@ -954,7 +994,7 @@ const QUIZ={
  ],
  de:[
   {n:'Frage 1 von 6',q:'Wo wirst du fahren?',o:['🇩🇪 Deutschland','🇦🇹 Österreich','🇨🇭 Schweiz','🌍 Anderswo in Europa']},
-  {n:'Frage 2 von 6',q:'Wie schnell möchtest du fahren?',o:['25 km/h — Mofa, ab 15','45 km/h — Moped (AM-Führerschein)','Bis 80 km/h — A1-Führerschein','Noch unsicher']},
+  {n:'Frage 2 von 6',q:'Wie schnell möchtest du fahren?',o:['25 km/h — Mofa, ab 15','45 km/h — Moped (AM-Führerschein)','Bis 110 km/h — A1-Führerschein','Noch unsicher']},
   {n:'Frage 3 von 6',q:'Wie weit an einem typischen Tag?',o:['Unter 30 km','30–60 km','60–90 km','90 km oder mehr']},
   {n:'Frage 4 von 6',q:'Wie viel möchtest du ausgeben?',o:['Unter 2.000 €','2.000–3.500 €','3.500–5.000 €','Über 5.000 €']},
   {n:'Frage 5 von 6',q:'Wofür hauptsächlich?',o:['Stadtpendeln','Freizeit &amp; Spaß','Lieferung oder Gewerbe','Mein erstes Fahrzeug']},
@@ -1048,6 +1088,50 @@ function recommend(){
  }
  return MODELS[key];
 }
+// media key + one-line reason per model (for featured image and alternates)
+const MMEDIA={'SFM EM1':['em1','g'],'SFM E2H':['e2h','g'],'SFM E2H Plus':['e2h','g'],'SFM Future 5':['future5','g'],'SFM Future 3':['future3','g'],'SFM Prima E':['primae','g'],'SFM Prima E Sport':['primaesport','g'],'SFM E2H Sport':['e2h','g'],'SFM Dream 7':['dream7','d']};
+const ALT_TAG={
+ 'SFM EM1':{en:'The value pick — cheapest in the range, 80 km range',de:'Der Preis-Tipp — günstigstes Modell, 80 km Reichweite'},
+ 'SFM E2H':{en:'Torque-rich 25 km/h retro',de:'Drehmomentstarkes 25-km/h-Retro'},
+ 'SFM E2H Plus':{en:'Dual battery for longer 25 km/h range',de:'Doppelakku für mehr 25-km/h-Reichweite'},
+ 'SFM Future 5':{en:'Sodium-ion first — cold-tough, long-life',de:'Natrium-Ionen-Premiere — kältefest, langlebig'},
+ 'SFM Future 3':{en:'Big 2,160 Wh battery for the money',de:'Großer 2.160-Wh-Akku fürs Geld'},
+ 'SFM Prima E':{en:'Retro style, 7 kg carry-in battery',de:'Retro-Stil, 7-kg-Wechselakku'},
+ 'SFM Prima E Sport':{en:'75 km/h & 90 km at moped money',de:'75 km/h & 90 km zum Moped-Preis'},
+ 'SFM E2H Sport':{en:'Cheapest 80 km/h L3e in DACH',de:'Günstigster 80-km/h-L3e in DACH'},
+ 'SFM Dream 7':{en:'The 110 km/h, 150 km flagship',de:'Das 110-km/h-, 150-km-Flaggschiff'}};
+function rankModels(){
+ const [loc,spd,dist,bud,use]=answers;
+ const budCap=[2000,3500,5000,999999][bud==null?3:bud];
+ const wantTier=[25,45,110,0][spd==null?3:spd];
+ const distKm=[25,45,80,110][dist==null?1:dist];
+ const tierOf=v=> v<=25?25:(v<=45?45:110); const order=[25,45,110];
+ const scored=Object.entries(MODELS).map(([key,m])=>{
+  let s=0;
+  if(wantTier===0){ s+=1; }
+  else { const mt=tierOf(m.sp); if(mt===wantTier) s+=6; else if(Math.abs(order.indexOf(mt)-order.indexOf(wantTier))===1) s+=1.5; else s-=4; }
+  if(m.price<=budCap){ s+=4; if(m.price<=budCap*0.8) s+=1; } else { s-=(m.price-budCap)/900; }
+  const rg=m.rg||(m.sp>=75?80:(m.sp>=45?55:70)); if(rg>=distKm) s+=2; else s-=1.5;
+  if(use===0 && ['EM1','FUTURE5','PRIMA_E','E2H_STD'].includes(key)) s+=2;
+  if(use===1 && ['PRIMA_E','FUTURE5','FUTURE3','PRIMA_SPORT','DREAM7'].includes(key)) s+=2;
+  if(use===2 && ['PRIMA_SPORT','E2H','FUTURE3','DREAM7'].includes(key)) s+=2;
+  if(use===3 && ['EM1','PRIMA_E','FUTURE5'].includes(key)) s+=2;
+  return {key,m,s};
+ });
+ scored.sort((a,b)=>b.s-a.s); return scored;
+}
+function renderAlternates(list,lang){
+ const g=document.getElementById('raltgrid'); if(!g)return; g.innerHTML='';
+ list.forEach(({m})=>{
+  const mm=MMEDIA[m.name]; const isD=mm[1]==='d';
+  const img=isD?'assets/dream7/d7-1.jpg':('assets/models/'+mm[0]+'/f-1.jpg');
+  const el=document.createElement('div'); el.className='altcard';
+  el.innerHTML='<div class="aimg'+(mm[0]==='e2h'?' grey':'')+(isD?' dark':'')+'"><img src="'+img+'" alt="'+m.name+'" loading="lazy"><span class="vtag">⟳ '+(lang==='de'?'Ansehen':'View')+'</span></div>'+
+   '<div class="abody"><div class="an">'+m.name+'</div><div class="ap">€'+m.price.toLocaleString(lang==='de'?'de-DE':'en-US')+'</div><div class="awhy">'+((ALT_TAG[m.name]&&ALT_TAG[m.name][lang])||m.cls[lang])+'</div></div>';
+  el.onclick=()=>{ isD?showView('dream7'):openGallery(mm[0]); };
+  g.appendChild(el);
+ });
+}
 
 // ---------- stepper quiz (one window per flip) ----------
 let curLang='en';
@@ -1130,8 +1214,7 @@ function showResult(){
  document.getElementById('rmprice').textContent='€'+m.price.toLocaleString(lang==='de'?'de-DE':'en-US');
  document.getElementById('rmspecs').innerHTML=m.specs[lang].map(s=>'<li><span>'+s[0]+'</span><b>'+s[1]+'</b></li>').join('');
  // matched model image
- const MM={'SFM EM1':['em1','g'],'SFM E2H':['e2h','g'],'SFM E2H Plus':['e2h','g'],'SFM Future 5':['future5','g'],'SFM Future 3':['future3','g'],'SFM Prima E':['primae','g'],'SFM Prima E Sport':['primaesport','g'],'SFM E2H Sport':['e2h','g'],'SFM Dream 7':['dream7','d']};
- const mm=MM[m.name]; const rmb=document.getElementById('rmimg');
+ const mm=MMEDIA[m.name]; const rmb=document.getElementById('rmimg');
  if(mm){ const isD=mm[1]==='d'; document.getElementById('rmimgi').src=isD?'assets/dream7/d7-1.jpg':('assets/models/'+mm[0]+'/f-1.jpg');
   rmb.className='mimg'+(mm[0]==='e2h'?' grey':'')+(isD?' dark':''); rmb.onclick=()=>{ isD?showView('dream7'):openGallery(mm[0]); }; rmb.style.display=''; }
  else rmb.style.display='none';
@@ -1147,6 +1230,10 @@ function showResult(){
  // heading + strengths
  document.getElementById('rct').textContent=(lang==='de'?('So schlägt sich deine '+m.name):('How your '+m.name+' stacks up'));
  renderStrengths(m,lang);
+ // alternates — other models the answers also fit
+ const fkey=Object.keys(MODELS).find(k=>MODELS[k]===m);
+ const alts=rankModels().filter(x=>x.key!==fkey).slice(0,3);
+ renderAlternates(alts,lang);
  // reveal
  resultShown=true; startCountdown();
  document.getElementById('quiz').classList.remove('revealed'); document.body.style.overflow='';
@@ -1391,15 +1478,15 @@ showView('home');
  document.body.style.overflow='hidden';
  const show=(id,d)=>setTimeout(()=>{const e=document.getElementById(id);if(e)e.classList.add('sshow');},d);
  // Phase 1 — the text hook reveals first
- show('sl1',400); show('sl2',1300); show('sl3',2200); show('slq',3100); show('senter',1600);
+ show('sl1',900); show('sl2',2400); show('sl3',3900); show('slq',5400); show('senter',2200);
  // Phase 2 — after the text lands, flash through the shots to hold attention
  const startMontage=setTimeout(()=>{ sp.classList.add('montage');
    montage=setInterval(()=>{ ci=(ci+1)%imgs.length; imgs.forEach((im,k)=>im.classList.toggle("on",k===ci)); },820);
- },4000);
+ },6800);
  let montage=null,done=false;
  function dismiss(){ if(done)return; done=true; clearInterval(montage); clearTimeout(startMontage); clearTimeout(timer);
    sp.classList.add('gone'); document.body.style.overflow=''; setTimeout(()=>{ if(sp&&sp.parentNode) sp.parentNode.removeChild(sp); },800); }
- const timer=setTimeout(dismiss,11000);
+ const timer=setTimeout(dismiss,13500);
  document.getElementById('senterb').onclick=(e)=>{e.stopPropagation();dismiss();};
  sp.addEventListener('click',e=>{ if(e.target.closest('.senter'))return; dismiss(); });
 })();
