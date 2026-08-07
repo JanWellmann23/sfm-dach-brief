@@ -358,6 +358,44 @@
   .d7lbhint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:#aeb4bc;font-size:13px;font-weight:600;}
   @media(max-width:560px){.d7film{grid-template-columns:repeat(7,1fr);gap:5px;}.d7chip{min-width:84px;padding:10px 12px;}.d7chip b{font-size:18px;}
     .d7arrow{width:38px;height:38px;font-size:17px;}.d7top{gap:10px;}.d7price{text-align:left;}}
+  /* ---------- lineup card hero photo + model gallery modal ---------- */
+  .mcard .mphoto{position:relative;margin:-18px -18px 12px;height:170px;border-radius:0;overflow:hidden;cursor:pointer;
+    background:radial-gradient(ellipse at 50% 45%,#ffffff,#ecece9 80%);}
+  .mcard .mphoto.grey{background:radial-gradient(ellipse at 50% 45%,#cfcfcf,#8f8f8f 90%);}
+  .mcard .mphoto img{width:100%;height:100%;object-fit:contain;padding:6px 10px;transition:transform .5s cubic-bezier(.2,.7,.2,1);}
+  .mcard .mphoto:hover img{transform:scale(1.06);}
+  .mcard .mphoto .vtag{position:absolute;bottom:8px;right:8px;background:rgba(11,11,11,.72);color:#fff;font-size:11px;font-weight:700;
+    padding:5px 10px;border-radius:16px;letter-spacing:.4px;display:flex;gap:5px;align-items:center;opacity:0;transform:translateY(4px);transition:.25s;}
+  .mcard .mphoto:hover .vtag{opacity:1;transform:translateY(0);}
+  .mcard.haspic{padding-top:18px;} [data-theme="dark"] .mcard .mphoto{filter:none;}
+  /* modal */
+  .mg{position:fixed;inset:0;z-index:130;background:rgba(6,7,10,.94);display:none;flex-direction:column;}
+  .mg.on{display:flex;}
+  .mgbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#fff;gap:12px;flex-wrap:wrap;}
+  .mgtitle{font-weight:800;font-size:19px;} .mgtitle small{font-weight:600;color:#9aa2ad;margin-left:8px;font-size:13px;}
+  .mgclose{background:rgba(255,255,255,.1);border:none;color:#fff;width:42px;height:42px;border-radius:50%;font-size:26px;cursor:pointer;flex:0 0 auto;}
+  .mgstage{flex:1;position:relative;overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;}
+  .mgstage:active{cursor:grabbing;}
+  .mgstage.light{background:radial-gradient(ellipse at 50% 42%,#ffffff,#e9e9e6 78%);}
+  .mgstage.grey{background:radial-gradient(ellipse at 50% 42%,#cbcbcb,#727272 88%);}
+  .mgstage.dark{background:radial-gradient(ellipse at 50% 40%,#20242c,#08090c 75%);}
+  .mgstage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:3% 4% 6%;opacity:0;
+    transition:opacity .5s ease,transform .7s cubic-bezier(.2,.7,.2,1);transform:scale(1.02);pointer-events:none;}
+  .mgstage img.on{opacity:1;transform:scale(1);}
+  .mgarrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:48px;height:48px;border-radius:50%;
+    background:rgba(20,22,28,.5);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;backdrop-filter:blur(4px);}
+  .mgstage.light .mgarrow{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.15);color:#111;}
+  .mgarrow:hover{background:#2a78d6;color:#fff;border-color:#2a78d6;transform:translateY(-50%) scale(1.08);}
+  .mgarrow.l{left:12px;}.mgarrow.r{right:12px;}
+  .mgzoom{position:absolute;top:14px;right:14px;z-index:3;background:rgba(20,22,28,.5);border:1px solid rgba(255,255,255,.3);color:#fff;
+    padding:8px 13px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;display:flex;gap:6px;align-items:center;backdrop-filter:blur(4px);}
+  .mgstage.light .mgzoom{background:rgba(255,255,255,.75);border-color:rgba(0,0,0,.12);color:#111;}
+  .mgfilm{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 16px 18px;}
+  .mgfilm button{width:74px;height:56px;background:rgba(255,255,255,.06);border:2px solid transparent;border-radius:9px;overflow:hidden;cursor:pointer;padding:0;transition:.2s;}
+  .mgfilm button.on{border-color:#2a78d6;} .mgfilm button:hover{transform:translateY(-2px);}
+  .mgfilm img{width:100%;height:100%;object-fit:contain;background:#fff;}
+  .mgstage.grey .mgfilm img,.mgfilm img{background:#f4f4f2;}
+  @media(max-width:560px){.mcard .mphoto{height:140px;}.mgfilm button{width:54px;height:42px;}.mgarrow{width:40px;height:40px;}}
 </style>
 </head>
 <body>
@@ -504,6 +542,20 @@
   <div class="d7lbhint" data-k="d7.lbhint">Scroll or pinch to zoom · drag to pan · Esc to close</div>
 </div>
 
+<!-- model gallery modal -->
+<div class="mg" id="mg">
+  <div class="mgbar">
+    <div class="mgtitle" id="mgtitle"></div>
+    <button class="mgclose" id="mgclose" aria-label="Close">×</button>
+  </div>
+  <div class="mgstage light" id="mgstage">
+    <button class="mgarrow l" id="mgprev" aria-label="Previous">‹</button>
+    <button class="mgarrow r" id="mgnext" aria-label="Next">›</button>
+    <button class="mgzoom" id="mgzoom">⤢ <span data-k="mg.zoom">Zoom</span></button>
+  </div>
+  <div class="mgfilm" id="mgfilm"></div>
+</div>
+
 <!-- EDGE (THE DATA) -->
 <section id="edge" data-view="analysis">
   <div class="eyebrow" data-k="e.eyebrow">The data behind it</div>
@@ -563,15 +615,15 @@
   <h2 data-k="lineup.title">The SFM 2027 lineup</h2>
   <p class="lead" data-k="lineup.lead">Nine models: three 25&nbsp;km/h Mofas (incl. the torque-rich E2H), a sodium-ion technology first, a big-battery Mokick, a retro city scooter, two performance L3e machines, and the Dream&nbsp;7 flagship. Removable batteries across almost the whole range. Prices are manufacturer UVP incl. VAT.</p>
   <div class="grid-cards">
-    <div class="mcard"><div class="mname">EM1</div><div class="mclass" data-k="m.em1.c">Mofa 25 km/h — from age 15</div><div class="price">€1,699 <small>UVP</small></div><ul data-k="m.em1.u"><li><span>Motor</span><b>500 W · 80 Nm</b></li><li><span>Battery</span><b>60V · 1,440 Wh Li-Ion</b></li><li><span>Range</span><b>up to 80 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>25 km/h Mofa</b></li></ul><span class="badge new" data-k="m.em1.b">Class price floor</span></div>
-    <div class="mcard"><div class="mname">E2H</div><div class="mclass" data-k="m.e2hstd.c">Retro · 25 km/h · torque</div><div class="price">€2,199 <small>UVP</small></div><ul data-k="m.e2hstd.u"><li><span>Motor</span><b>3,000 W · 165 Nm</b></li><li><span>Battery</span><b>72V · 1,728 Wh</b></li><li><span>Top speed</span><b>25 km/h</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>25 km/h Mofa</b></li></ul><span class="badge new" data-k="m.e2hstd.b">Strongest torque in class</span></div>
-    <div class="mcard"><div class="mname">E2H Plus</div><div class="mclass" data-k="m.e2hplus.c">Retro · 25 km/h · dual battery</div><div class="price">€2,849 <small>UVP</small></div><ul data-k="m.e2hplus.u"><li><span>Motor</span><b>3,000 W · 165 Nm</b></li><li><span>Battery</span><b>2× 72V · 3,456 Wh</b></li><li><span>Top speed</span><b>25 km/h</b></li><li><span>Removable batteries</span><b>Yes</b></li><li><span>Class</span><b>25 km/h Mofa</b></li></ul><span class="badge new" data-k="m.e2hplus.b">Dual pack — long range</span></div>
-    <div class="mcard sodium"><div class="mname">Future 5</div><div class="mclass" data-k="m.fut5.c">Mokick 45 km/h — sodium-ion</div><div class="price">€1,999 <small>UVP</small></div><ul data-k="m.fut5.u"><li><span>Battery</span><b>⚛ Sodium-ion · 1,260 Wh</b></li><li><span>Cycles</span><b>~1,200</b></li><li><span>Range</span><b>up to 45 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>45 km/h Mokick</b></li></ul><span class="badge sod" data-k="m.fut5.b">⚛ Sodium-ion first</span></div>
-    <div class="mcard"><div class="mname">Future 3</div><div class="mclass" data-k="m.fut3.c">Mokick 45 km/h — big battery</div><div class="price">€2,699 <small>UVP</small></div><ul data-k="m.fut3.u"><li><span>Motor</span><b>2,000 W</b></li><li><span>Battery</span><b>72V · 2,160 Wh</b></li><li><span>Range</span><b>strong for class</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>45 km/h Mokick</b></li></ul><span class="badge new" data-k="m.fut3.b">Big battery for less</span></div>
-    <div class="mcard"><div class="mname">Prima E</div><div class="mclass" data-k="m.pri.c">Retro · 25 or 45 km/h</div><div class="price">€1,999 <small>UVP</small></div><ul data-k="m.pri.u"><li><span>Motor</span><b>1,000 W · 14″ wheels</b></li><li><span>Battery</span><b>48V · 960 Wh Li-Ion</b></li><li><span>Range</span><b>up to 65 km (25)</b></li><li><span>Removable battery</span><b>Yes · 7 kg</b></li><li><span>Weight</span><b>~51 kg</b></li></ul><span class="badge new" data-k="m.pri.b">Retro / lifestyle</span></div>
-    <div class="mcard sport"><div class="mname">Prima E Sport</div><div class="mclass" data-k="m.pris.c">Fast scooter — 75 km/h · A1</div><div class="price">€2,999 <small>UVP</small></div><ul data-k="m.pris.u"><li><span>Motor</span><b>3,000 W / 3,800 W · 150 Nm</b></li><li><span>Battery</span><b>2× · 2,400 Wh Li-Ion</b></li><li><span>Range</span><b>up to 90 km</b></li><li><span>Brakes</span><b>CBS combined</b></li><li><span>Weight</span><b>~103 kg</b></li></ul><span class="badge new" data-k="m.pris.b">75 km/h at moped money</span></div>
+    <div class="mcard flag haspic"><div class="mphoto" style="background:radial-gradient(ellipse at 50% 45%,#20242c,#08090c 82%)" onclick="showView('dream7')"><img src="assets/dream7/d7-1.jpg" alt="SFM Dream 7"><span class="vtag">⟳ <span data-k="m.viewfull">Full showcase</span></span></div><div class="mname">Dream 7</div><div class="mclass" data-k="m.dream7.c">L3e flagship — 110 km/h · A1</div><div class="price">€5,999 <small>UVP</small></div><ul data-k="m.dream7.u"><li><span>Top speed</span><b>110 km/h</b></li><li><span>Battery</span><b>BYD LFP · 5.18 kWh</b></li><li><span>Range</span><b>up to 150 km</b></li><li><span>Charge</span><b>~2 h to 80%</b></li><li><span>Safety</span><b>ABS + TCS</b></li></ul><span class="badge sod" data-k="m.dream7.b">★ Range &amp; speed flagship</span></div>
+    <div class="mcard sodium haspic"><div class="mphoto" onclick="openGallery('future5')"><img src="assets/models/future5/f-1.jpg" alt="SFM Future 5"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Future 5</div><div class="mclass" data-k="m.fut5.c">Mokick 45 km/h — sodium-ion</div><div class="price">€1,999 <small>UVP</small></div><ul data-k="m.fut5.u"><li><span>Battery</span><b>⚛ Sodium-ion · 1,260 Wh</b></li><li><span>Cycles</span><b>~1,200</b></li><li><span>Range</span><b>up to 45 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>45 km/h Mokick</b></li></ul><span class="badge sod" data-k="m.fut5.b">⚛ Sodium-ion first</span></div>
     <div class="mcard sport"><div class="mname">E2H Sport</div><div class="mclass" data-k="m.e2h.c">L3e motorcycle — 80 km/h · A1</div><div class="price">€2,999 <small>UVP</small></div><ul data-k="m.e2h.u"><li><span>Motor</span><b>3,000 W / 5,000 W peak</b></li><li><span>Battery</span><b>2× 72V · 3,456 Wh</b></li><li><span>Range</span><b>up to 75 km</b></li><li><span>Removable batteries</span><b>Yes</b></li><li><span>Weight</span><b>~106 kg</b></li></ul><span class="badge new" data-k="m.e2h.b">Cheapest 80 km/h L3e in DACH</span></div>
-    <div class="mcard flag"><div class="mname">Dream 7</div><div class="mclass" data-k="m.dream7.c">L3e flagship — 110 km/h · A1</div><div class="price">€5,999 <small>UVP</small></div><ul data-k="m.dream7.u"><li><span>Top speed</span><b>110 km/h</b></li><li><span>Battery</span><b>BYD LFP · 5.18 kWh</b></li><li><span>Range</span><b>up to 150 km</b></li><li><span>Charge</span><b>~2 h to 80%</b></li><li><span>Safety</span><b>ABS + TCS</b></li></ul><span class="badge sod" data-k="m.dream7.b">★ Range &amp; speed flagship</span></div>
+    <div class="mcard sport haspic"><div class="mphoto" onclick="openGallery('primaesport')"><img src="assets/models/primaesport/f-1.jpg" alt="SFM Prima E Sport"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Prima E Sport</div><div class="mclass" data-k="m.pris.c">Fast scooter — 75 km/h · A1</div><div class="price">€2,999 <small>UVP</small></div><ul data-k="m.pris.u"><li><span>Motor</span><b>3,000 W / 3,800 W · 150 Nm</b></li><li><span>Battery</span><b>2× · 2,400 Wh Li-Ion</b></li><li><span>Range</span><b>up to 90 km</b></li><li><span>Brakes</span><b>CBS combined</b></li><li><span>Weight</span><b>~103 kg</b></li></ul><span class="badge new" data-k="m.pris.b">75 km/h at moped money</span></div>
+    <div class="mcard haspic"><div class="mphoto" onclick="openGallery('future3')"><img src="assets/models/future3/f-1.jpg" alt="SFM Future 3"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Future 3</div><div class="mclass" data-k="m.fut3.c">Mokick 45 km/h — big battery</div><div class="price">€2,699 <small>UVP</small></div><ul data-k="m.fut3.u"><li><span>Motor</span><b>2,000 W</b></li><li><span>Battery</span><b>72V · 2,160 Wh</b></li><li><span>Range</span><b>strong for class</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>45 km/h Mokick</b></li></ul><span class="badge new" data-k="m.fut3.b">Big battery for less</span></div>
+    <div class="mcard haspic"><div class="mphoto" onclick="openGallery('primae')"><img src="assets/models/primae/f-1.jpg" alt="SFM Prima E"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">Prima E</div><div class="mclass" data-k="m.pri.c">Retro · 25 or 45 km/h</div><div class="price">€1,999 <small>UVP</small></div><ul data-k="m.pri.u"><li><span>Motor</span><b>1,000 W · 14″ wheels</b></li><li><span>Battery</span><b>48V · 960 Wh Li-Ion</b></li><li><span>Range</span><b>up to 65 km (25)</b></li><li><span>Removable battery</span><b>Yes · 7 kg</b></li><li><span>Weight</span><b>~51 kg</b></li></ul><span class="badge new" data-k="m.pri.b">Retro / lifestyle</span></div>
+    <div class="mcard haspic"><div class="mphoto grey" onclick="openGallery('e2h')"><img src="assets/models/e2h/f-1.jpg" alt="SFM E2H"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">E2H</div><div class="mclass" data-k="m.e2hstd.c">Retro · 25 km/h · torque</div><div class="price">€2,199 <small>UVP</small></div><ul data-k="m.e2hstd.u"><li><span>Motor</span><b>3,000 W · 165 Nm</b></li><li><span>Battery</span><b>72V · 1,728 Wh</b></li><li><span>Top speed</span><b>25 km/h</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>25 km/h Mofa</b></li></ul><span class="badge new" data-k="m.e2hstd.b">Strongest torque in class</span></div>
+    <div class="mcard haspic"><div class="mphoto grey" onclick="openGallery('e2h')"><img src="assets/models/e2h/f-3.jpg" alt="SFM E2H Plus"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">E2H Plus</div><div class="mclass" data-k="m.e2hplus.c">Retro · 25 km/h · dual battery</div><div class="price">€2,849 <small>UVP</small></div><ul data-k="m.e2hplus.u"><li><span>Motor</span><b>3,000 W · 165 Nm</b></li><li><span>Battery</span><b>2× 72V · 3,456 Wh</b></li><li><span>Top speed</span><b>25 km/h</b></li><li><span>Removable batteries</span><b>Yes</b></li><li><span>Class</span><b>25 km/h Mofa</b></li></ul><span class="badge new" data-k="m.e2hplus.b">Dual pack — long range</span></div>
+    <div class="mcard haspic"><div class="mphoto" onclick="openGallery('em1')"><img src="assets/models/em1/f-1.jpg" alt="SFM EM1"><span class="vtag">⟳ <span data-k="m.view">360° · Zoom</span></span></div><div class="mname">EM1</div><div class="mclass" data-k="m.em1.c">Mofa 25 km/h — from age 15</div><div class="price">€1,699 <small>UVP</small></div><ul data-k="m.em1.u"><li><span>Motor</span><b>500 W · 80 Nm</b></li><li><span>Battery</span><b>60V · 1,440 Wh Li-Ion</b></li><li><span>Range</span><b>up to 80 km</b></li><li><span>Removable battery</span><b>Yes</b></li><li><span>Class</span><b>25 km/h Mofa</b></li></ul><span class="badge new" data-k="m.em1.b">Class price floor</span></div>
   </div>
 </section>
 
@@ -683,6 +735,7 @@ const ENPH={}; document.querySelectorAll('[data-kph]').forEach(e=>{ENPH[e.datase
 // ---------- German dictionary ----------
 const DE={
 'nav.home':'Start','nav.analysis':'Analyse','nav.dream':'Dream 7',
+'mg.zoom':'Zoom','m.view':'360° · Zoom','m.viewfull':'Zur Showcase',
 'd7.ey':'Das Flaggschiff','d7.sub':'Das autobahntaugliche Aushängeschild der Palette. Ziehen zum Umrunden, ein Blickwinkel antippen, auf das Fahrzeug klicken für Detail-Zoom.','d7.uvp':'UVP inkl. MwSt.','d7.zoom':'⤢ <span>Zum Zoomen klicken</span>','d7.auto':'Auto-Rotation','d7.s1':'km/h Spitze','d7.s2':'km Reichweite','d7.s4':'auf 80%','d7.cta1':'Eignung prüfen →','d7.cta2':'So schneidet sie ab','d7.lbhint':'Scrollen oder pinchen zum Zoomen · ziehen zum Verschieben · Esc schließt',
 'a.k':'E-Mobility 2027',
 'r.u1':'bis dein Vorzugspreis fixiert ist','r.u2':'Plätze · nur qualifizierte Bewerber',
@@ -1063,6 +1116,53 @@ document.getElementById('deBtn').onclick=()=>{manualLang=true;applyLang('de');};
 
 // ---------- view switching (Home / Analysis) ----------
 let resultShown=false;
+// ---------- per-model gallery modal ----------
+const MEDIA={
+ em1:{title:'EM1',sub:{en:'€1,699 · 25 km/h Mofa',de:'1.699 € · 25 km/h Mofa'},stage:'light',n:8},
+ e2h:{title:'E2H',sub:{en:'€2,199 · retro · 25 km/h',de:'2.199 € · Retro · 25 km/h'},stage:'grey',n:8},
+ future5:{title:'Future 5',sub:{en:'€1,999 · ⚛ sodium-ion',de:'1.999 € · ⚛ Natrium-Ionen'},stage:'light',n:7},
+ future3:{title:'Future 3',sub:{en:'€2,699 · big battery',de:'2.699 € · großer Akku'},stage:'light',n:6},
+ primae:{title:'Prima E',sub:{en:'€1,999 · retro',de:'1.999 € · Retro'},stage:'light',n:4},
+ primaesport:{title:'Prima E Sport',sub:{en:'€2,999 · 75 km/h · A1',de:'2.999 € · 75 km/h · A1'},stage:'light',n:4}
+};
+const mgEl=document.getElementById('mg'),mgStage=document.getElementById('mgstage'),
+      mgFilm=document.getElementById('mgfilm'),mgTitle=document.getElementById('mgtitle');
+let mgKey=null,mgI=0,mgN=0;
+function mgShots(k){const a=[];for(let i=1;i<=MEDIA[k].n;i++)a.push({img:'assets/models/'+k+'/f-'+i+'.jpg',th:'assets/models/'+k+'/f-'+i+'-t.jpg'});return a;}
+function openGallery(k){
+ const m=MEDIA[k]; if(!m)return; mgKey=k; mgI=0; mgN=m.n; const shots=mgShots(k);
+ mgTitle.innerHTML=m.title+' <small>'+(m.sub[curLang]||m.sub.en)+'</small>';
+ mgStage.className='mgstage '+m.stage;
+ mgStage.querySelectorAll('img').forEach(e=>e.remove());
+ mgFilm.innerHTML='';
+ shots.forEach((s,i)=>{
+  const im=document.createElement('img');im.src=s.img;im.alt=m.title+' '+(i+1);im.dataset.i=i;if(i===0)im.className='on';
+  mgStage.insertBefore(im,mgStage.firstChild);
+  const b=document.createElement('button');b.dataset.i=i;if(i===0)b.className='on';
+  const t=document.createElement('img');t.src=s.th;t.loading='lazy';b.appendChild(t);b.onclick=()=>mgGo(i);mgFilm.appendChild(b);
+ });
+ mgEl.classList.add('on'); document.body.style.overflow='hidden';
+}
+function mgGo(i){ mgI=(i+mgN)%mgN;
+ mgStage.querySelectorAll('img').forEach(im=>im.classList.toggle('on',+im.dataset.i===mgI));
+ mgFilm.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.i===mgI));
+}
+function mgNext(){mgGo(mgI+1);} function mgPrev(){mgGo(mgI-1);}
+function mgClose(){ mgEl.classList.remove('on'); if(!d7lb.classList.contains('on')) document.body.style.overflow=''; }
+document.getElementById('mgnext').onclick=mgNext;
+document.getElementById('mgprev').onclick=mgPrev;
+document.getElementById('mgclose').onclick=mgClose;
+document.getElementById('mgzoom').onclick=()=>lbOpenSrc('assets/models/'+mgKey+'/f-'+(mgI+1)+'.jpg');
+mgStage.addEventListener('click',e=>{ if(e.target.closest('.mgarrow')||e.target.closest('.mgzoom'))return; lbOpenSrc('assets/models/'+mgKey+'/f-'+(mgI+1)+'.jpg'); });
+// drag to rotate in modal
+let mgdx=0,mgdown=false;
+mgStage.addEventListener('pointerdown',e=>{mgdown=true;mgdx=e.clientX;});
+window.addEventListener('pointermove',e=>{ if(!mgdown)return; const dx=e.clientX-mgdx; if(Math.abs(dx)>48){ dx<0?mgNext():mgPrev(); mgdx=e.clientX; } });
+window.addEventListener('pointerup',()=>{mgdown=false;});
+mgEl.addEventListener('keydown',e=>{ if(e.key==='ArrowRight')mgNext(); if(e.key==='ArrowLeft')mgPrev(); });
+window.addEventListener('keydown',e=>{ if(!mgEl.classList.contains('on'))return; if(d7lb.classList.contains('on'))return;
+ if(e.key==='Escape')mgClose(); if(e.key==='ArrowRight')mgNext(); if(e.key==='ArrowLeft')mgPrev(); });
+
 // ---------- Dream 7 walk-around gallery ----------
 const D7=[
  {img:'assets/dream7/d7-1.jpg',th:'assets/dream7/d7-1-t.jpg',v:{en:'Left profile',de:'Seite links'}},
@@ -1116,7 +1216,8 @@ window.addEventListener('keydown',e=>{
 const d7lb=document.getElementById('d7lb'),d7lbimg=document.getElementById('d7lbimg');
 let d7z=1,d7px=0,d7py=0,d7pan=false,d7sx=0,d7sy=0;
 function d7apply(){ d7lbimg.style.transform='translate('+d7px+'px,'+d7py+'px) scale('+d7z+')'; d7lb.classList.toggle('zoomed',d7z>1); }
-function d7lbOpen(i){ d7lbimg.src=D7[i].img; d7z=1;d7px=0;d7py=0;d7apply(); d7lb.classList.add('on'); document.body.style.overflow='hidden'; }
+function lbOpenSrc(src){ d7lbimg.src=src; d7z=1;d7px=0;d7py=0;d7apply(); d7lb.classList.add('on'); document.body.style.overflow='hidden'; }
+function d7lbOpen(i){ lbOpenSrc(D7[i].img); }
 function d7lbClose(){ d7lb.classList.remove('on'); document.body.style.overflow=''; }
 document.getElementById('d7lbx').onclick=d7lbClose;
 d7lb.addEventListener('click',e=>{ if(e.target===d7lb)d7lbClose(); });
